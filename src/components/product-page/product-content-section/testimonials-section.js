@@ -9,8 +9,6 @@ export default function TestimonialsSection({ testimonials }) {
     ...testimonials,
   ];
 
-  const singleSetWidth = testimonials.length * 350;
-
   return (
     <>
       <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
@@ -48,55 +46,8 @@ export default function TestimonialsSection({ testimonials }) {
           </p>
         </li>
       </ul>
-      <div className="relative flex flex-col items-center gap-4 rounded-md py-4 font-medium">
-        <p>TRUSTED BY LEADING BRANDS</p>
-        <div className="relative w-full overflow-hidden pointer-events-none">
-          <div className="flex whitespace-nowrap animate-infinite-scroll">
-            {duplicatedTestimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 pl-4"
-                style={{ width: "350px" }}
-              >
-                <div className="flex flex-col gap-2 rounded-md bg-secondary px-4 py-3">
-                  <div className="relative h-[30px]">
-                    <Image
-                      alt={
-                        testimonial.logo.split("/").pop()?.split(".")[0] ||
-                        "Logo"
-                      }
-                      loading="lazy"
-                      width={100}
-                      height={50}
-                      src={testimonial.logo || "/placeholder.svg"}
-                      className="object-contain object-left"
-                    />
-                  </div>
-                  <q className="text-sm font-medium whitespace-pre-wrap">{testimonial.quote}</q>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        @keyframes infinite-scroll {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-${singleSetWidth}px); 
-          }
-        }
-        .animate-infinite-scroll {
-          animation: infinite-scroll 30s linear infinite;
-        }
-      `,
-        }}
-      />
+      <InfiniteSlider testimonials={duplicatedTestimonials} />
 
       <div
         dir="ltr"
@@ -192,5 +143,68 @@ export default function TestimonialsSection({ testimonials }) {
         </div>
       </div>
     </>
+  );
+}
+
+import { useEffect, useRef } from "react";
+
+function InfiniteSlider({ testimonials }) {
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let animationFrame;
+    const scrollSpeed = 0.5; // Adjust speed here
+
+    const scroll = () => {
+      scrollContainer.scrollLeft += scrollSpeed;
+
+      // Loop scroll
+      if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+        scrollContainer.scrollLeft = 0;
+      }
+
+      animationFrame = requestAnimationFrame(scroll);
+    };
+
+    animationFrame = requestAnimationFrame(scroll);
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
+  // Duplicate testimonials to ensure seamless scroll
+  const duplicated = [...testimonials, ...testimonials];
+
+  return (
+    <div className="relative flex flex-col items-center gap-4 rounded-md py-4 font-medium overflow-hidden">
+      <p className="z-10">TRUSTED BY LEADING BRANDS</p>
+
+      <div
+        ref={scrollRef}
+        className="w-full overflow-hidden whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      >
+        <div className="inline-flex">
+          {duplicated.map((brand, i) => (
+            <div key={i} className="flex-none w-[350px] px-4 h-full">
+              <div className="flex flex-col gap-2 rounded-md bg-secondary h-full px-4 py-3">
+                <div className="relative h-[30px] w-full flex items-center">
+                  <Image
+                    src={brand.logo}
+                    alt={brand.name}
+                    fill
+                    className="object-contain object-left"
+                  />
+                </div>
+                <p className="text-sm font-medium whitespace-pre-wrap">
+                  {brand.quote}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
