@@ -16,7 +16,7 @@ export default function ArticleCard({
   return (
     <a
       href={href}
-      className="group flex h-fit basis-1/3 flex-col items-start overflow-hidden rounded-xl p-4 @container hover:bg-secondary"
+      className="group flex h-fit basis-1/3 flex-col items-start overflow-hidden rounded-xl p-4 container hover:bg-secondary"
     >
       <div className="w-full">
         <div className="relative w-full pb-[56.25%]">

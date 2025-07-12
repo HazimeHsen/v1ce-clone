@@ -5,7 +5,7 @@ export default function HeroSection() {
     <section className="3xl:px-[200px] relative -mt-20 flex w-full items-center justify-center overflow-hidden px-4 pb-8 pt-28 lg:px-10 lg:pb-28 lg:pt-40 2xl:px-[100px]">
       <div className="z-10 flex w-full flex-col-reverse items-center justify-center gap-2 px-3 md:flex-row lg:gap-9">
         <div className="flex max-w-[660px] basis-1/2 flex-col items-center gap-4 md:items-start">
-          <div className="inline-flex items-center gap-[10px] rounded-full border px-4 py-1 text-[14px] font-medium transition-colors focus:outline-none border-neutral-200 bg-background text-foreground">
+          <div className="inline-flex items-center gap-[10px] rounded-full px-4 py-1 text-[14px] font-medium transition-colors focus:outline-none border border-neutral-200 bg-background text-foreground">
             Smart. Contactless. Built to Convert.
           </div>
           <h1 className="max-w-[750px] text-balance text-center text-3xl font-bold md:text-left md:text-6xl xl:max-w-[1080px]">
@@ -16,7 +16,7 @@ export default function HeroSection() {
             turn every meeting into money. Share with a tap, capture contacts
             instantly, and sync everything to your CRM — no app required.
           </p>
-          <div className="flex w-full flex-col items-center gap-4 @container md:items-start">
+          <div className="flex w-full flex-col items-center gap-4 container md:items-start">
             <div className="flex w-full flex-col items-center gap-2 md:flex-row">
               <a
                 className="w-full md:w-60"
@@ -88,29 +88,37 @@ export default function HeroSection() {
             </li>
           </ul>
         </div>
+
+        <div className="absolute inset-0 top-60 grid grid-cols-2 -space-x-52 opacity-30">
+          <div className="h-60 bg-gradient-to-br from-cyan-900 to-sky-900 blur-[110px]"></div>
+          <div className="h-40 bg-gradient-to-r from-cyan-900 to-sky-900 blur-[110px]"></div>
+        </div>
+
         <div className="flex max-w-[600px] basis-1/2 items-center justify-center">
           <div className="mb-6 w-full min-w-[350px] max-w-[500px]">
-            <div className="relative -z-10 aspect-[1.35] w-full overflow-hidden rounded-lg">
-              <div className="relative">
-                <div
-                  className="size-full  absolute inset-0 size-full"
-                  style={{ position: "relative", paddingTop: "74.0741%" }}
-                >
-                  <iframe
-                    src="https://iframe.cloudflarestream.com/d57acb13277d25f3d42dec5691410144?letterboxColor=transparent&amp;muted=true&amp;preload=true&amp;loop=true&amp;autoplay=true&amp;controls=false"
-                    title="What is an NFC Card example"
-                    style={{
-                      position: "absolute",
-                      inset: "0px",
-                      height: "100%",
-                      width: "100%",
-                    }}
-                    frameBorder="0"
-                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </div>
+            <div className="aspect-[1]">
+              <video
+                width="600"
+                height="600"
+                autoPlay
+                playsInline
+                loop
+                muted
+                preload="auto"
+                autobuffer="true"
+                poster="//mibio.am/cdn/shop/t/3/assets/mibio-card-tap-poster.png?v=146276278607873946751688317515"
+                className="size-full object-cover"
+              >
+                <source
+                  src="//mibio.am/cdn/shop/t/3/assets/mibio-card-tap.mp4?v=71580772676909705191688166066"
+                  type="video/mp4"
+                />
+                <source
+                  src="//mibio.am/cdn/shop/t/3/assets/mibio-card-tap.webm?v=154180269574855850101688166070"
+                  type="video/webm"
+                />
+                <track kind="captions" src="" srcLang="en" label="English" />
+              </video>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ import { ChevronDown, LogIn, ShoppingCart, Menu } from "lucide-react";
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-[99] w-full border-b border-[#f4f4f4] bg-background">
+    <header className="sticky top-0 z-[99] w-full border-b border-border bg-background">
       <div className="center-wide flex w-full justify-between px-5 py-4">
         <div className="flex items-center gap-7">
           <Link href="/">
@@ -16,7 +16,7 @@ export default function Navbar() {
               height="29"
               decoding="async"
               style={{ color: "transparent" }}
-              src="/logo.png"
+              src="/logo-dark.svg"
             />
           </Link>
           <nav
@@ -114,7 +114,7 @@ export default function Navbar() {
               aria-disabled="false"
               href="https://app.v1ce.co.uk/login"
             >
-              <button className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] text-sm leading-[102%] transition-all disabled:pointer-events-none disabled:opacity-50 border border-neutral-200 bg-background font-semibold text-foreground hover:bg-accent size-10">
+              <button className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] text-sm leading-[102%] transition-all disabled:pointer-events-none disabled:opacity-50 border border-border bg-background font-semibold text-foreground hover:bg-accent size-10">
                 <LogIn className="lucide lucide-log-in size-4" />
               </button>
             </Link>

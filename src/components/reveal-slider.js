@@ -135,7 +135,7 @@ export default function RevealSlider() {
       </div>
 
       <div
-        className="absolute z-10 h-[calc(100%+20px)] w-[10px] -mt-[10px] rounded-full bg-white shadow-[0_0_20px_5px_rgba(5,130,255,0.75)] cursor-ew-resize"
+        className="absolute z-10 h-[calc(100%+20px)] w-[10px] -mt-[10px] rounded-full bg-primary-foreground shadow-[0_0_20px_5px_hsl(var(--primary)_/_0.75)] cursor-ew-resize"
         style={{ left: `${sliderPosition}%`, transform: "translateX(-50%)" }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}

@@ -76,7 +76,7 @@ export default function BeforeEventSection() {
       className="w-full"
       style={{ scrollMarginTop: "100px" }}
     >
-      <div className="center-narrow flex flex-col gap-8 rounded-xl p-5 py-16 @md:p-8">
+      <div className="center-narrow flex flex-col gap-8 rounded-xl p-5 py-16 md:p-8">
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="flex max-w-[750px] flex-col items-center gap-2">
             <h2 className="text-center text-3xl font-bold md:text-5xl">
@@ -120,7 +120,7 @@ export default function BeforeEventSection() {
                     {item.videoSrc && (
                       <div className="relative flex aspect-video w-full md:hidden">
                         <div className="w-full">
-                          <div className="relative aspect-square size-full overflow-hidden rounded-2xl border border-neutral-200">
+                          <div className="relative aspect-square size-full overflow-hidden rounded-2xl border border-border">
                             <div
                               className=""
                               style={{
@@ -154,7 +154,7 @@ export default function BeforeEventSection() {
           {/* Desktop-only video */}
           <div className="relative hidden aspect-video w-full items-center md:flex">
             <div className="w-full">
-              <div className="relative aspect-square size-full overflow-hidden rounded-2xl border border-neutral-200">
+              <div className="relative aspect-square size-full overflow-hidden rounded-2xl border border-border">
                 <div
                   className=""
                   style={{ position: "relative", paddingTop: "100%" }}

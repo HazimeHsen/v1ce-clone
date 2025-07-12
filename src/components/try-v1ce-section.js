@@ -21,7 +21,7 @@ export default function TryV1CESection() {
           </a>
         </div>
         <div className="flex items-center justify-center">
-          <ShieldCheck className="lucide lucide-shield-check size-14 md:size-28" />
+          <ShieldCheck className="lucide lucide-shield-check size-14 md:size-28 text-primary" />
         </div>
       </div>
     </section>

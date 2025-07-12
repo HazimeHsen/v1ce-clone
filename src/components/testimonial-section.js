@@ -164,7 +164,7 @@ export default function TestimonialSection() {
           <div className="flex items-center justify-center gap-3">
             <button
               type="button"
-              className="flex aspect-square items-center rounded-full border border-neutral-200 p-1 disabled:opacity-50"
+              className="flex aspect-square items-center rounded-full border border-border p-1 disabled:opacity-50"
               aria-label="Previous testimonial"
               onClick={() => scrollCarousel("left")}
               disabled={!canScrollLeft}
@@ -186,7 +186,7 @@ export default function TestimonialSection() {
             </button>
             <button
               type="button"
-              className="flex aspect-square items-center rounded-full border border-neutral-200 p-1 disabled:opacity-50"
+              className="flex aspect-square items-center rounded-full border border-border p-1 disabled:opacity-50"
               aria-label="Next testimonial"
               onClick={() => scrollCarousel("right")}
               disabled={!canScrollRight}

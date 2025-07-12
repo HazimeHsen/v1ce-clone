@@ -19,9 +19,11 @@ export default function ComparisonCard({
         style={{ color: "transparent" }}
         src={imageSrc || "/placeholder.svg"}
       />
-      <div className={`flex h-full w-full flex-1 flex-col gap-3 rounded-lg p-3 ${bgColorClass} ${textColorClass}`}>
+      <div
+        className={`flex h-full w-full flex-1 flex-col gap-3 rounded-lg p-3 ${bgColorClass} ${textColorClass}`}
+      >
         <h3 className="text-center text-xl font-semibold">{title}</h3>
-        <ul className="flex h-full flex-1 flex-col gap-4 rounded-lg bg-white p-4 pb-0 text-black sm:pb-4">
+        <ul className="flex h-full flex-1 flex-col gap-4 rounded-lg bg-card p-4 pb-0 text-card-foreground sm:pb-4">
           {features.map((feature, index) => (
             <li key={index} className="flex gap-2">
               <svg
@@ -40,11 +42,12 @@ export default function ComparisonCard({
               </svg>
               <div className="flex w-full flex-col gap-2">
                 <h4 className="font-medium leading-tight">{feature.title}</h4>
-                {feature.description && <p className="text-sm leading-tight">{feature.description}</p>}
+                {feature.description && (
+                  <p className="text-sm leading-tight">{feature.description}</p>
+                )}
               </div>
             </li>
           ))}
-          {/* Mobile-only image for the paper card, if applicable */}
           {title === "Paper Business Card" && (
             <img
               alt={imageAlt}
@@ -57,7 +60,6 @@ export default function ComparisonCard({
               src={imageSrc || "/placeholder.svg"}
             />
           )}
-          {/* Mobile-only image for the V1CE card, if applicable */}
           {title === "V1CE Smart Business Card" && (
             <img
               alt={imageAlt}
@@ -73,5 +75,5 @@ export default function ComparisonCard({
         </ul>
       </div>
     </div>
-  )
+  );
 }

@@ -59,7 +59,7 @@ export default function BeforeAfterSection() {
         <ComparisonCard
           title="Paper Business Card"
           bgColorClass="bg-secondary"
-          textColorClass="text-black"
+          textColorClass="text-foreground"
           imageSrc="/before-and-after-1.png"
           imageAlt="Paper Business Card"
           imagePositionClass="-right-6 lg:-left-14 xl:-left-20"

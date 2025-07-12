@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Ratings from "./ratings"
-import { Check, Reply, Play } from "lucide-react"
+import { useState } from "react";
+import Ratings from "./ratings";
+import { Check, Reply, Play } from "lucide-react";
 
 export default function ReviewCard({
   name,
@@ -13,7 +13,7 @@ export default function ReviewCard({
   mediaType,
   reply,
 }) {
-  const [showFullText, setShowFullText] = useState(false)
+  const [showFullText, setShowFullText] = useState(false);
 
   return (
     <div className="flex flex-col gap-4 overflow-hidden rounded-lg bg-secondary p-4">
@@ -22,8 +22,8 @@ export default function ReviewCard({
           <span className="text-lg font-medium">{name}</span>
           {isVerified && (
             <button aria-label="Verified Purchase">
-              <div className="w-fit rounded-full border border-blue bg-blue/10 p-0.5">
-                <Check className="size-3 text-blue" />
+              <div className="w-fit rounded-full border border-primary bg-primary/10 p-0.5">
+                <Check className="size-3 text-primary" />
               </div>
             </button>
           )}
@@ -35,7 +35,11 @@ export default function ReviewCard({
           </div>
           {!showFullText &&
             reviewText.length > 150 && ( // Simple heuristic for "See more"
-              <button type="button" className="mt-1 text-left underline" onClick={() => setShowFullText(true)}>
+              <button
+                type="button"
+                className="mt-1 text-left underline"
+                onClick={() => setShowFullText(true)}
+              >
                 See more
               </button>
             )}
@@ -73,7 +77,7 @@ export default function ReviewCard({
         {reply && (
           <div className="flex flex-col gap-2 rounded-md p-3">
             <div className="flex items-center gap-2">
-              <div className="flex size-7 items-center justify-center rounded-full bg-black">
+              <div className="flex size-7 items-center justify-center rounded-full bg-card">
                 <img
                   alt={reply.author}
                   loading="lazy"
@@ -90,7 +94,11 @@ export default function ReviewCard({
             <div className="relative overflow-hidden transition-all duration-300 max-h-[90px]">
               <p
                 className="overflow-hidden text-ellipsis text-muted-foreground"
-                style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+                style={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                }}
               >
                 {reply.text}
               </p>
@@ -99,5 +107,5 @@ export default function ReviewCard({
         )}
       </div>
     </div>
-  )
+  );
 }

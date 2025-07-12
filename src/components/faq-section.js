@@ -4,7 +4,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ChevronDown } from "lucide-react";
 
 export default function FAQSection() {
   const faqItems = [
@@ -59,7 +58,7 @@ export default function FAQSection() {
       data-sentry-source-file="faq.tsx"
     >
       <div className="center-narrow flex flex-col items-center justify-center gap-14">
-        <div className="w-full rounded-2xl border border-neutral-200 bg-white px-8 py-4">
+        <div className="w-full rounded-2xl border border-border bg-card px-8 py-4">
           <Accordion
             type="single"
             collapsible
@@ -70,7 +69,7 @@ export default function FAQSection() {
               <AccordionItem
                 key={item.value}
                 value={item.value}
-                className="border-b border-neutral-200/20 last:border-0 w-full"
+                className="border-b border-border/20 last:border-0 w-full"
               >
                 <h3 className="flex w-full">
                   <AccordionTrigger className="w-full flex flex-1 items-center justify-between py-4 text-left text-base font-medium transition-all hover:underline ">

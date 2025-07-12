@@ -4,7 +4,7 @@ export default function SliderImageCard({
   isAfter = false,
 }) {
   return (
-    <div className="relative ml-4 h-[260px] w-[200px] shrink-0 grow-0 basis-auto rounded-xl border border-neutral-200 bg-secondary">
+    <div className="relative ml-4 h-[260px] w-[200px] shrink-0 grow-0 basis-auto rounded-xl border border-border bg-secondary">
       <img
         alt={imageAlt}
         loading="lazy"

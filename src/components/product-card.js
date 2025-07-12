@@ -10,7 +10,7 @@ export default function ProductCard({
 }) {
   return (
     <a
-      className="group relative flex w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-[15px] border border-neutral-200/40 bg-white transition-all hover:border-primary"
+      className="group relative flex w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-[15px] border border-border/40 bg-card transition-all hover:border-primary"
       href={href}
     >
       <div className="w-full">
@@ -30,7 +30,7 @@ export default function ProductCard({
             <div className="relative size-full overflow-hidden">
               {badgeText && (
                 <div className="absolute left-3 top-3 z-10 flex gap-1 text-xs font-semibold lg:text-sm">
-                  <div className="inline-flex items-center gap-[10px] rounded-full border px-4 py-1 text-[14px] font-medium transition-colors focus:outline-none border-neutral-200 bg-background text-foreground">
+                  <div className="inline-flex items-center gap-[10px] rounded-full border border-border px-4 py-1 text-[14px] font-medium transition-colors focus:outline-none bg-background text-foreground">
                     {badgeText}
                   </div>
                 </div>
@@ -40,7 +40,7 @@ export default function ProductCard({
                 className="group/tooltip absolute bottom-3 right-3 z-10"
                 aria-label="Customize product"
               >
-                <div className="flex size-[30px] items-center justify-center rounded-full border border-neutral-200 bg-background">
+                <div className="flex size-[30px] items-center justify-center rounded-full border border-border bg-background">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
