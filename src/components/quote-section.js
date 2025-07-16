@@ -1,5 +1,5 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge" // Assuming you have a Badge component or can create one
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 export default function QuoteSection() {
   return (
@@ -12,7 +12,10 @@ export default function QuoteSection() {
           className="max-w-[700px] text-center text-2xl font-bold hover:underline md:text-3xl"
           href="/case-studies/furniture-village-v1ce-digital-business-card-review-cost-savings"
         >
-          <q>Managing cards for 40+ staff was chaos. V1CE made setup fast and lead capture automatic.</q>
+          <q>
+            Managing cards for 40+ staff was chaos. V1CE made setup fast and
+            lead capture automatic.
+          </q>
         </a>
         <div className="flex items-center gap-2">
           <Avatar className="relative flex shrink-0 overflow-hidden rounded-full size-11">
@@ -29,5 +32,5 @@ export default function QuoteSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

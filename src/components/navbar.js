@@ -1,21 +1,78 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDown, LogIn, ShoppingCart, Menu } from "lucide-react";
+import Image from "next/image";
+import { ChevronDown, LogIn, ShoppingCart, Menu, X } from "lucide-react";
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export default function Navbar() {
+  const [cartItems, setCartItems] = useState([
+    {
+      id: 1,
+      name: "V1CE Pro Card",
+      price: 29.99,
+      quantity: 1,
+      image: "/placeholder.svg?height=60&width=60",
+    },
+    {
+      id: 2,
+      name: "V1CE Classic Card",
+      price: 19.99,
+      quantity: 2,
+      image: "/placeholder.svg?height=60&width=60",
+    },
+  ]);
+
+  const handleIncrease = (id) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
+
+  const handleDecrease = (id) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, item.quantity - 1) }
+          : item
+      )
+    );
+  };
+
+  const handleRemove = (id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
   return (
-    <header className="sticky top-0 z-[99] w-full border-b border-border bg-background">
+    <header className="sticky top-0 z-[40] w-full border-b border-border bg-background">
       <div className="center-wide flex w-full justify-between px-5 py-4">
         <div className="flex items-center gap-7">
           <Link href="/">
-            <img
+            <Image
               alt="V1CE Logo"
               loading="lazy"
               width="80"
               height="29"
               decoding="async"
-              style={{ color: "transparent" }}
               src="/logo-dark.svg"
             />
           </Link>
@@ -73,92 +130,133 @@ export default function Navbar() {
           </nav>
         </div>
         <div className="flex gap-5">
-          <div className="hidden lg:flex">
-            <button
-              type="button"
-              className="relative flex w-full cursor-pointer items-center gap-1 text-left sm:text-sm"
-              aria-haspopup="listbox"
-              aria-expanded="false"
-              aria-labelledby="listbox-label"
-            >
-              <span className="flex items-center gap-1 truncate">
-                <div className="h-3 w-[19px]">
-                  <img
-                    alt="United Arab Emirates flag"
-                    loading="lazy"
-                    width="19"
-                    height="14"
-                    decoding="async"
-                    className="rounded-[2px]"
-                    src="/placeholder.svg?height=14&width=19"
-                    style={{
-                      color: "transparent",
-                      width: "auto",
-                      height: "auto",
-                    }}
-                  />
+          <Sheet>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                aria-label="Open cart"
+                className="hidden cursor-pointer items-center gap-1 rounded-full md:flex"
+              >
+                <div className="relative">
+                  <div className="flex size-10 items-center justify-center">
+                    <ShoppingCart className="lucide lucide-shopping-cart" />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                        {totalItems}
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <p className="hidden w-6 text-center lg:block">AE</p>
-              </span>
-              <span className="pointer-events-none flex items-center">
-                <ChevronDown
-                  className="lucide lucide-chevron-down relative top-px size-4 transition duration-200 rotate-0"
-                  aria-hidden="true"
-                />
-              </span>
-            </button>
-          </div>
-          <div className="hidden gap-[10px] lg:flex">
-            <Link
-              className="w-fit"
-              aria-disabled="false"
-              href="https://app.v1ce.co.uk/login"
-            >
-              <button className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] text-sm leading-[102%] transition-all disabled:pointer-events-none disabled:opacity-50 border border-border bg-background font-semibold text-foreground hover:bg-accent size-10">
-                <LogIn className="lucide lucide-log-in size-4" />
               </button>
-            </Link>
-          </div>
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-            data-state="closed"
-            className="hidden cursor-pointer items-center gap-1 rounded-full md:flex"
-            aria-label="Cart"
-          >
-            <div className="relative">
-              <div className="flex size-10 items-center justify-center">
-                <ShoppingCart className="lucide lucide-shopping-cart" />
+            </SheetTrigger>
+
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                aria-label="Open cart"
+                className="flex cursor-pointer items-center gap-1 rounded-full md:hidden"
+              >
+                <div className="relative">
+                  <div className="flex size-10 items-center justify-center">
+                    <ShoppingCart className="lucide lucide-shopping-cart" />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                        {totalItems}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </button>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className="w-full sm:max-w-lg flex flex-col z-50"
+            >
+              <SheetHeader>
+                <SheetTitle>Your Cart ({totalItems})</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Review your items and proceed to checkout.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="flex-1 overflow-y-auto py-4">
+                {cartItems.length === 0 ? (
+                  <p className="text-center text-muted-foreground">
+                    Your cart is empty.
+                  </p>
+                ) : (
+                  <div className="grid gap-4">
+                    {cartItems.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center gap-4 border-b p-4 last:border-b-0 last:pb-0"
+                      >
+                        <Image
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.name}
+                          width={60}
+                          height={60}
+                          className="rounded-md object-cover"
+                        />
+                        <div className="grid flex-1 gap-1">
+                          <h3 className="font-medium">{item.name}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            ${item.price.toFixed(2)}
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="h-7 w-7 bg-transparent"
+                              onClick={() => handleDecrease(item.id)}
+                            >
+                              -
+                            </Button>
+                            <span className="text-sm font-medium">
+                              {item.quantity}
+                            </span>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="h-7 w-7 bg-transparent"
+                              onClick={() => handleIncrease(item.id)}
+                            >
+                              +
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="ml-auto text-muted-foreground hover:text-destructive"
+                              onClick={() => handleRemove(item.id)}
+                            >
+                              <X className="h-4 w-4" />
+                              <span className="sr-only">
+                                Remove {item.name}
+                              </span>
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="font-semibold">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-          </button>
-          <span
-            id="radix-cart-title"
-            className="text-lg font-semibold text-foreground sr-only"
-          >
-            Cart
-          </span>
-          <p
-            id="radix-cart-description"
-            className="text-sm text-muted-foreground hidden"
-          >
-            Cart items
-          </p>
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-            data-state="closed"
-            className="flex cursor-pointer items-center gap-1 rounded-full md:hidden"
-            aria-label="Cart"
-          >
-            <div className="relative">
-              <div className="flex size-10 items-center justify-center">
-                <ShoppingCart className="lucide lucide-shopping-cart" />
-              </div>
-            </div>
-          </button>
+              <SheetFooter className="mt-auto pt-4 border-t">
+                <div className="flex justify-between items-center w-full mb-4">
+                  <span className="text-lg font-semibold">Total:</span>
+                  <span className="text-lg font-semibold">
+                    ${totalPrice.toFixed(2)}
+                  </span>
+                </div>
+                <Button className="w-full" size="lg">
+                  Proceed to Checkout
+                </Button>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+
           <button
             type="button"
             aria-haspopup="dialog"

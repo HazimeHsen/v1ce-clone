@@ -52,11 +52,7 @@ export default function FAQSection() {
   ];
 
   return (
-    <section
-      className="pb-[50px] pt-10 md:pb-20"
-      data-sentry-component="FAQSection"
-      data-sentry-source-file="faq.tsx"
-    >
+    <section className="pb-[50px] pt-10 md:pb-20">
       <div className="center-narrow flex flex-col items-center justify-center gap-14">
         <div className="w-full rounded-2xl border border-border bg-card px-8 py-4">
           <Accordion
