@@ -90,20 +90,20 @@ export default function Navbar() {
               >
                 <li>
                   <Link
-                    href="/collections/tap-business-cards"
+                    href="/products"
                     className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
                     data-radix-collection-item=""
                   >
-                    Shop
+                    Products
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/#before"
+                    href="/policies/shipping-and-returns"
                     className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
                     data-radix-collection-item=""
                   >
-                    How It Works
+                   Shipping And Returns
                   </Link>
                 </li>
                 <li>
