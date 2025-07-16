@@ -33,6 +33,7 @@ export default function Navbar() {
       image: "/placeholder.svg?height=60&width=60",
     },
   ]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleIncrease = (id) => {
     setCartItems((prevItems) =>
@@ -63,7 +64,7 @@ export default function Navbar() {
   );
 
   return (
-    <header className="sticky top-0 z-[40] w-full border-b border-border bg-background">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background">
       <div className="center-wide flex w-full justify-between px-5 py-4">
         <div className="flex items-center gap-7">
           <Link href="/">
@@ -99,11 +100,11 @@ export default function Navbar() {
                 </li>
                 <li>
                   <Link
-                    href="/policies/shipping-and-returns"
+                    href="/#before"
                     className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
                     data-radix-collection-item=""
                   >
-                   Shipping And Returns
+                    How It Works
                   </Link>
                 </li>
                 <li>
@@ -124,12 +125,63 @@ export default function Navbar() {
                     Reviews
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href="/policies/shipping-and-returns"
+                    className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
+                    data-radix-collection-item=""
+                  >
+                    Shipping & Returns
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="absolute left-0 top-full flex justify-center"></div>
           </nav>
         </div>
         <div className="flex gap-5">
+          <div className="hidden lg:flex">
+            <button
+              type="button"
+              className="relative flex w-full cursor-pointer items-center gap-1 text-left sm:text-sm"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-labelledby="listbox-label"
+            >
+              <span className="flex items-center gap-1 truncate">
+                <div className="h-3 w-[19px]">
+                  <Image
+                    alt="United Arab Emirates flag"
+                    loading="lazy"
+                    width="19"
+                    height="14"
+                    decoding="async"
+                    className="rounded-[2px]"
+                    src="/placeholder.svg?height=14&width=19"
+                  />
+                </div>
+                <p className="hidden w-6 text-center lg:block">AE</p>
+              </span>
+              <span className="pointer-events-none flex items-center">
+                <ChevronDown
+                  className="lucide lucide-chevron-down relative top-px size-4 transition duration-200 rotate-0"
+                  aria-hidden="true"
+                />
+              </span>
+            </button>
+          </div>
+          <div className="hidden gap-[10px] lg:flex">
+            <Link
+              className="w-fit"
+              aria-disabled="false"
+              href="https://app.v1ce.co.uk/login"
+            >
+              <Button className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] text-sm leading-[102%] transition-all disabled:pointer-events-none disabled:opacity-50 border border-border bg-background font-semibold text-foreground hover:bg-accent size-10">
+                <LogIn className="lucide lucide-log-in size-4" />
+              </Button>
+            </Link>
+          </div>
+
           <Sheet>
             <SheetTrigger asChild>
               <button
@@ -257,16 +309,74 @@ export default function Navbar() {
             </SheetContent>
           </Sheet>
 
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-            data-state="closed"
-            className="block lg:hidden"
-            aria-label="Toggle hamburger menu"
-          >
-            <Menu className="lucide lucide-menu size-6 text-primary" />
-          </button>
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                aria-label="Toggle hamburger menu"
+                className="block lg:hidden"
+              >
+                <Menu className="lucide lucide-menu size-6 text-primary" />
+              </button>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="w-full sm:max-w-xs flex flex-col"
+            >
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Main navigation links
+                </SheetDescription>
+              </SheetHeader>
+              <nav className="flex flex-col gap-4 p-6">
+                <Link
+                  href="/collections/tap-business-cards"
+                  className="text-lg font-semibold hover:text-primary"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Shop
+                </Link>
+                <Link
+                  href="/#before"
+                  className="text-lg font-semibold hover:text-primary"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  How It Works
+                </Link>
+                <Link
+                  href="/teams"
+                  className="text-lg font-semibold hover:text-primary"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Teams
+                </Link>
+                <Link
+                  href="/digital-business-card-reviews"
+                  className="text-lg font-semibold hover:text-primary"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Reviews
+                </Link>
+                <Link
+                  href="/shipping-and-returns"
+                  className="text-lg font-semibold hover:text-primary"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Shipping & Returns
+                </Link>
+                <div className="mt-4 border-t pt-4">
+                  <Link
+                    href="https://app.v1ce.co.uk/login"
+                    className="flex items-center gap-2 text-lg font-semibold hover:text-primary"
+                  >
+                    <LogIn className="size-5" />
+                    Login
+                  </Link>
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
