@@ -1,60 +1,236 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import ProductContentSection from "@/components/product-page/product-content-section";
-import ProductDetailsForm from "@/components/product-page/product-details-form";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
-import ProductReviewsSection from "@/components/product-reviews-section";
+import { useState } from "react"
+import ProductContentSection from "@/components/product-page/product-content-section"
+import ProductDetailsForm from "@/components/product-page/product-details-form"
+import Navbar from "@/components/navbar"
+import Footer from "@/components/footer"
+import ProductReviewsSection from "@/components/product-reviews-section"
 
 export default function ProductPage() {
-  const [mainCarouselIndex, setMainCarouselIndex] = useState(0);
-  const [thumbCarouselIndex, setThumbCarouselIndex] = useState(0);
+  const [mainCarouselIndex, setMainCarouselIndex] = useState(0)
+  const [thumbCarouselIndex, setThumbCarouselIndex] = useState(0)
+  const [selectedColor, setSelectedColor] = useState("Green & Silver") // Default selected color
 
-  const images = [
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a1_ea44fac0-8cd2-41fb-9b05-d192ea5527b9.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a2_15fb1a5b-aaac-42d0-b80a-950acaa7ea17.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a3_f7d40887-9556-431a-9db8-a195e78754f4.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a4_5023982b-b94e-4608-991a-b004ea69040b.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a5_fe05bb03-0c57-48dd-828e-7cdd0145d982.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a6_7a7b8095-f7df-498e-b54f-ac17060c5ce3.jpg?v=1740139540",
-      type: "image",
-    },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a7_34768fe7-a404-4d63-8556-da4b67c70698.jpg?v=1740139540",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a8_04a003c5-9353-4c33-b9bd-fc15375161a9.jpg?v=1740139540",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a9_a1e1710a-2cba-4097-b889-ca112143b0f9.jpg?v=1740139540",
-      type: "image",
-    },
-  ];
+  // Define image sets for each color using real image URLs
+  const colorImageMap = {
+    "Black & Silver": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "Black & Gold": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "Silver & Black": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "Blue & Silver": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "Blue & Gold": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "White & Silver": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "White & Gold": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "Green & Silver": [
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a1_ea44fac0-8cd2-41fb-9b05-d192ea5527b9.jpg?v=1740134790",
+        type: "image",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a2_15fb1a5b-aaac-42d0-b80a-950acaa7ea17.jpg?v=1740134790",
+        type: "image",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a3_f7d40887-9556-431a-9db8-a195e78754f4.jpg?v=1740134790",
+        type: "image",
+      },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a4_5023982b-b94e-4608-991a-b004ea69040b.jpg?v=1740134790",
+        type: "image",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a5_fe05bb03-0c57-48dd-828e-7cdd0145d982.jpg?v=1740134790",
+        type: "image",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a6_7a7b8095-f7df-498e-b54f-ac17060c5ce3.jpg?v=1740139540",
+        type: "image",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a7_34768fe7-a404-4d63-8556-da4b67c70698.jpg?v=1740139540",
+        type: "image",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a8_04a003c5-9353-4c33-b9bd-fc15375161a9.jpg?v=1740139540",
+        type: "image",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a9_a1e1710a-2cba-4097-b889-ca112143b0f9.jpg?v=1740139540",
+        type: "image",
+      },
+    ],
+    "Green & Gold": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "Red & Silver": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+    "Red & Gold": [
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      {
+        src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
+        poster:
+          "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
+        type: "video",
+      },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      { src: "/placeholder.svg?height=700&width=700", type: "image" },
+    ],
+  }
+
+  const currentImages = colorImageMap[selectedColor] || colorImageMap["Green & Silver"]
 
   const testimonials = [
     {
@@ -62,74 +238,65 @@ export default function ProductPage() {
       quote: "No more forgotten contacts—V1CE auto-saves every Contact.",
       name: "Rob Mitchell",
       title: "Commercial Director - AFC Bournemouth",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/94604703-35e3-49f0-b49f-4f1675d00000/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/94604703-35e3-49f0-b49f-4f1675d00000/public",
     },
     {
       logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/2651f20d-5fd8-4d17-f0b9-ed4342010000/public",
       quote: "Feels good knowing I’m always ready.",
       name: "Chris Sarjant",
       title: "AGM - Dillards",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/03c5c4a9-b766-4ac9-f683-19b42b6dc600/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/03c5c4a9-b766-4ac9-f683-19b42b6dc600/public",
     },
     {
       logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/d29f93de-3cf7-4bd1-37dd-f666aebd7d00/public",
       quote: "Everyone asks where I got it. It just works.",
       name: "Jenni Reveulta",
       title: "Marketing Manager - Salon Services",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/4d816e31-eb8a-4d9c-51e7-4d9ca31b0c00/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/4d816e31-eb8a-4d9c-51e7-4d9ca31b0c00/public",
     },
     {
       logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/fe6d5ade-8d1b-401a-ec44-20e96cc51400/public",
       quote: "V1CE helped me make 3x more connections at networking events.",
       name: "Luna Williams",
       title: "CEO - Thrive Club",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/cdd53185-3108-4aed-4b59-331818cce400/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/cdd53185-3108-4aed-4b59-331818cce400/public",
     },
     {
       logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/70e1a113-1a00-4ae3-e67c-b4e021f52300/public",
       quote: "I used to forget my cards. Now I don’t even think about it.",
       name: "Josh",
       title: "Entrepreneur - Tokyo",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/0b2f1215-2627-4f46-1a11-507b4ede1400/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/0b2f1215-2627-4f46-1a11-507b4ede1400/public",
     },
     {
       logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/3fa4146a-36da-4d69-0787-f34d85732300/public",
       quote: "Transformed my networking—every meeting is now trackable.",
       name: "Faisal Pakar",
       title: "Head Of IT - Tim Hortons UAE",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/c46a612c-0ced-4610-c92a-61c9b9b3d800/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/c46a612c-0ced-4610-c92a-61c9b9b3d800/public",
     },
     {
       logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/32e94e94-f663-46d1-2998-ad6da246ea00/public",
       quote: "No more running out of cards—one V1CE card lasts forever.",
       name: "Charlie Harrison",
       title: "CEO & Co-Founder - Furniture Village",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/9c1c3b33-fa02-4e56-4a84-e839eaf1bc00/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/9c1c3b33-fa02-4e56-4a84-e839eaf1bc00/public",
     },
     {
       logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/1af2689b-78c8-4ba5-b9ac-51b84d248d00/thumbnail",
       quote: "Networking is now 5x faster with V1CE.",
       name: "Ignacio Mallagray",
       title: "Marketing Director - Gilmar",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/33998f9d-4d09-4b61-2266-cad30b04b900/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/33998f9d-4d09-4b61-2266-cad30b04b900/public",
     },
     {
       logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/5675ae51-e5e7-4db8-cca9-c6153ea92c00/public",
       quote: "V1CE made networking 80% faster and more accurate for our team!",
       name: "Julia",
       title: "CEO - Acre",
-      thumbnail:
-        "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/8c089350-02bc-425a-af5f-ff175d121900/public",
+      thumbnail: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/8c089350-02bc-425a-af5f-ff175d121900/public",
     },
-  ];
+  ]
 
   const salesPoints = [
     {
@@ -162,12 +329,11 @@ export default function ProductPage() {
     },
     {
       title: "See Who's Using Your Card",
-      content:
-        "Find out who's viewing your card so you can follow up with confidence, knowing they're interested.",
+      content: "Find out who's viewing your card so you can follow up with confidence, knowing they're interested.",
       videoSrc:
         "https://iframe.cloudflarestream.com/63ed60dcce3d74a2b499f169e5a261ed?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
-  ];
+  ]
 
   const faqItems = {
     "Using Your V1CE Card": [
@@ -256,23 +422,19 @@ export default function ProductPage() {
           "Our design team typically completes mockups within 6 hours. Once you approve the design, we offer fast and secure delivery, with 1-3 day shipping available from our offices in the UK, USA, or UAE, depending on your location.",
       },
     ],
-  };
+  }
 
   const handleMainPrev = () => {
-    setMainCarouselIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
+    setMainCarouselIndex((prevIndex) => (prevIndex === 0 ? currentImages.length - 1 : prevIndex - 1))
+  }
 
   const handleMainNext = () => {
-    setMainCarouselIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
+    setMainCarouselIndex((prevIndex) => (prevIndex === currentImages.length - 1 ? 0 : prevIndex + 1))
+  }
 
   const handleThumbnailClick = (index) => {
-    setMainCarouselIndex(index);
-  };
+    setMainCarouselIndex(index)
+  }
 
   return (
     <>
@@ -280,27 +442,28 @@ export default function ProductPage() {
 
       <div className="center-wide mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 lg:gap-20">
         <ProductContentSection
-          images={images}
-          mainCarouselIndex={mainCarouselIndex}
-          thumbCarouselIndex={thumbCarouselIndex}
-          handleMainPrev={handleMainPrev}
-          handleMainNext={handleMainNext}
-          handleThumbnailClick={handleThumbnailClick}
+          images={currentImages}
           testimonials={testimonials}
           salesPoints={salesPoints}
           faqItems={faqItems}
         />
         <ProductDetailsForm
-          images={images}
+          images={currentImages}
           mainCarouselIndex={mainCarouselIndex}
           thumbCarouselIndex={thumbCarouselIndex}
           handleMainPrev={handleMainPrev}
           handleMainNext={handleMainNext}
           handleThumbnailClick={handleThumbnailClick}
+          selectedColor={selectedColor}
+          setSelectedColor={(color) => {
+            setSelectedColor(color)
+            setMainCarouselIndex(0) // Reset carousel to first image of new color
+            setThumbCarouselIndex(0) // Reset thumbnail carousel as well
+          }}
         />
       </div>
       <ProductReviewsSection center={false} />
       <Footer />
     </>
-  );
+  )
 }
