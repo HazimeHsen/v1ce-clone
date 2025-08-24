@@ -262,7 +262,7 @@ export default function ProductReviewsSection({ center }) {
     <section className={center ? "center-narrow" : ""}>
       <section
         id="reviews-section"
-        className="center-wide my-16 flex flex-col items-center gap-7 !px-0"
+        className="center-wide my-16 flex flex-col items-center gap-7 px-2 md:!px-0"
       >
         <div className="flex w-full items-center justify-between gap-4">
           <div className="flex flex-col gap-2">

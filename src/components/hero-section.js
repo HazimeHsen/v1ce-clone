@@ -4,7 +4,7 @@ export default function HeroSection() {
   return (
     <section className="3xl:px-[200px] relative -mt-20 flex w-full items-center justify-center overflow-hidden px-4 pb-8 pt-28 lg:px-10 lg:pb-28 lg:pt-40 2xl:px-[100px]">
       <div className="z-10 flex w-full flex-col-reverse items-center justify-center gap-2 px-3 md:flex-row lg:gap-9">
-        <div className="flex max-w-[660px] basis-1/2 flex-col items-center gap-4 md:items-start">
+        <div className="flex max-w-[660px] basis-1/2 flex-col items-center gap-4 md:items-start relative z-10">
           <div className="inline-flex items-center gap-[10px] rounded-full px-4 py-1 text-[14px] font-medium transition-colors focus:outline-none border border-neutral-200 bg-background text-foreground">
             Smart. Contactless. Built to Convert.
           </div>
@@ -28,7 +28,7 @@ export default function HeroSection() {
               </a>
             </div>
           </div>
-          <ul className="flex flex-col gap-1 font-medium text-primary">
+          <ul className="flex flex-col gap-1 font-medium text-primary w-full md:w-fit">
             <li className="flex items-center gap-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +117,6 @@ export default function HeroSection() {
                   src="//mibio.am/cdn/shop/t/3/assets/mibio-card-tap.webm?v=154180269574855850101688166070"
                   type="video/webm"
                 />
-                <track kind="captions" src="" srcLang="en" label="English" />
               </video>
             </div>
           </div>

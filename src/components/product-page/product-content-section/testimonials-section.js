@@ -91,8 +91,7 @@ export default function TestimonialsSection({ testimonials }) {
                             <Image
                               alt="Logo"
                               loading="lazy"
-                              width={100}
-                              height={50}
+                              fill
                               src={testimonial.logo || "/placeholder.svg"}
                               className="object-contain object-left"
                             />
@@ -156,12 +155,11 @@ function InfiniteSlider({ testimonials }) {
     if (!scrollContainer) return;
 
     let animationFrame;
-    const scrollSpeed = 0.5; // Adjust speed here
+    const scrollSpeed = 0.5;
 
     const scroll = () => {
       scrollContainer.scrollLeft += scrollSpeed;
 
-      // Loop scroll
       if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
         scrollContainer.scrollLeft = 0;
       }
@@ -174,7 +172,6 @@ function InfiniteSlider({ testimonials }) {
     return () => cancelAnimationFrame(animationFrame);
   }, []);
 
-  // Duplicate testimonials to ensure seamless scroll
   const duplicated = [...testimonials, ...testimonials];
 
   return (
@@ -187,19 +184,17 @@ function InfiniteSlider({ testimonials }) {
       >
         <div className="inline-flex">
           {duplicated.map((brand, i) => (
-            <div key={i} className="flex-none w-[350px] px-4 h-full">
-              <div className="flex flex-col gap-2 rounded-md bg-secondary h-full px-4 py-3">
-                <div className="relative h-[30px] w-full flex items-center">
-                  <Image
-                    src={brand.logo}
-                    alt={brand.name}
-                    fill
-                    className="object-contain object-left"
-                  />
-                </div>
-                <p className="text-sm font-medium whitespace-pre-wrap">
-                  {brand.quote}
-                </p>
+            <div key={i} className="flex-none w-[100px] px-4 h-full">
+              <div className="relative h-[50px] w-full flex items-center">
+                <Image
+                  src={brand.logo}
+                  alt={brand.name}
+                  fill
+                  className="object-contain object-left"
+                  blurDataURL={brand.logo}
+                  placeholder="blur"
+                  quality={100}
+                />
               </div>
             </div>
           ))}

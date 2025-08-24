@@ -71,8 +71,8 @@ export default function Navbar() {
             <Image
               alt="V1CE Logo"
               loading="lazy"
-              width="80"
-              height="29"
+              width="100"
+              height="32"
               decoding="async"
               src="/logo-dark.svg"
             />

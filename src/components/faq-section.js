@@ -67,11 +67,9 @@ export default function FAQSection() {
                 value={item.value}
                 className="border-b border-border/20 last:border-0 w-full"
               >
-                <h3 className="flex w-full">
-                  <AccordionTrigger className="w-full flex flex-1 items-center justify-between py-4 text-left text-base font-medium transition-all hover:underline ">
-                    {item.question}
-                  </AccordionTrigger>
-                </h3>
+                <AccordionTrigger className="w-full flex flex-1 items-center justify-between py-4 text-left text-base font-medium transition-all hover:underline ">
+                  {item.question}
+                </AccordionTrigger>
                 <AccordionContent className="overflow-hidden text-muted-foreground data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <p className="pb-4">{item.answer}</p>
                 </AccordionContent>
