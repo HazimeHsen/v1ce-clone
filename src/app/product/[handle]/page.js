@@ -9,222 +9,6 @@ import ProductReviewsSection from "@/components/product-reviews-section";
 import { useStore } from "@/context/store-context";
 import { useParams } from "next/navigation";
 
-const colorImageMap = {
-  "Black & Silver": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "Black & Gold": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "Silver & Black": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "Blue & Silver": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "Blue & Gold": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "White & Silver": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "White & Gold": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "Green & Silver": [
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a1_ea44fac0-8cd2-41fb-9b05-d192ea5527b9.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a2_15fb1a5b-aaac-42d0-b80a-950acaa7ea17.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a3_f7d40887-9556-431a-9db8-a195e78754f4.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a4_5023982b-b94e-4608-991a-b004ea69040b.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a5_fe05bb03-0c57-48dd-828e-7cdd0145d982.jpg?v=1740134790",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a6_7a7b8095-f7df-498e-b54f-ac17060c5ce3.jpg?v=1740139540",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a7_34768fe7-a404-4d63-8556-da4b67c70698.jpg?v=1740139540",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a8_04a003c5-9353-4c33-b9bd-fc15375161a9.jpg?v=1740139540",
-      type: "image",
-    },
-    {
-      src: "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/a9_a1e1710a-2cba-4097-b889-ca112143b0f9.jpg?v=1740139540",
-      type: "image",
-    },
-  ],
-  "Green & Gold": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "Red & Silver": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-  "Red & Gold": [
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    {
-      src: "https://checkout.v1ce.co/cdn/shop/videos/c/vp/939ee7cd11a449b9be497517a02fa0b7/939ee7cd11a449b9be497517a02fa0b7.HD-1080p-7.2Mbps-42965082.mp4",
-      poster:
-        "https://cdn.shopify.com/s/files/1/0263/6156/1168/files/preview_images/939ee7cd11a449b9be497517a02fa0b7.thumbnail.0000000000.jpg?v=1740081161",
-      type: "video",
-    },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-    { src: "/placeholder.svg?height=700&width=700", type: "image" },
-  ],
-};
 const testimonials = [
   {
     logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/525f4875-2e87-45ec-31c2-811be0abb100/public",
@@ -430,24 +214,90 @@ const faqItems = {
 export default function ProductPage() {
   const [mainCarouselIndex, setMainCarouselIndex] = useState(0);
   const [thumbCarouselIndex, setThumbCarouselIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState("Green & Silver");
-  const { fetchProduct } = useStore();
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [colorImageMap, setColorImageMap] = useState({});
+
+  const { fetchProduct, region } = useStore();
   const { handle } = useParams();
+
+  const createColorImageMap = (productData) => {
+    if (!productData?.variants) return {};
+
+    const imageMap = {};
+    let allImages = [];
+
+    productData.variants.forEach((variant) => {
+      const colorName = variant.title || "Default";
+      let variantImages = [];
+
+      if (variant.metadata?.images) {
+        try {
+          const parsedImages = JSON.parse(variant.metadata.images);
+          variantImages = parsedImages.map((url) => ({
+            src: url,
+            type: "image",
+          }));
+        } catch (error) {
+          console.error("[v0] Error parsing variant images:", error);
+        }
+      }
+
+      if (variantImages.length === 0 && productData.images?.length > 0) {
+        variantImages = productData.images.map((img) => ({
+          src: img.url,
+          type: "image",
+        }));
+      }
+
+      if (variantImages.length === 0) {
+        variantImages = [
+          { src: "/placeholder.svg?height=700&width=700", type: "image" },
+        ];
+      }
+
+      imageMap[colorName] = variantImages;
+      allImages = [...allImages, ...variantImages];
+    });
+
+    imageMap["all"] = allImages;
+
+    return imageMap;
+  };
 
   useEffect(() => {
     const fetchProductData = async () => {
+      if (!region || !handle) return;
+
       try {
-        const product = await fetchProduct(handle);
-        console.log(product);
+        setLoading(true);
+        const productData = await fetchProduct(handle);
+        console.log("[v0] Fetched product data:", productData);
+
+        if (productData) {
+          setProduct(productData);
+
+          const dynamicColorMap = createColorImageMap(productData);
+          setColorImageMap(dynamicColorMap);
+        }
       } catch (error) {
-        console.log(error);
+        console.error("[v0] Error fetching product:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchProductData();
-  }, []);
 
-  const currentImages =
-    colorImageMap[selectedColor] || colorImageMap["Green & Silver"];
+    fetchProductData();
+  }, [region, handle, fetchProduct]);
+
+  const currentImages = selectedColor
+    ? colorImageMap[selectedColor] || [
+        { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      ]
+    : colorImageMap["all"] || [
+        { src: "/placeholder.svg?height=700&width=700", type: "image" },
+      ];
 
   const handleMainPrev = () => {
     setMainCarouselIndex((prevIndex) =>
@@ -465,6 +315,38 @@ export default function ProductPage() {
     setMainCarouselIndex(index);
   };
 
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="center-wide mt-10 flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading product...</p>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (!product) {
+    return (
+      <>
+        <Navbar />
+        <div className="center-wide mt-10 flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <h1 className="text-2xl font-semibold mb-2">Product Not Found</h1>
+            <p className="text-muted-foreground">
+              The product you're looking for doesn't exist.
+            </p>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
@@ -477,6 +359,7 @@ export default function ProductPage() {
           faqItems={faqItems}
         />
         <ProductDetailsForm
+          product={product}
           images={currentImages}
           mainCarouselIndex={mainCarouselIndex}
           thumbCarouselIndex={thumbCarouselIndex}

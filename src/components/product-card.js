@@ -1,17 +1,28 @@
-export default function ProductCard({ product }) {
-  const { handle, thumbnail, title, description, variants } = product;
+import Link from "next/link";
+import ColorSwatches from "./color-swatches";
 
-  const colorSwatches = product.options?.map((opt) => {
-    return {
-      alt: opt.title,
-      src: product.images?.[0]?.url || "/placeholder.svg",
-    };
+export default function ProductCard({ product }) {
+  const { handle, thumbnail, title, variants } = product;
+
+  const colorSwatches = variants?.map((variant) => {
+    const combo = variant.title;
+    const colors = combo.split("&").map((c) => c.trim().toLowerCase());
+    return { title: combo, colors };
   });
 
-  const price = "Contact for Price";
+  const price =
+    variants && variants.length > 0
+      ? variants[0].calculated_price?.calculated_amount?.toLocaleString(
+          "en-US",
+          {
+            style: "currency",
+            currency: variants[0].calculated_price?.currency_code || "USD",
+          }
+        )
+      : "Contact for Price";
 
   return (
-    <a
+    <Link
       className="group relative flex w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-[15px] border border-border/40 bg-card transition-all hover:border-primary"
       href={"/product/" + handle}
     >
@@ -19,17 +30,8 @@ export default function ProductCard({ product }) {
         <div
           style={{ position: "relative", width: "100%", paddingBottom: "100%" }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-            }}
-          >
+          <div style={{ position: "absolute", inset: 0 }}>
             <div className="relative size-full overflow-hidden">
-              {/* Badge example */}
               {product.tags?.length > 0 && (
                 <div className="absolute left-3 top-3 z-10 flex gap-1 text-xs font-semibold lg:text-sm">
                   <div className="inline-flex items-center gap-[10px] rounded-full border border-border px-4 py-1 text-[14px] font-medium transition-colors focus:outline-none bg-background text-foreground">
@@ -43,16 +45,7 @@ export default function ProductCard({ product }) {
                 loading="eager"
                 decoding="async"
                 className="object-cover transition-all duration-500 ease-in-out group-hover:scale-[1.02]"
-                style={{
-                  position: "absolute",
-                  height: "100%",
-                  width: "100%",
-                  left: 0,
-                  top: 0,
-                  right: 0,
-                  bottom: 0,
-                  color: "transparent",
-                }}
+                style={{ position: "absolute", inset: 0 }}
                 src={thumbnail || "/placeholder.svg"}
               />
             </div>
@@ -63,33 +56,9 @@ export default function ProductCard({ product }) {
       <div className="flex size-full flex-col items-start justify-between gap-[10px] p-4">
         <div className="mb-2 flex flex-col items-start justify-between gap-2">
           <span className="text-h6">{title}</span>
-          <p className="text-sm text-muted-foreground">{description}</p>
         </div>
 
-        {colorSwatches && colorSwatches.length > 0 && (
-          <div className="flex w-full flex-wrap gap-1.5">
-            {colorSwatches.map((swatch, index) => (
-              <button
-                key={index}
-                aria-disabled="false"
-                title={swatch.alt}
-                className="relative aspect-square overflow-hidden rounded-full"
-                style={{ width: "20px", height: "20px" }}
-              >
-                <img
-                  alt={swatch.alt}
-                  loading="eager"
-                  width="20"
-                  height="20"
-                  decoding="async"
-                  className="rounded-full"
-                  style={{ color: "transparent" }}
-                  src={swatch.src || "/placeholder.svg"}
-                />
-              </button>
-            ))}
-          </div>
-        )}
+        <ColorSwatches swatches={colorSwatches} />
 
         <div className="flex items-center gap-2">
           <div className="text-l1 flex gap-1" id="price">
@@ -97,6 +66,6 @@ export default function ProductCard({ product }) {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

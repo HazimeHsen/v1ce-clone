@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, LogIn, ShoppingCart, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { LogIn, ShoppingCart, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useStore } from "@/context/store-context";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,53 +16,70 @@ import {
   SheetFooter,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "V1CE Pro Card",
-      price: 29.99,
-      quantity: 1,
-      image: "/placeholder.svg?height=60&width=60",
-    },
-    {
-      id: 2,
-      name: "V1CE Classic Card",
-      price: 19.99,
-      quantity: 2,
-      image: "/placeholder.svg?height=60&width=60",
-    },
-  ]);
+  const {
+    cart,
+    removeFromCart,
+    updateCartItem,
+    isCartOpen,
+    openCart,
+    closeCart,
+  } = useStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
-  const handleIncrease = (id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  const cartItems = cart?.items || [];
+
+  const getItemImage = (item) => {
+    try {
+      const images =
+        item.variant?.metadata?.images &&
+        JSON.parse(item.variant.metadata.images);
+      if (Array.isArray(images) && images.length > 0) {
+        return images[0];
+      }
+    } catch (e) {
+      console.error("Failed to parse variant images", e);
+    }
+    return item.variant?.product?.thumbnail || "/placeholder.svg";
   };
 
-  const handleDecrease = (id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity - 1) }
-          : item
-      )
-    );
+  const handleIncrease = async (lineItemId, currentQuantity) => {
+    try {
+      await updateCartItem(lineItemId, currentQuantity + 1);
+    } catch (error) {
+      console.error("Failed to increase quantity:", error);
+    }
   };
 
-  const handleRemove = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const handleDecrease = async (lineItemId, currentQuantity) => {
+    try {
+      if (currentQuantity > 1) {
+        await updateCartItem(lineItemId, currentQuantity - 1);
+      }
+    } catch (error) {
+      console.error("Failed to decrease quantity:", error);
+    }
+  };
+
+  const handleRemove = async (lineItemId) => {
+    try {
+      await removeFromCart(lineItemId);
+    } catch (error) {
+      console.error("Failed to remove item:", error);
+    }
   };
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const totalPrice = cart?.total ? cart.total / 100 : 0;
+
+  const handleCheckout = () => {
+    if (cartItems.length > 0) {
+      router.push("/checkout");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background">
@@ -77,147 +95,60 @@ export default function Navbar() {
               src="/logo-dark.svg"
             />
           </Link>
-          <nav
-            aria-label="Main"
-            data-orientation="horizontal"
-            dir="ltr"
-            className="relative z-10 max-w-max flex-1 items-center justify-center hidden lg:block"
-          >
-            <div style={{ position: "relative" }}>
-              <ul
-                data-orientation="horizontal"
-                className="group flex flex-1 list-none items-center justify-center space-x-1"
-                dir="ltr"
-              >
-                <li>
-                  <Link
-                    href="/products"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
-                    data-radix-collection-item=""
-                  >
-                    Products
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/#before"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
-                    data-radix-collection-item=""
-                  >
-                    How It Works
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/teams"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
-                    data-radix-collection-item=""
-                  >
-                    Teams
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/digital-business-card-reviews"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
-                    data-radix-collection-item=""
-                  >
-                    Reviews
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/policies/shipping-and-returns"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md p-3 text-[14px] font-semibold text-muted-foreground transition-colors data-[active]:text-primary data-[state=open]:text-primary hover:text-primary"
-                    data-radix-collection-item=""
-                  >
-                    Shipping & Returns
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="absolute left-0 top-full flex justify-center"></div>
+          <nav className="hidden lg:block">
+            <ul className="flex items-center space-x-6 text-[14px] font-semibold text-muted-foreground">
+              <li>
+                <Link href="/products" className="hover:text-primary">
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link href="/#before" className="hover:text-primary">
+                  How It Works
+                </Link>
+              </li>
+              <li>
+                <Link href="/teams" className="hover:text-primary">
+                  Teams
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/digital-business-card-reviews"
+                  className="hover:text-primary"
+                >
+                  Reviews
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/policies/shipping-and-returns"
+                  className="hover:text-primary"
+                >
+                  Shipping & Returns
+                </Link>
+              </li>
+            </ul>
           </nav>
         </div>
+
         <div className="flex gap-5">
-          <div className="hidden lg:flex">
-            <button
-              type="button"
-              className="relative flex w-full cursor-pointer items-center gap-1 text-left sm:text-sm"
-              aria-haspopup="listbox"
-              aria-expanded="false"
-              aria-labelledby="listbox-label"
-            >
-              <span className="flex items-center gap-1 truncate">
-                <div className="h-3 w-[19px]">
-                  <Image
-                    alt="United Arab Emirates flag"
-                    loading="lazy"
-                    width="19"
-                    height="14"
-                    decoding="async"
-                    className="rounded-[2px]"
-                    src="/placeholder.svg?height=14&width=19"
-                  />
-                </div>
-                <p className="hidden w-6 text-center lg:block">AE</p>
-              </span>
-              <span className="pointer-events-none flex items-center">
-                <ChevronDown
-                  className="lucide lucide-chevron-down relative top-px size-4 transition duration-200 rotate-0"
-                  aria-hidden="true"
-                />
-              </span>
-            </button>
-          </div>
-          <div className="hidden gap-[10px] lg:flex">
-            <Link
-              className="w-fit"
-              aria-disabled="false"
-              href="https://app.v1ce.co.uk/login"
-            >
-              <Button className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] text-sm leading-[102%] transition-all disabled:pointer-events-none disabled:opacity-50 border border-border bg-background font-semibold text-foreground hover:bg-accent size-10">
-                <LogIn className="lucide lucide-log-in size-4" />
-              </Button>
-            </Link>
-          </div>
-
-          <Sheet>
+          <Sheet
+            open={isCartOpen}
+            onOpenChange={(open) => (open ? openCart() : closeCart())}
+          >
             <SheetTrigger asChild>
               <button
                 type="button"
                 aria-label="Open cart"
-                className="hidden cursor-pointer items-center gap-1 rounded-full md:flex"
+                className="relative flex items-center justify-center size-10"
               >
-                <div className="relative">
-                  <div className="flex size-10 items-center justify-center">
-                    <ShoppingCart className="lucide lucide-shopping-cart" />
-                    {totalItems > 0 && (
-                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                        {totalItems}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </button>
-            </SheetTrigger>
-
-            <SheetTrigger asChild>
-              <button
-                type="button"
-                aria-label="Open cart"
-                className="flex cursor-pointer items-center gap-1 rounded-full md:hidden"
-              >
-                <div className="relative">
-                  <div className="flex size-10 items-center justify-center">
-                    <ShoppingCart className="lucide lucide-shopping-cart" />
-                    {totalItems > 0 && (
-                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                        {totalItems}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                <ShoppingCart className="lucide lucide-shopping-cart" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                    {totalItems}
+                  </span>
+                )}
               </button>
             </SheetTrigger>
             <SheetContent
@@ -240,26 +171,28 @@ export default function Navbar() {
                     {cartItems.map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center gap-4 border-b p-4 last:border-b-0 last:pb-0"
+                        className="flex items-center gap-4 border-b p-4 last:border-b-0"
                       >
                         <Image
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.name}
+                          src={getItemImage(item)}
+                          alt={item.title}
                           width={60}
                           height={60}
                           className="rounded-md object-cover"
                         />
-                        <div className="grid flex-1 gap-1">
-                          <h3 className="font-medium">{item.name}</h3>
+                        <div className="flex-1">
+                          <h3 className="font-medium">{item.title}</h3>
                           <p className="text-sm text-muted-foreground">
-                            ${item.price.toFixed(2)}
+                            €{((item.unit_price || 0) / 100).toFixed(2)}
                           </p>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 mt-1">
                             <Button
                               variant="outline"
                               size="icon"
-                              className="h-7 w-7 bg-transparent"
-                              onClick={() => handleDecrease(item.id)}
+                              className="h-7 w-7"
+                              onClick={() =>
+                                handleDecrease(item.id, item.quantity)
+                              }
                             >
                               -
                             </Button>
@@ -269,8 +202,10 @@ export default function Navbar() {
                             <Button
                               variant="outline"
                               size="icon"
-                              className="h-7 w-7 bg-transparent"
-                              onClick={() => handleIncrease(item.id)}
+                              className="h-7 w-7"
+                              onClick={() =>
+                                handleIncrease(item.id, item.quantity)
+                              }
                             >
                               +
                             </Button>
@@ -282,13 +217,17 @@ export default function Navbar() {
                             >
                               <X className="h-4 w-4" />
                               <span className="sr-only">
-                                Remove {item.name}
+                                Remove {item.title}
                               </span>
                             </Button>
                           </div>
                         </div>
                         <div className="font-semibold">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          €
+                          {(
+                            ((item.unit_price || 0) * item.quantity) /
+                            100
+                          ).toFixed(2)}
                         </div>
                       </div>
                     ))}
@@ -296,13 +235,13 @@ export default function Navbar() {
                 )}
               </div>
               <SheetFooter className="mt-auto pt-4 border-t">
-                <div className="flex justify-between items-center w-full mb-4">
+                <div className="flex justify-between w-full mb-4">
                   <span className="text-lg font-semibold">Total:</span>
                   <span className="text-lg font-semibold">
-                    ${totalPrice.toFixed(2)}
+                    €{totalPrice.toFixed(2)}
                   </span>
                 </div>
-                <Button className="w-full" size="lg">
+                <Button onClick={handleCheckout} className="w-full" size="lg">
                   Proceed to Checkout
                 </Button>
               </SheetFooter>
@@ -313,7 +252,7 @@ export default function Navbar() {
             <SheetTrigger asChild>
               <button
                 type="button"
-                aria-label="Toggle hamburger menu"
+                aria-label="Toggle menu"
                 className="block lg:hidden"
               >
                 <Menu className="lucide lucide-menu size-6 text-primary" />
@@ -333,35 +272,30 @@ export default function Navbar() {
                 <Link
                   href="/collections/tap-business-cards"
                   className="text-lg font-semibold hover:text-primary"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Shop
                 </Link>
                 <Link
                   href="/#before"
                   className="text-lg font-semibold hover:text-primary"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   How It Works
                 </Link>
                 <Link
                   href="/teams"
                   className="text-lg font-semibold hover:text-primary"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Teams
                 </Link>
                 <Link
                   href="/digital-business-card-reviews"
                   className="text-lg font-semibold hover:text-primary"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Reviews
                 </Link>
                 <Link
                   href="/shipping-and-returns"
                   className="text-lg font-semibold hover:text-primary"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Shipping & Returns
                 </Link>
