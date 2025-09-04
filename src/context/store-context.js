@@ -10,6 +10,9 @@ const medusa = new Medusa({
   maxRetries: 3,
   publishableApiKey:
     "pk_7a8eb333fbe02975ba20a652877ddbb432d53a4131c8c2a05348933cf7333c03",
+    customHeaders:{
+      "x-publishable-api-key": "pk_7a8eb333fbe02975ba20a652877ddbb432d53a4131c8c2a05348933cf7333c03"
+    }
 });
 
 export const StoreProvider = ({ children }) => {
@@ -320,6 +323,189 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
+  // Checkout methods
+  const addShippingAddress = async (address) => {
+    try {
+      setError(null);
+      setLoading(true);
+
+      if (!cart) {
+        throw new Error("No cart available");
+      }
+
+      const res = await medusa.carts.update(cart.id, {
+        shipping_address: address,
+      });
+
+      setCart(res.cart);
+      return res.cart;
+    } catch (err) {
+      console.error("Failed to add shipping address:", err);
+      setError("Failed to add shipping address");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addBillingAddress = async (address) => {
+    try {
+      setError(null);
+      setLoading(true);
+
+      if (!cart) {
+        throw new Error("No cart available");
+      }
+
+      const res = await medusa.carts.update(cart.id, {
+        billing_address: address,
+      });
+
+      setCart(res.cart);
+      return res.cart;
+    } catch (err) {
+      console.error("Failed to add billing address:", err);
+      setError("Failed to add billing address");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addEmail = async (email) => {
+    try {
+      setError(null);
+
+      if (!cart) {
+        throw new Error("No cart available");
+      }
+
+      const res = await medusa.carts.update(cart.id, {
+        email,
+      });
+
+      setCart(res.cart);
+      return res.cart;
+    } catch (err) {
+      console.error("Failed to add email:", err);
+      setError("Failed to add email");
+      throw err;
+    }
+  };
+
+  const getShippingOptions = async () => {
+    try {
+      if (!cart) {
+        throw new Error("No cart available");
+      }
+
+      const res = await medusa.shippingOptions.listCartOptions(cart.id, {
+        "x-publishable-api-key": "pk_7a8eb333fbe02975ba20a652877ddbb432d53a4131c8c2a05348933cf7333c03"
+
+      });
+      return res.shipping_options || [];
+    } catch (err) {
+      console.error("Failed to get shipping options:", err);
+      return [];
+    }
+  };
+
+  const addShippingMethod = async (optionId) => {
+    try {
+      setError(null);
+      setLoading(true);
+
+      if (!cart) {
+        throw new Error("No cart available");
+      }
+
+      const res = await medusa.carts.addShippingMethod(cart.id, {
+        option_id: optionId,
+      });
+
+      setCart(res.cart);
+      return res.cart;
+    } catch (err) {
+      console.error("Failed to add shipping method:", err);
+      setError("Failed to add shipping method");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const initializePaymentSessions = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+
+      if (!cart) {
+        throw new Error("No cart available");
+      }
+
+      const res = await medusa.carts.createPaymentSessions(cart.id);
+      setCart(res.cart);
+      return res.cart;
+    } catch (err) {
+      console.error("Failed to initialize payment sessions:", err);
+      setError("Failed to initialize payment sessions");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const setPaymentSession = async (providerId) => {
+    try {
+      setError(null);
+
+      if (!cart) {
+        throw new Error("No cart available");
+      }
+
+      const res = await medusa.carts.setPaymentSession(cart.id, {
+        provider_id: providerId,
+      });
+
+      setCart(res.cart);
+      return res.cart;
+    } catch (err) {
+      console.error("Failed to set payment session:", err);
+      setError("Failed to set payment session");
+      throw err;
+    }
+  };
+
+  const completeCart = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+
+      if (!cart) {
+        throw new Error("No cart available");
+      }
+
+      const res = await medusa.carts.complete(cart.id);
+      
+      if (res.type === "order") {
+        // Clear cart after successful order
+        setCart(null);
+        localStorage.removeItem("cart_id");
+        return { type: "order", order: res.data };
+      } else {
+        // Cart needs more information
+        setCart(res.data);
+        return { type: "cart", cart: res.data };
+      }
+    } catch (err) {
+      console.error("Failed to complete cart:", err);
+      setError("Failed to complete order");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     detectUserRegion();
   }, []);
@@ -358,6 +544,15 @@ export const StoreProvider = ({ children }) => {
         isCartOpen,
         openCart,
         closeCart,
+        // Checkout methods
+        addShippingAddress,
+        addBillingAddress,
+        addEmail,
+        getShippingOptions,
+        addShippingMethod,
+        initializePaymentSessions,
+        setPaymentSession,
+        completeCart,
       }}
     >
       {children}

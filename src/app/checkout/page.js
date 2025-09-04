@@ -47,12 +47,27 @@ export default function CheckoutPage() {
     removeFromCart,
     updateCartItem,
     fetchCartItemsWithProducts,
+    loading,
+    error,
+    // Checkout methods
+    addShippingAddress,
+    addBillingAddress,
+    addEmail,
+    getShippingOptions,
+    addShippingMethod,
+    initializePaymentSessions,
+    setPaymentSession,
+    completeCart,
   } = useStore();
   
   const router = useRouter();
   const [enrichedCartItems, setEnrichedCartItems] = useState([]);
   const [loadingCartItems, setLoadingCartItems] = useState(false);
   const [updatingItems, setUpdatingItems] = useState(new Set());
+  const [currentStep, setCurrentStep] = useState(1);
+  const [shippingOptions, setShippingOptions] = useState([]);
+  const [selectedShippingOption, setSelectedShippingOption] = useState(null);
+  const [isProcessingOrder, setIsProcessingOrder] = useState(false);
 
   // Form setup
   const shippingForm = useForm({
@@ -247,26 +262,122 @@ export default function CheckoutPage() {
   const tax = subtotal * 0.1; // 10% tax for example
 
   // Form submission handlers
-  const onShippingSubmit = (data) => {
-    console.log("Shipping data:", data);
-    // Handle shipping form submission
-  };
-
-  const onPaymentSubmit = (data) => {
-    console.log("Payment data:", data);
-    // Handle payment form submission
-  };
-
-  const handleCompleteOrder = () => {
-    const shippingValid = shippingForm.trigger();
-    const paymentValid = paymentForm.trigger();
-    
-    Promise.all([shippingValid, paymentValid]).then(([shipping, payment]) => {
-      if (shipping && payment) {
-        console.log("Order completed!");
-        // Handle order completion
+  const onShippingSubmit = async (data) => {
+    try {
+      setIsProcessingOrder(true);
+      
+      // Add email to cart
+      await addEmail(data.email);
+      
+      // Add shipping address
+      const shippingAddress = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        address_1: data.address,
+        city: data.city,
+        postal_code: data.postalCode,
+        country_code: data.country,
+        phone: data.phone,
+      };
+      
+      await addShippingAddress(shippingAddress);
+      console.log(1);
+      
+      // Use same address for billing (can be changed later)
+      await addBillingAddress(shippingAddress);
+      console.log(2);
+      
+      // Get available shipping options
+      const options = await getShippingOptions();
+      console.log(3);
+      
+      setShippingOptions(options);
+      
+      // Auto-select first shipping option if available
+      if (options.length > 0) {
+        setSelectedShippingOption(options[0]);
+        await addShippingMethod(options[0].id);
+        console.log(4);
+        
       }
-    });
+      
+      // Move to next step
+      setCurrentStep(2);
+      
+    } catch (error) {
+      console.error("Failed to process shipping information:", error);
+    } finally {
+      setIsProcessingOrder(false);
+    }
+  };
+
+  const onPaymentSubmit = async (data) => {
+    try {
+      setIsProcessingOrder(true);
+      
+      // Initialize payment sessions
+      await initializePaymentSessions();
+      
+      // For now, we'll just log the payment data
+      // In a real app, you'd integrate with a payment provider
+      console.log("Payment data:", data);
+      
+      // Move to final step
+      setCurrentStep(3);
+      
+    } catch (error) {
+      console.error("Failed to process payment information:", error);
+    } finally {
+      setIsProcessingOrder(false);
+    }
+  };
+
+  const handleCompleteOrder = async () => {
+    try {
+      setIsProcessingOrder(true);
+      
+      // Validate forms
+      const shippingValid = await shippingForm.trigger();
+      const paymentValid = await paymentForm.trigger();
+      
+      if (!shippingValid) {
+        setCurrentStep(1);
+        return;
+      }
+      
+      if (!paymentValid) {
+        setCurrentStep(2);
+        return;
+      }
+      
+      // Process shipping if not done yet
+      if (currentStep === 1) {
+        await onShippingSubmit(shippingForm.getValues());
+      }
+      
+      // Process payment if not done yet
+      if (currentStep <= 2) {
+        await onPaymentSubmit(paymentForm.getValues());
+      }
+      
+      // Complete the order
+      const result = await completeCart();
+      
+      if (result.type === "order") {
+        // Order completed successfully
+        console.log("Order completed successfully:", result.order);
+        // Redirect to success page or show success message
+        router.push(`/order/confirmed/${result.order.id}`);
+      } else {
+        // Cart needs more information
+        console.log("Cart needs more information:", result.cart);
+      }
+      
+    } catch (error) {
+      console.error("Failed to complete order:", error);
+    } finally {
+      setIsProcessingOrder(false);
+    }
   };
 
   if (cartItems.length === 0) {
@@ -316,6 +427,12 @@ export default function CheckoutPage() {
           </Button>
           <h1 className="text-3xl font-bold text-foreground">Checkout</h1>
           <p className="text-muted-foreground mt-2">Review your order and complete your purchase</p>
+          
+          {error && (
+            <div className="mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <p className="text-destructive font-medium">Error: {error}</p>
+            </div>
+          )}
         </div>
 
                 <div className="grid lg:grid-cols-2 gap-8">
@@ -323,43 +440,69 @@ export default function CheckoutPage() {
           <div className="lg:col-span-2 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-medium">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                  currentStep >= 1 ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
+                }`}>
                   1
                 </div>
-                <span className="text-foreground font-medium">Review Order</span>
+                <span className={`${currentStep >= 1 ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+                  Shipping Info
+                </span>
               </div>
               <div className="flex-1 mx-4 h-px bg-border"></div>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground text-sm font-medium">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                  currentStep >= 2 ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
+                }`}>
                   2
                 </div>
-                <span className="text-muted-foreground">Shipping</span>
+                <span className={`${currentStep >= 2 ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+                  Payment
+                </span>
               </div>
               <div className="flex-1 mx-4 h-px bg-border"></div>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground text-sm font-medium">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                  currentStep >= 3 ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
+                }`}>
                   3
                 </div>
-                <span className="text-muted-foreground">Payment</span>
+                <span className={`${currentStep >= 3 ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+                  Complete
+                </span>
               </div>
             </div>
           </div>
           
           {/* Checkout Form */}
           <div className="order-1 lg:order-1 space-y-6">
-            {/* Shipping Information */}
-            <Card className="backdrop-blur-sm bg-card/80 border-border/50">
-              <CardHeader className="border-b border-border/50">
-                <CardTitle className="flex items-center gap-2 text-foreground">
-                  <div className="p-2 rounded-full bg-secondary/50">
-                    <Truck className="h-5 w-5 text-primary" />
-                  </div>
-                  Shipping Information
-                </CardTitle>
-              </CardHeader>
+                        {/* Shipping Information - Step 1 */}
+            {currentStep >= 1 && (
+              <Card className={`backdrop-blur-sm border-border/50 transition-all duration-300 ${
+                currentStep === 1 
+                  ? 'bg-card/80 ring-2 ring-primary/20' 
+                  : currentStep > 1 
+                    ? 'bg-secondary/20 opacity-75' 
+                    : 'bg-card/80'
+              }`}>
+                <CardHeader className="border-b border-border/50">
+                  <CardTitle className="flex items-center gap-2 text-foreground">
+                    <div className="p-2 rounded-full bg-secondary/50">
+                      <Truck className="h-5 w-5 text-primary" />
+                    </div>
+                    <span className="flex items-center gap-2">
+                      Shipping Information
+                      {currentStep > 1 && (
+                        <Badge variant="secondary" className="bg-primary/10 text-primary">
+                          ✓ Complete
+                        </Badge>
+                      )}
+                    </span>
+                  </CardTitle>
+                </CardHeader>
               <CardContent className="p-6">
                 <Form {...shippingForm}>
-                  <form className="space-y-4">
+                  <form className="space-y-4" onSubmit={shippingForm.handleSubmit(onShippingSubmit)}>
                     <div className="grid grid-cols-2 gap-4">
                       <FormField
                         control={shippingForm.control}
@@ -510,7 +653,7 @@ export default function CheckoutPage() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="bg-card border-border">
-                              <SelectItem value="us">United States</SelectItem>
+                              <SelectItem value="lb">Lebanon</SelectItem>
                               <SelectItem value="ca">Canada</SelectItem>
                               <SelectItem value="uk">United Kingdom</SelectItem>
                               <SelectItem value="au">Australia</SelectItem>
@@ -524,24 +667,60 @@ export default function CheckoutPage() {
                         </FormItem>
                       )}
                     />
+                    
+                    <div className="pt-4">
+                      {currentStep === 1 ? (
+                        <Button 
+                          type="submit" 
+                          className="w-full bg-secondary hover:bg-secondary/80"
+                          disabled={isProcessingOrder || loading}
+                        >
+                          {isProcessingOrder ? "Processing..." : "Continue to Payment"}
+                        </Button>
+                      ) : (
+                        <Button 
+                          type="button" 
+                          variant="outline"
+                          className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                          onClick={() => setCurrentStep(1)}
+                        >
+                          Edit Shipping Information
+                        </Button>
+                      )}
+                    </div>
                   </form>
                 </Form>
               </CardContent>
             </Card>
+            )}
 
-            {/* Payment Information */}
-            <Card className="backdrop-blur-sm bg-card/80 border-border/50">
-              <CardHeader className="border-b border-border/50">
-                <CardTitle className="flex items-center gap-2 text-foreground">
-                  <div className="p-2 rounded-full bg-secondary/50">
-                    <CreditCard className="h-5 w-5 text-primary" />
-                  </div>
-                  Payment Information
-                </CardTitle>
-              </CardHeader>
+                        {/* Payment Information - Step 2 */}
+            {currentStep >= 2 && (
+              <Card className={`backdrop-blur-sm border-border/50 transition-all duration-300 ${
+                currentStep === 2 
+                  ? 'bg-card/80 ring-2 ring-primary/20' 
+                  : currentStep > 2 
+                    ? 'bg-secondary/20 opacity-75' 
+                    : 'bg-card/80'
+              }`}>
+                <CardHeader className="border-b border-border/50">
+                  <CardTitle className="flex items-center gap-2 text-foreground">
+                    <div className="p-2 rounded-full bg-secondary/50">
+                      <CreditCard className="h-5 w-5 text-primary" />
+                    </div>
+                    <span className="flex items-center gap-2">
+                      Payment Information
+                      {currentStep > 2 && (
+                        <Badge variant="secondary" className="bg-primary/10 text-primary">
+                          ✓ Complete
+                        </Badge>
+                      )}
+                    </span>
+                  </CardTitle>
+                </CardHeader>
               <CardContent className="p-6">
                 <Form {...paymentForm}>
-                  <form className="space-y-4">
+                  <form className="space-y-4" onSubmit={paymentForm.handleSubmit(onPaymentSubmit)}>
                     <FormField
                       control={paymentForm.control}
                       name="cardholderName"
@@ -639,10 +818,32 @@ export default function CheckoutPage() {
                         )}
                       />
                     </div>
+                    
+                    <div className="pt-4">
+                      {currentStep === 2 ? (
+                        <Button 
+                          type="submit" 
+                          className="w-full bg-secondary hover:bg-secondary/80"
+                          disabled={isProcessingOrder || loading}
+                        >
+                          {isProcessingOrder ? "Processing..." : "Continue to Review"}
+                        </Button>
+                      ) : (
+                        <Button 
+                          type="button" 
+                          variant="outline"
+                          className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                          onClick={() => setCurrentStep(2)}
+                        >
+                          Edit Payment Information
+                        </Button>
+                      )}
+                    </div>
                   </form>
                 </Form>
               </CardContent>
             </Card>
+            )}
           </div>
 
           {/* Order Summary */}
@@ -782,10 +983,17 @@ export default function CheckoutPage() {
                   <Button 
                     size="lg" 
                     className="w-full relative bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/25"
-                    disabled={cartItems.length === 0}
+                    disabled={cartItems.length === 0 || isProcessingOrder || loading}
                     onClick={handleCompleteOrder}
                   >
-                    Complete Order - €{formatPrice(totalPrice)}
+                    {isProcessingOrder ? (
+                      <div className="flex items-center gap-2">
+                        <Spinner size="sm" />
+                        Processing Order...
+                      </div>
+                    ) : (
+                      `Complete Order - €${formatPrice(totalPrice)}`
+                    )}
                   </Button>
                 </div>
               </CardContent>
