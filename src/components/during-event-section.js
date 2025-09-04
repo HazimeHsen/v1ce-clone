@@ -26,7 +26,7 @@ export default function DuringEventSection() {
       icon: Scan,
       title: "Scan Paper Cards and Event Badges",
       description:
-        "Quickly scan traditional paper business cards or event badges to capture contact information directly into your V1CE dashboard.",
+        "Quickly scan traditional paper business cards or event badges to capture contact information directly into your Mibio dashboard.",
       videoSrc:
         "https://iframe.cloudflarestream.com/f32f56a27580fcbba0574bac25f89e9e?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },

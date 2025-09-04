@@ -332,7 +332,7 @@ export function ContactForm() {
               <Input
                 id="companyName"
                 name="companyName"
-                placeholder="V1CE LTD"
+                placeholder="Mibio LTD"
                 value={formData.companyName}
                 onChange={(e) =>
                   handleInputChange("companyName", e.target.value)

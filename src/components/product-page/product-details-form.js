@@ -37,7 +37,6 @@ export default function ProductDetailsForm({
 
   const {
     addToCart,
-    loading: storeLoading,
     error: storeError,
     openCart,
   } = useStore();
@@ -74,6 +73,20 @@ export default function ProductDetailsForm({
   );
 
   const quantityBundles = [
+    {
+      id: "1-item",
+      name: "1 Item",
+      quantity: 1,
+      price: "€25.00",
+      pricePerItem: "€25.00",
+      save: null,
+      popular: false,
+      description: [
+        "Perfect for individual use",
+        "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
+        "Always Up to Date - Edit your info anytime. No reprints needed.",
+      ],
+    },
     {
       id: "4-items",
       name: "4 Items",
@@ -184,8 +197,9 @@ export default function ProductDetailsForm({
         (b) => b.id === selectedBundle
       );
       const bundleQuantity = selectedQuantityBundle?.quantity || 1;
+      const totalQuantity = bundleQuantity * quantity;
 
-      await addToCart(selectedVariant.id, bundleQuantity);
+      await addToCart(selectedVariant.id, totalQuantity);
 
       setCartSuccess(true);
       setTimeout(() => {
@@ -194,7 +208,9 @@ export default function ProductDetailsForm({
 
       console.log("[v0] Successfully added to cart:", {
         variant: selectedVariant.title,
-        quantity: bundleQuantity,
+        bundleQuantity,
+        userQuantity: quantity,
+        totalQuantity,
       });
     } catch (error) {
       console.error("[v0] Add to cart error:", error);
@@ -206,7 +222,6 @@ export default function ProductDetailsForm({
 
   const isAddToCartDisabled =
     isAddingToCart ||
-    storeLoading ||
     !product?.variants?.length ||
     !selectedBundle ||
     !selectedColor;
@@ -214,7 +229,6 @@ export default function ProductDetailsForm({
   return (
     <section
       className="relative flex w-full flex-col"
-      data-sentry-component="ProductFormContainer"
     >
       <div
         className="sticky"
@@ -466,99 +480,164 @@ export default function ProductDetailsForm({
                   />
                 </div>
               </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-small text-muted-foreground">
+                  Quantity:
+                </label>
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="h-10 w-10 rounded-full p-0"
+                    onClick={decrementQuantity}
+                    disabled={quantity <= 1}
+                  >
+                    -
+                  </Button>
+                  <span className="min-w-[3rem] text-center text-lg font-semibold">
+                    {quantity}
+                  </span>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="h-10 w-10 rounded-full p-0"
+                    onClick={incrementQuantity}
+                    disabled={quantity >= 100}
+                  >
+                    +
+                  </Button>
+                </div>
+              </div>
             </div>
             <div>
               <div
                 className="space-y-4"
-                data-sentry-component="PriceOptions"
-                data-sentry-source-file="price-options.tsx"
               >
-                <div className="mb-2">
-                  <label className="text-small text-muted-foreground">
-                    Select Quantity:{" "}
-                    <span className="font-medium text-white">
-                      {selectedBundle
-                        ? quantityBundles.find((b) => b.id === selectedBundle)
-                            ?.name
-                        : "Please select a quantity"}
-                    </span>
-                  </label>
-                </div>
                 <Accordion
                   type="single"
                   collapsible
                   value={selectedBundle}
                   onValueChange={setSelectedBundle}
                 >
-                  {quantityBundles.map((bundle, index) => (
-                    <AccordionItem
-                      key={bundle.id}
-                      value={bundle.id}
-                      className={`box-border overflow-hidden rounded-xl border border-muted data-[state=open]:border-2 data-[state=open]:bg-secondary ${
-                        index > 0 ? "mt-4" : ""
-                      } ${
-                        selectedBundle === bundle.id
-                          ? "border-primary bg-primary/5"
-                          : ""
-                      }`}
-                    >
-                      <AccordionTrigger
-                        arrow={false}
-                        className="relative flex w-full flex-col p-0 hover:no-underline data-[state=open]:no-underline"
+                  {/* Single Item Option - Standalone */}
+                  {quantityBundles
+                    .filter((bundle) => bundle.id === "1-item")
+                    .map((bundle) => (
+                      <AccordionItem
+                        key={bundle.id}
+                        value={bundle.id}
+                        className={`box-border overflow-hidden rounded-xl border border-muted data-[state=open]:border-2 data-[state=open]:bg-secondary ${
+                          selectedBundle === bundle.id
+                            ? "border-primary bg-primary/5"
+                            : ""
+                        }`}
                       >
-                        {bundle.popular && (
-                          <div className="flex w-full justify-center rounded-t-xl border-transparent bg-primary/10 py-1 font-semibold text-primary">
-                            Most Popular
-                          </div>
-                        )}
-                        <div className="flex w-full">
-                          <div className="flex w-full cursor-pointer flex-row items-center justify-between p-5">
-                            <div className="flex w-full items-center gap-4">
-                              <div
-                                className={`aspect-square size-2 rounded-full ring-1 ring-muted ring-offset-4 ${
-                                  selectedBundle === bundle.id
-                                    ? "bg-primary"
-                                    : "bg-white"
-                                }`}
-                              ></div>
-                              <span className="text-left font-semibold leading-tight">
-                                {bundle.name}
-                              </span>
+                        <AccordionTrigger
+                          arrow={false}
+                          className="relative flex w-full flex-col p-0 hover:no-underline data-[state=open]:no-underline"
+                        >
+                          <div className="flex w-full">
+                            <div className="flex w-full cursor-pointer flex-row items-center justify-between p-5">
+                              <div className="flex w-full items-center gap-4">
+                                <div
+                                  className={`aspect-square size-2 rounded-full ring-1 ring-muted ring-offset-4 ${
+                                    selectedBundle === bundle.id
+                                      ? "bg-primary"
+                                      : "bg-white"
+                                  }`}
+                                ></div>
+                                <span className="text-left font-semibold leading-tight">
+                                  {bundle.name}
+                                </span>
+                              </div>
+                              <div className="ml-2 text-right font-semibold">
+                                {bundle.price}
+                              </div>
                             </div>
-                            <div className="ml-2 text-right font-semibold">
-                              {bundle.price}
-                            </div>
                           </div>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="px-5 pb-5">
-                        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                          {bundle.description.map((item, idx) => (
-                            <li key={idx}>{item}</li>
-                          ))}
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
+                        </AccordionTrigger>
+                        <AccordionContent className="px-5 pb-5">
+                          <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                            {bundle.description.map((item, idx) => (
+                              <li key={idx}>{item}</li>
+                            ))}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+
+                  <div className="mt-4 rounded-xl bg-secondary p-4 border">
+                    <h3 className="font-semibold mb-4 text-center">
+                      Limited Time Only
+                    </h3>
+                    {quantityBundles
+                      .filter((bundle) => bundle.id !== "1-item")
+                      .map((bundle, index) => (
+                        <AccordionItem
+                          key={bundle.id}
+                          value={bundle.id}
+                          className={`box-border overflow-hidden rounded-xl border border-muted data-[state=open]:border-2 data-[state=open]:bg-background ${
+                            index > 0 ? "mt-4" : ""
+                          } ${
+                            selectedBundle === bundle.id
+                              ? "border-primary bg-background"
+                              : "bg-background"
+                          }`}
+                        >
+                          <AccordionTrigger
+                            arrow={false}
+                            className="relative flex w-full flex-col p-0 hover:no-underline data-[state=open]:no-underline"
+                          >
+                            {bundle.popular && (
+                              <div className="flex w-full justify-center rounded-t-xl border-transparent bg-primary/10 py-1 font-semibold text-primary">
+                                Most Popular
+                              </div>
+                            )}
+                            <div className="flex w-full">
+                              <div className="flex w-full cursor-pointer flex-row items-center justify-between p-5">
+                                <div className="flex w-full items-center gap-4">
+                                  <div
+                                    className={`aspect-square size-2 rounded-full ring-1 ring-muted ring-offset-4 ${
+                                      selectedBundle === bundle.id
+                                        ? "bg-primary"
+                                        : "bg-white"
+                                    }`}
+                                  ></div>
+                                  <span className="text-left font-semibold leading-tight">
+                                    {bundle.name}
+                                  </span>
+                                </div>
+                                <div className="ml-2 text-right font-semibold">
+                                  {bundle.price}
+                                </div>
+                              </div>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="px-5 pb-5">
+                            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                              {bundle.description.map((item, idx) => (
+                                <li key={idx}>{item}</li>
+                              ))}
+                            </ul>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                  </div>
                 </Accordion>
               </div>
             </div>
+
             <div className="space-y-2">
               <Button
                 className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] font-semibold transition-all disabled:pointer-events-none disabled:opacity-50 border border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-8 py-4 h-14 w-full text-xl"
                 onClick={handleAddToCart}
                 disabled={isAddToCartDisabled}
+                loading={isAddingToCart}
+                loadingText="Adding..."
               >
-                {isAddingToCart ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    Adding...
-                  </>
-                ) : cartSuccess ? (
-                  "Added to Cart ✓"
-                ) : (
-                  "Add To Cart"
-                )}
+                Add To Cart
               </Button>
 
               {(!selectedBundle || !selectedColor) && (
@@ -570,12 +649,6 @@ export default function ProductDetailsForm({
               {(cartError || storeError) && (
                 <p className="text-center text-sm text-red-500 font-medium">
                   {cartError || storeError}
-                </p>
-              )}
-
-              {cartSuccess && (
-                <p className="text-center text-sm text-green-500 font-medium">
-                  Item successfully added to cart!
                 </p>
               )}
 

@@ -31,7 +31,7 @@ export default function BeforeEventSection() {
       icon: Nfc,
       title: "Build Your Digital Profile",
       description:
-        "Customize your V1CE profile with all your essential contact details, social links, and more.",
+        "Customize your Mibio profile with all your essential contact details, social links, and more.",
       videoSrc:
         "https://iframe.cloudflarestream.com/c59cef20fc4ccf0e84b5e28cd5fafeff?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
@@ -83,7 +83,7 @@ export default function BeforeEventSection() {
               Before The Event
             </h2>
             <p className="text-center text-muted-foreground">
-              V1CE makes it easy to share your details with a tap, scan, or
+              Mibio makes it easy to share your details with a tap, scan, or
               link. Here’s how it works.
             </p>
           </div>

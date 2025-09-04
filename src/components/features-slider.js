@@ -17,7 +17,7 @@ const features = [
   {
     icon: Clock,
     title: "Save 10+ Hours a Month",
-    description: "Let V1CE handle follow-ups for you.",
+    description: "Let Mibio handle follow-ups for you.",
   },
   {
     icon: Rocket,

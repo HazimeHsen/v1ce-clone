@@ -10,10 +10,10 @@ export default function QuoteSection() {
         </Badge>
         <a
           className="max-w-[700px] text-center text-2xl font-bold hover:underline md:text-3xl"
-          href="/case-studies/furniture-village-v1ce-digital-business-card-review-cost-savings"
+          href="/case-studies/furniture-village-mibio-digital-business-card-review-cost-savings"
         >
           <q>
-            Managing cards for 40+ staff was chaos. V1CE made setup fast and
+            Managing cards for 40+ staff was chaos. Mibio made setup fast and
             lead capture automatic.
           </q>
         </a>

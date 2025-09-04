@@ -24,7 +24,7 @@ export default function ProductCard({ product }) {
   return (
     <Link
       className="group relative flex w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-[15px] border border-border/40 bg-card transition-all hover:border-primary"
-      href={"/product/" + handle}
+      href={"/products/" + handle}
     >
       <div className="w-full">
         <div

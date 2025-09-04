@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="flex flex-col items-center justify-center gap-4 text-center lg:items-start lg:justify-start lg:text-left">
               <Link className="" href="/">
                 <img
-                  alt="V1CE logo"
+                  alt="Mibio logo"
                   loading="lazy"
                   width="90"
                   height="32"
@@ -20,7 +20,7 @@ export default function Footer() {
                 />
               </Link>
               <p className="text-center leading-[18px] text-foreground lg:max-w-[360px] lg:text-left">
-                V1CE is your all-in-one smart, contactless business card
+                Mibio is your all-in-one smart, contactless business card
                 designed to turn every meeting into money.
               </p>
               <div className="flex w-full flex-row items-center justify-center gap-4 text-muted-foreground lg:w-auto lg:justify-normal">
@@ -28,7 +28,7 @@ export default function Footer() {
                   target="_blank"
                   aria-label="Facebook"
                   className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                  href="https://www.facebook.com/v1ceconnections/"
+                  href="https://www.facebook.com/mibioconnections/"
                   rel="noreferrer"
                 >
                   <Facebook className="size-6" />
@@ -37,7 +37,7 @@ export default function Footer() {
                   target="_blank"
                   aria-label="Instagram"
                   className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                  href="https://www.instagram.com/v1ceconnections"
+                  href="https://www.instagram.com/mibioconnections"
                   rel="noreferrer"
                 >
                   <Instagram className="size-6" />
@@ -46,7 +46,7 @@ export default function Footer() {
                   target="_blank"
                   aria-label="X.com"
                   className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                  href="https://x.com/v1ceconnections"
+                  href="https://x.com/mibioconnections"
                   rel="noreferrer"
                 >
                   <Twitter className="size-6" />
@@ -55,7 +55,7 @@ export default function Footer() {
                   target="_blank"
                   aria-label="LinkedIn"
                   className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                  href="https://www.linkedin.com/company/v1ceconnections/"
+                  href="https://www.linkedin.com/company/mibioconnections/"
                   rel="noreferrer"
                 >
                   <Linkedin className="size-6" />
@@ -64,7 +64,7 @@ export default function Footer() {
                   target="_blank"
                   aria-label="Youtube"
                   className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                  href="https://www.youtube.com/@v1ce345"
+                  href="https://www.youtube.com/@mibio345"
                   rel="noreferrer"
                 >
                   <Youtube className="size-6" />
@@ -75,7 +75,7 @@ export default function Footer() {
               src="/payment.png"
               width="300"
               height="24"
-              alt="V1CE Payment Methods"
+              alt="Mibio Payment Methods"
             />
           </div>
           <div className="grid w-full grid-cols-2 gap-6 sm:grid-cols-4 lg:w-fit lg:justify-end lg:gap-8">
@@ -102,7 +102,7 @@ export default function Footer() {
               <a
                 target="_blank"
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                href="https://ecologi.com/v1ce"
+                href="https://ecologi.com/mibio"
                 rel="noreferrer"
               >
                 <p className="text-sm">Sustainability</p>
@@ -182,7 +182,7 @@ export default function Footer() {
               <a
                 target="_blank"
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                href="https://v1cehelp.zohodesk.eu/portal/en/home"
+                href="https://mibiohelp.zohodesk.eu/portal/en/home"
                 rel="noreferrer"
               >
                 <p className="text-sm">Help Center</p>
@@ -228,19 +228,19 @@ export default function Footer() {
               <p className="font-semibold text-foreground">Compare</p>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                href="/compare/blinq-vs-v1ce-digital-business-card"
+                href="/compare/blinq-vs-mibio-digital-business-card"
               >
                 <p className="text-sm">vs Blinq</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                href="/compare/linq-vs-v1ce-digital-business-card"
+                href="/compare/linq-vs-mibio-digital-business-card"
               >
                 <p className="text-sm">vs Linq</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
-                href="/compare/mobilo-vs-v1ce-digital-business-card"
+                href="/compare/mobilo-vs-mibio-digital-business-card"
               >
                 <p className="text-sm">vs Mobilo</p>
               </Link>
@@ -250,7 +250,7 @@ export default function Footer() {
         <div className="bg-black py-1 text-white">
           <div className="center-wide flex w-full flex-col justify-between gap-2 md:flex-row">
             <p className="text-sm font-medium">
-              © {"2025"} V1CE LTD. All rights reserved.
+              © {"2025"} Mibio LTD. All rights reserved.
             </p>
             <div className="flex gap-4">
               <Link href="/policies/terms-of-service">

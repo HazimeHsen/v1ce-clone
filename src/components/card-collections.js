@@ -14,7 +14,7 @@ export default function CardCollections() {
             One Tap Replaces a Stack
           </h2>
           <p className="text-muted-foreground">
-            From sales teams to global brands, V1CE helps you share details,
+            From sales teams to global brands, Mibio helps you share details,
             capture leads, and follow up automatically without paper or lost
             leads.
           </p>

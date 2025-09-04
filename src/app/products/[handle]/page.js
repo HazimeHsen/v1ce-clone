@@ -8,6 +8,7 @@ import Footer from "@/components/footer";
 import ProductReviewsSection from "@/components/product-reviews-section";
 import { useStore } from "@/context/store-context";
 import { useParams } from "next/navigation";
+import { ProductPageLoader } from "@/components/ui/loader";
 
 const testimonials = [
   {
@@ -319,12 +320,7 @@ export default function ProductPage() {
     return (
       <>
         <Navbar />
-        <div className="center-wide mt-10 flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading product...</p>
-          </div>
-        </div>
+        <ProductPageLoader />
         <Footer />
       </>
     );

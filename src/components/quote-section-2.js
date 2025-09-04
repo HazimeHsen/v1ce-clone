@@ -10,7 +10,7 @@ export default function QuoteSection2() {
         </Badge>
         <a
           className="max-w-[700px] text-center text-2xl font-bold hover:underline md:text-3xl"
-          href="/case-studies/dillard-s-reimagines-retail-networking-with-v1ce-digital-business-cards"
+          href="/case-studies/dillard-s-reimagines-retail-networking-with-mibio-digital-business-cards"
         >
           <q>
             Our team shared profiles instantly, scanned badges, and synced leads in real time. No missed follow-ups, no

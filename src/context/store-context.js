@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import Medusa from "@medusajs/medusa-js";
 
 const StoreContext = createContext();
@@ -21,9 +21,28 @@ export const StoreProvider = ({ children }) => {
   const [productCache, setProductCache] = useState({});
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  console.log(products);
+  const calculateCartTotals = (cartItems, existingCart = cart) => {
+    const subtotal = cartItems.reduce((sum, item) => {
+      return sum + (item.unit_price || 0) * item.quantity;
+    }, 0);
 
-  // Fetch all available regions from Medusa
+    const tax_total = existingCart?.tax_total || 0;
+    const shipping_total = existingCart?.shipping_total || 0;
+    const discount_total = existingCart?.discount_total || 0;
+    const gift_card_total = existingCart?.gift_card_total || 0;
+
+    const total = subtotal + tax_total + shipping_total - discount_total - gift_card_total;
+
+    return {
+      subtotal,
+      total,
+      tax_total,
+      shipping_total,
+      discount_total,
+      gift_card_total,
+    };
+  };
+
   const fetchRegions = async () => {
     try {
       const res = await medusa.regions.list();
@@ -34,15 +53,12 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
-  // Detect user location (basic version with navigator.language)
   const detectUserRegion = async () => {
     const regions = await fetchRegions();
 
-    // Example: Get user country from browser (you can also use IP-based services)
     const userLocale = navigator.language || "en-US";
     const userCountry = userLocale.split("-")[1]?.toUpperCase();
 
-    // Find a region that includes this country
     const matchedRegion = regions.find((r) =>
       r.countries.some((c) => c.iso_2.toUpperCase() === userCountry)
     );
@@ -50,14 +66,13 @@ export const StoreProvider = ({ children }) => {
     if (matchedRegion) {
       setRegion(matchedRegion);
     } else {
-      // fallback to default region
       setRegion(regions[0]);
     }
   };
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
-      if (!region) return; // wait for region detection
+      if (!region) return;
       const res = await medusa.products.list({
         region_id: region.id,
       });
@@ -65,13 +80,12 @@ export const StoreProvider = ({ children }) => {
     } catch (err) {
       console.error("Failed to fetch products:", err);
     }
-  };
+  }, [region]);
 
-  const fetchProduct = async (handle) => {
+  const fetchProduct = useCallback(async (handle) => {
     try {
       if (!region || !handle) return null;
 
-      // Check cache first
       const cacheKey = `${region.id}-${handle}`;
       if (productCache[cacheKey]) {
         return productCache[cacheKey];
@@ -84,7 +98,6 @@ export const StoreProvider = ({ children }) => {
 
       const product = res.products?.[0] || null;
 
-      // Cache the result
       if (product) {
         setProductCache((prev) => ({
           ...prev,
@@ -97,11 +110,69 @@ export const StoreProvider = ({ children }) => {
       console.error("Failed to fetch product:", err);
       return null;
     }
-  };
+  }, [region]);
+
+  const fetchProductById = useCallback(async (productId) => {
+    try {
+      if (!region || !productId) return null;
+
+      const cacheKey = `${region.id}-id-${productId}`;
+      if (productCache[cacheKey]) {
+        return productCache[cacheKey];
+      }
+
+      const res = await medusa.products.list({
+        id: productId,
+        region_id: region.id,
+      });
+
+      const product = res.products?.[0] || null;
+
+      if (product) {
+        setProductCache((prev) => ({
+          ...prev,
+          [cacheKey]: product,
+        }));
+      }
+
+      return product;
+    } catch (err) {
+      console.error("Failed to fetch product by ID:", err);
+      return null;
+    }
+  }, [region]);
+
+  const fetchCartItemsWithProducts = useCallback(async (cartItems) => {
+    if (!cartItems || cartItems.length === 0) return [];
+
+    try {
+      const productIds = [...new Set(cartItems.map(item => item.product_id))];
+      
+      const productPromises = productIds.map(id => fetchProductById(id));
+      const products = await Promise.all(productPromises);
+      console.log("Products:", products);
+      
+      const productMap = {};
+      products.forEach(product => {
+        if (product) {
+          productMap[product.id] = product;
+        }
+      });
+
+      const enrichedItems = cartItems.map(item => ({
+        ...item,
+        fullProduct: productMap[item.product_id] || null,
+      }));
+
+      return enrichedItems;
+    } catch (err) {
+      console.error("Failed to fetch cart items with products:", err);
+      return cartItems;
+    }
+  }, [fetchProductById]);
 
   const createCart = async () => {
     try {
-      setLoading(true);
       setError(null);
 
       if (!region) {
@@ -119,8 +190,6 @@ export const StoreProvider = ({ children }) => {
       console.error("Failed to create cart:", err);
       setError("Failed to create cart");
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -131,14 +200,12 @@ export const StoreProvider = ({ children }) => {
       return res.cart;
     } catch (err) {
       console.error("Failed to get cart:", err);
-      // If cart doesn't exist, create a new one
       return await createCart();
     }
   };
 
   const addToCart = async (variantId, quantity = 1) => {
     try {
-      setLoading(true);
       setError(null);
 
       if (!variantId || quantity < 1) {
@@ -147,7 +214,6 @@ export const StoreProvider = ({ children }) => {
 
       let currentCart = cart;
 
-      // Get or create cart
       if (!currentCart) {
         const savedCartId = localStorage.getItem("cart_id");
         if (savedCartId) {
@@ -181,40 +247,61 @@ export const StoreProvider = ({ children }) => {
       console.error("Failed to add to cart:", err);
       setError("Failed to add item to cart");
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
   const removeFromCart = async (lineItemId) => {
     try {
-      setLoading(true);
       setError(null);
 
       if (!cart || !lineItemId) {
         throw new Error("No cart or invalid line item");
       }
 
+      const updatedItems = cart.items.filter(item => item.id !== lineItemId);
+      const calculatedTotals = calculateCartTotals(updatedItems, cart);
+      
+      const optimisticCart = {
+        ...cart,
+        items: updatedItems,
+        ...calculatedTotals
+      };
+      setCart(optimisticCart);
+
       const res = await medusa.carts.lineItems.delete(cart.id, lineItemId);
-      setCart(res.cart);
       return res.cart;
     } catch (err) {
       console.error("Failed to remove from cart:", err);
       setError("Failed to remove item from cart");
+      const savedCartId = localStorage.getItem("cart_id");
+      if (savedCartId) {
+        getCart(savedCartId);
+      }
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
   const updateCartItem = async (lineItemId, quantity) => {
     try {
-      setLoading(true);
       setError(null);
 
       if (!cart || !lineItemId || quantity < 0) {
         throw new Error("Invalid parameters");
       }
+
+      const updatedItems = cart.items.map(item => 
+        item.id === lineItemId 
+          ? { ...item, quantity: quantity }
+          : item
+      );
+      const calculatedTotals = calculateCartTotals(updatedItems, cart);
+      
+      const optimisticCart = {
+        ...cart,
+        items: updatedItems,
+        ...calculatedTotals
+      };
+      setCart(optimisticCart);
 
       const res = await medusa.carts.lineItems.update(cart.id, lineItemId, {
         quantity: quantity,
@@ -225,9 +312,11 @@ export const StoreProvider = ({ children }) => {
     } catch (err) {
       console.error("Failed to update cart item:", err);
       setError("Failed to update cart item");
+      const savedCartId = localStorage.getItem("cart_id");
+      if (savedCartId) {
+        getCart(savedCartId);
+      }
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -239,7 +328,6 @@ export const StoreProvider = ({ children }) => {
     if (region) {
       fetchProducts();
 
-      // Try to restore cart from localStorage
       const savedCartId = localStorage.getItem("cart_id");
       if (savedCartId) {
         getCart(savedCartId);
@@ -256,6 +344,8 @@ export const StoreProvider = ({ children }) => {
         products,
         fetchProducts,
         fetchProduct,
+        fetchProductById,
+        fetchCartItemsWithProducts,
         region,
         cart,
         loading,

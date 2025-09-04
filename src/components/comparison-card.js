@@ -60,7 +60,7 @@ export default function ComparisonCard({
               src={imageSrc || "/placeholder.svg"}
             />
           )}
-          {title === "V1CE Smart Business Card" && (
+          {title === "Mibio Smart Business Card" && (
             <img
               alt={imageAlt}
               loading="lazy"

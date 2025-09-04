@@ -18,6 +18,7 @@ import FAQSection from "@/components/faq-section";
 import Footer from "@/components/footer";
 import RefundSection from "@/components/refund-section";
 import { useStore } from "@/context/store-context";
+import { PageLoader } from "@/components/ui/loader";
 
 export default function Home() {
   const { products, fetchProducts } = useStore();
@@ -33,9 +34,10 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <p className="text-xl font-semibold">Loading products...</p>
-      </div>
+      <PageLoader 
+        title="Loading Mibio Store" 
+        description="Preparing your digital business card experience..."
+      />
     );
   }
 

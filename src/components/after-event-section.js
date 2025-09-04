@@ -17,7 +17,7 @@ export default function AfterEventSection() {
       icon: Workflow,
       title: "Automated Follow-Ups",
       description:
-        "Send post-event follow-ups right inside your V1CE dashboard. Keep conversations warm and move leads further down your funnel without lifting a finger.",
+        "Send post-event follow-ups right inside your Mibio dashboard. Keep conversations warm and move leads further down your funnel without lifting a finger.",
       imageSrc:
         "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/3266f3bb-f934-442c-8323-15b64c8a4c00/public",
     },

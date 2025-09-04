@@ -10,7 +10,7 @@ export default function RefundSection() {
             If It’s Not for You, We’ll Refund You
           </h2>
           <p>
-            Try V1CE for yourself. If it’s not your thing, we’ll give you your
+            Try Mibio for yourself. If it’s not your thing, we’ll give you your
             money back. No questions. No stress. No pressure.It’s that simple,
             because we know once you try it, you’ll never go back to paper.
           </p>
