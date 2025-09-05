@@ -32,33 +32,32 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [enrichedCartItems, setEnrichedCartItems] = useState([]);
   const [loadingCartItems, setLoadingCartItems] = useState(false);
-  const [updatingItems, setUpdatingItems] = useState(new Set()); // Track items being updated
+  const [updatingItems, setUpdatingItems] = useState(new Set());
   const router = useRouter();
 
   const cartItems = cart?.items || [];
 
-  // Memoize the enriched items fetching function to prevent infinite loops
   const fetchEnrichedItems = useCallback(async () => {
     if (cartItems.length === 0) {
       setEnrichedCartItems([]);
       return;
     }
 
-    // Always sync enriched items with current cart items immediately
     if (enrichedCartItems.length > 0) {
-      const currentItemIds = new Set(cartItems.map(item => item.id));
-      
-      // Filter out removed items and update quantities for remaining items
+      const currentItemIds = new Set(cartItems.map((item) => item.id));
+
       const syncedItems = enrichedCartItems
-        .filter(enrichedItem => currentItemIds.has(enrichedItem.id))
-        .map(enrichedItem => {
-          const currentItem = cartItems.find(item => item.id === enrichedItem.id);
-          return currentItem ? { ...enrichedItem, quantity: currentItem.quantity } : enrichedItem;
+        .filter((enrichedItem) => currentItemIds.has(enrichedItem.id))
+        .map((enrichedItem) => {
+          const currentItem = cartItems.find(
+            (item) => item.id === enrichedItem.id
+          );
+          return currentItem
+            ? { ...enrichedItem, quantity: currentItem.quantity }
+            : enrichedItem;
         });
-      
-      // If we have fewer synced items than current items, we need to fetch fresh data for new items
+
       if (syncedItems.length < cartItems.length) {
-        // Fetch fresh data for all items to get the new ones
         setLoadingCartItems(true);
         try {
           const enriched = await fetchCartItemsWithProducts(cartItems);
@@ -70,13 +69,11 @@ export default function Navbar() {
           setLoadingCartItems(false);
         }
       } else {
-        // Just use the synced items (removals and quantity updates)
         setEnrichedCartItems(syncedItems);
       }
       return;
     }
 
-    // Initial fetch for empty enriched items
     setLoadingCartItems(true);
     try {
       const enriched = await fetchCartItemsWithProducts(cartItems);
@@ -87,17 +84,25 @@ export default function Navbar() {
     } finally {
       setLoadingCartItems(false);
     }
-  }, [cartItems.length, cartItems.map(item => item.id).sort().join(','), cartItems.map(item => `${item.id}:${item.quantity}`).join(','), fetchCartItemsWithProducts]);
+  }, [
+    cartItems.length,
+    cartItems
+      .map((item) => item.id)
+      .sort()
+      .join(","),
+    cartItems.map((item) => `${item.id}:${item.quantity}`).join(","),
+    fetchCartItemsWithProducts,
+  ]);
 
-  // Fetch enriched cart items when cart changes
   useEffect(() => {
     fetchEnrichedItems();
   }, [fetchEnrichedItems]);
 
   const getItemImage = (item) => {
-    // First priority: Get variant-specific images from fullProduct data
     if (item.fullProduct?.variants && item.variant_id) {
-      const variant = item.fullProduct.variants.find(v => v.id === item.variant_id);
+      const variant = item.fullProduct.variants.find(
+        (v) => v.id === item.variant_id
+      );
       if (variant?.metadata?.images) {
         try {
           const images = JSON.parse(variant.metadata.images);
@@ -109,23 +114,19 @@ export default function Navbar() {
         }
       }
     }
-    
-    // Second priority: Check if we have full product data with images
+
     if (item.fullProduct?.images && item.fullProduct.images.length > 0) {
       return item.fullProduct.images[0].url;
     }
-    
-    // Third priority: Check if there's a thumbnail directly on the item
+
     if (item.thumbnail) {
       return item.thumbnail;
     }
-    
-    // Fourth priority: Check full product thumbnail
+
     if (item.fullProduct?.thumbnail) {
       return item.fullProduct.thumbnail;
     }
-    
-    // Fifth priority: Fallback to trying to parse variant metadata images from original item
+
     try {
       const images =
         item.variant?.metadata?.images &&
@@ -136,12 +137,10 @@ export default function Navbar() {
     } catch (e) {
       console.error("Failed to parse variant images", e);
     }
-    
-    // Final fallback
+
     return item.variant?.product?.thumbnail || "/placeholder.svg";
   };
 
-  // Get the correct title for the item
   const getItemTitle = (item) => {
     return (
       item.fullProduct?.title ||
@@ -152,37 +151,34 @@ export default function Navbar() {
     );
   };
 
-  // Get the correct variant title if available
   const getItemVariantTitle = (item) => {
-    // Try to find the variant in the full product data
     if (item.fullProduct?.variants && item.variant_id) {
-      const variant = item.fullProduct.variants.find(v => v.id === item.variant_id);
+      const variant = item.fullProduct.variants.find(
+        (v) => v.id === item.variant_id
+      );
       if (variant?.title) {
         return variant.title;
       }
     }
-    
+
     return item.variant_title || item.variant?.title || "";
   };
 
-  // Format price properly - prices are already in correct format
   const formatPrice = (price) => {
-    if (typeof price !== 'number') return '0.00';
-    // Prices are already in the correct format, no need to divide by 100
+    if (typeof price !== "number") return "0.00";
+
     return price.toFixed(2);
   };
 
   const handleIncrease = async (lineItemId, currentQuantity) => {
     try {
-      // Add item to updating set for visual feedback
-      setUpdatingItems(prev => new Set(prev).add(lineItemId));
-      
+      setUpdatingItems((prev) => new Set(prev).add(lineItemId));
+
       await updateCartItem(lineItemId, currentQuantity + 1);
     } catch (error) {
       console.error("Failed to increase quantity:", error);
     } finally {
-      // Remove item from updating set
-      setUpdatingItems(prev => {
+      setUpdatingItems((prev) => {
         const newSet = new Set(prev);
         newSet.delete(lineItemId);
         return newSet;
@@ -193,16 +189,14 @@ export default function Navbar() {
   const handleDecrease = async (lineItemId, currentQuantity) => {
     try {
       if (currentQuantity > 1) {
-        // Add item to updating set for visual feedback
-        setUpdatingItems(prev => new Set(prev).add(lineItemId));
-        
+        setUpdatingItems((prev) => new Set(prev).add(lineItemId));
+
         await updateCartItem(lineItemId, currentQuantity - 1);
       }
     } catch (error) {
       console.error("Failed to decrease quantity:", error);
     } finally {
-      // Remove item from updating set
-      setUpdatingItems(prev => {
+      setUpdatingItems((prev) => {
         const newSet = new Set(prev);
         newSet.delete(lineItemId);
         return newSet;
@@ -219,7 +213,8 @@ export default function Navbar() {
   };
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const displayItems = enrichedCartItems.length > 0 ? enrichedCartItems : cartItems;
+  const displayItems =
+    enrichedCartItems.length > 0 ? enrichedCartItems : cartItems;
   const totalPrice = cart?.total ? cart.total : 0;
 
   const handleCheckout = () => {
@@ -318,7 +313,9 @@ export default function Navbar() {
                   <div className="flex items-center justify-center py-8">
                     <div className="flex items-center gap-3">
                       <Spinner size="sm" />
-                      <p className="text-muted-foreground">Loading cart items...</p>
+                      <p className="text-muted-foreground">
+                        Loading cart items...
+                      </p>
                     </div>
                   </div>
                 ) : (
@@ -350,7 +347,9 @@ export default function Navbar() {
                               variant="outline"
                               size="icon"
                               className={`h-7 w-7 transition-all duration-200 ${
-                                updatingItems.has(item.id) ? 'opacity-70' : 'opacity-100'
+                                updatingItems.has(item.id)
+                                  ? "opacity-70"
+                                  : "opacity-100"
                               }`}
                               onClick={() =>
                                 handleDecrease(item.id, item.quantity)
@@ -359,16 +358,22 @@ export default function Navbar() {
                             >
                               -
                             </Button>
-                            <span className={`text-sm font-medium min-w-[20px] text-center transition-all duration-200 ${
-                              updatingItems.has(item.id) ? 'opacity-60 scale-95' : 'opacity-100 scale-100'
-                            }`}>
+                            <span
+                              className={`text-sm font-medium min-w-[20px] text-center transition-all duration-200 ${
+                                updatingItems.has(item.id)
+                                  ? "opacity-60 scale-95"
+                                  : "opacity-100 scale-100"
+                              }`}
+                            >
                               {item.quantity}
                             </span>
                             <Button
                               variant="outline"
                               size="icon"
                               className={`h-7 w-7 transition-all duration-200 ${
-                                updatingItems.has(item.id) ? 'opacity-70' : 'opacity-100'
+                                updatingItems.has(item.id)
+                                  ? "opacity-70"
+                                  : "opacity-100"
                               }`}
                               onClick={() =>
                                 handleIncrease(item.id, item.quantity)
@@ -381,7 +386,9 @@ export default function Navbar() {
                               size="icon"
                               className="ml-auto text-muted-foreground hover:text-destructive"
                               onClick={() => {
-                                const originalItem = cartItems.find(ci => ci.id === item.id) || item;
+                                const originalItem =
+                                  cartItems.find((ci) => ci.id === item.id) ||
+                                  item;
                                 handleRemove(originalItem.id);
                               }}
                             >
@@ -465,15 +472,6 @@ export default function Navbar() {
                 >
                   Shipping & Returns
                 </Link>
-                <div className="mt-4 border-t pt-4">
-                  <Link
-                    href="https://app.mibio.co.uk/login"
-                    className="flex items-center gap-2 text-lg font-semibold hover:text-primary"
-                  >
-                    <LogIn className="size-5" />
-                    Login
-                  </Link>
-                </div>
               </nav>
             </SheetContent>
           </Sheet>
