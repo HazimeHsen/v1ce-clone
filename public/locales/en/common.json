@@ -101,8 +101,6 @@
     "bambooNfcCards": "Bamboo NFC Cards",
     "metalNfcCards": "Metal NFC Cards",
     "tapPhoneCards": "Tap Phone Cards",
-    "termsOfService": "Terms of Service",
-    "privacyPolicy": "Privacy Policy",
     "cookiePolicy": "Cookie Policy"
   },
   "cardCollections": {
@@ -402,7 +400,7 @@
       "send": "Send",
       "placeholders": {
         "country": "Select your country",
-        "companyName": "Mibio LTD",
+        "companyName": "Mibio LLC",
         "companySize": "Select company size",
         "message": "Tell us what you need help with (e.g., bulk orders, custom solutions)."
       },
@@ -586,6 +584,38 @@
           "Priority Customer Support"
         ]
       }
+    }
+  },
+  "metadata": {
+    "home": {
+      "title": "Mibio - Smart Business Cards | The Last Business Card You'll Ever Need",
+      "description": "Mibio is your all-in-one smart, contactless business card designed to turn every meeting into money. Share with a tap, capture contacts instantly, and sync everything to your CRM — no app required.",
+      "keywords": "smart business cards, NFC business cards, digital business cards, contactless networking, lead capture, CRM integration"
+    },
+    "products": {
+      "title": "Smart Business Cards - Products | Mibio",
+      "description": "Discover our range of smart business cards. From classic metal to eco-friendly bamboo, find the perfect NFC business card for your professional networking needs.",
+      "keywords": "NFC business cards, smart business cards, metal business cards, bamboo business cards, digital networking"
+    },
+    "product": {
+      "title": "{{productName}} - Smart Business Card | Mibio",
+      "description": "Get your {{productName}} smart business card. Professional, contactless networking solution with instant lead capture and CRM integration.",
+      "keywords": "{{productName}}, smart business card, NFC card, contactless networking, lead capture"
+    },
+    "checkout": {
+      "title": "Checkout - Complete Your Order | Mibio",
+      "description": "Complete your smart business card order. Secure checkout with worldwide shipping and 100% lifetime guarantee.",
+      "keywords": "checkout, order, smart business cards, secure payment, worldwide shipping"
+    },
+    "contact": {
+      "title": "Contact Us - Get in Touch | Mibio",
+      "description": "Get in touch with Mibio. Our average response time is 3 hours. Contact us for support, bulk orders, or custom solutions.",
+      "keywords": "contact, support, help, bulk orders, custom solutions, customer service"
+    },
+    "shippingReturns": {
+      "title": "Shipping & Returns Policy | Mibio",
+      "description": "Learn about Mibio's shipping and returns policy. Worldwide shipping, fast delivery, and 100% satisfaction guarantee.",
+      "keywords": "shipping policy, returns policy, worldwide shipping, delivery, satisfaction guarantee"
     }
   }
 }

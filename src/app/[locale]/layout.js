@@ -2,16 +2,17 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { StoreProvider } from "@/context/store-context";
 import { I18nProvider } from "@/components/i18n-provider";
+import { generateMetadata as generateLocalizedMetadata } from "@/lib/metadata";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Mibio - Smart Business Cards",
-  description: "The last business card you'll ever need. Smart, contactless, and built to convert.",
-};
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  return generateLocalizedMetadata(locale || "en", 'home');
+}
 
 export default async function RootLayout({ children, params }) {
-  const locale = params.locale || "en";
+  const { locale } = await params;
   
   return (
     <html lang={locale}>
