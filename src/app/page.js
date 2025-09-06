@@ -19,6 +19,7 @@ import Footer from "@/components/footer";
 import RefundSection from "@/components/refund-section";
 import { useStore } from "@/context/store-context";
 import { PageLoader } from "@/components/ui/loader";
+import FadeInSection from "@/components/ui/fade-in-section";
 
 export default function Home() {
   const { products, fetchProducts } = useStore();
@@ -44,23 +45,53 @@ export default function Home() {
   return (
     <main>
       <Navbar />
-      <HeroSection />
-      <CardCollections products={products} />
-      <TestimonialSection />
-      <BeforeAfterSection />
-      <RevealSlider />
-      <BeforeEventSection />
-      <QuoteSection />
-      <DuringEventSection />
-      <QuoteSection2 />
-      <AfterEventSection />
-      <CaseStudiesSection />
-      <ProductReviewsSection />
+      <FadeInSection delay={0.1} direction="up">
+        <HeroSection />
+      </FadeInSection>
+      <FadeInSection delay={0.2} direction="up">
+        <CardCollections products={products} />
+      </FadeInSection>
+      <FadeInSection delay={0.3} direction="up">
+        <TestimonialSection />
+      </FadeInSection>
+      <FadeInSection delay={0.4} direction="up">
+        <BeforeAfterSection />
+      </FadeInSection>
+      <FadeInSection delay={0.5} direction="up">
+        <RevealSlider />
+      </FadeInSection>
+      <FadeInSection delay={0.6} direction="up">
+        <BeforeEventSection />
+      </FadeInSection>
+      <FadeInSection delay={0.7} direction="up">
+        <QuoteSection />
+      </FadeInSection>
+      <FadeInSection delay={0.8} direction="up">
+        <DuringEventSection />
+      </FadeInSection>
+      <FadeInSection delay={0.9} direction="up">
+        <QuoteSection2 />
+      </FadeInSection>
+      <FadeInSection delay={1.0} direction="up">
+        <AfterEventSection />
+      </FadeInSection>
+      <FadeInSection delay={1.1} direction="up">
+        <CaseStudiesSection />
+      </FadeInSection>
+      <FadeInSection delay={1.2} direction="up">
+        <ProductReviewsSection />
+      </FadeInSection>
       <div className="bg-secondary pt-14">
-        <RefundSection />
-        <FAQSection />
+        <FadeInSection delay={1.3} direction="up">
+          <RefundSection />
+        </FadeInSection>
+        <FadeInSection delay={1.4} direction="up">
+          <FAQSection />
+        </FadeInSection>
       </div>
-      <Footer />
+      <FadeInSection delay={1.5} direction="up">
+        <Footer />
+      </FadeInSection>
     </main>
   );
 }

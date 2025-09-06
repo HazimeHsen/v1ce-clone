@@ -5,22 +5,16 @@ import SliderImageCard from "./slider-image-card";
 
 const sliderImages = [
   {
-    before:
-      "https://cdn.shopify.com/s/files/1/0559/6246/8523/files/wave_nfc_card_front_1024x1024.webp?v=1729256771",
-    after:
-      "https://wavecnct.com/cdn/shop/articles/Best_nfc_business_card_750x.webp?v=1737334142",
+    before: "/before-and-after-1.png",
+    after: "/before-and-after-2.png",
   },
   {
-    before:
-      "https://cdn.shopify.com/s/files/1/0559/6246/8523/files/wave_nfc_card_front_1024x1024.webp?v=1729256771",
-    after:
-      "https://wavecnct.com/cdn/shop/articles/Best_nfc_business_card_750x.webp?v=1737334142",
+    before: "/before-and-after-1.png",
+    after: "/before-and-after-2.png",
   },
   {
-    before:
-      "https://cdn.shopify.com/s/files/1/0559/6246/8523/files/wave_nfc_card_front_1024x1024.webp?v=1729256771",
-    after:
-      "https://wavecnct.com/cdn/shop/articles/Best_nfc_business_card_750x.webp?v=1737334142",
+    before: "/before-and-after-1.png",
+    after: "/before-and-after-2.png",
   },
 ];
 
