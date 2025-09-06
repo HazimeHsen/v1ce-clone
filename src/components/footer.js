@@ -251,7 +251,7 @@ export default function Footer() {
         <div className="bg-black py-1 text-white">
           <div className="center-wide flex w-full flex-col justify-between gap-2 md:flex-row">
             <p className="text-sm font-medium">
-              © {"2025"} Mibio LLC. All rights reserved.
+              {t("footer.copyright")}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/policies/terms-of-service">
