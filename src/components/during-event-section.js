@@ -9,51 +9,48 @@ import {
 import { Nfc, Scan, Mail, ToggleRight, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react"; // Import useState
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function DuringEventSection() {
+  const { t } = useTranslations();
   const accordionItems = [
     {
       value: "item-1",
       icon: Nfc,
-      title: "Share Your Details Instantly",
-      description:
-        "Tap your NFC business card to share your full profile in seconds. No paper, no typing, just one smooth tap that makes you look professional and stay remembered.",
+      title: t("duringEvent.items.shareDetails.title"),
+      description: t("duringEvent.items.shareDetails.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/c59cef20fc4ccf0e84b5e28cd5fafeff?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
     {
       value: "item-2",
       icon: Scan,
-      title: "Scan Paper Cards and Event Badges",
-      description:
-        "Quickly scan traditional paper business cards or event badges to capture contact information directly into your Mibio dashboard.",
+      title: t("duringEvent.items.scanCards.title"),
+      description: t("duringEvent.items.scanCards.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/f32f56a27580fcbba0574bac25f89e9e?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
     {
       value: "item-3",
       icon: Mail,
-      title: "Send Instant Welcome Emails",
-      description:
-        "Automate personalized welcome emails to new contacts immediately after sharing your details, ensuring a prompt follow-up.",
+      title: t("duringEvent.items.sendEmails.title"),
+      description: t("duringEvent.items.sendEmails.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/59bcd7afe25721306454cba71985e99e?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
     {
       value: "item-4",
       icon: ToggleRight,
-      title: "Switch Profiles in Seconds",
-      description:
-        "Easily switch between different digital profiles on your card, allowing you to tailor the information you share for various contacts or events.",
+      title: t("duringEvent.items.switchProfiles.title"),
+      description: t("duringEvent.items.switchProfiles.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/a56f2d45a10b250bf07a7d5fdd092695?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
     {
       value: "item-5",
       icon: Map,
-      title: "Mapped Memories",
-      description:
-        "See exactly where you met each contact so you can follow up with context and confidence even days later.",
+      title: t("duringEvent.items.mappedMemories.title"),
+      description: t("duringEvent.items.mappedMemories.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/a56f2d45a10b250bf07a7d5fdd092695?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
@@ -75,10 +72,10 @@ export default function DuringEventSection() {
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="flex max-w-[750px] flex-col items-center gap-2">
             <h2 className="text-center text-3xl font-bold md:text-5xl">
-              During The Event
+              {t("duringEvent.title")}
             </h2>
             <p className="text-center text-muted-foreground">
-              Share your details, capture theirs, and sync with CRM.
+              {t("duringEvent.description")}
             </p>
           </div>
         </div>
@@ -174,11 +171,11 @@ export default function DuringEventSection() {
         <div className="flex flex-col items-center gap-2">
           <a href="/collections/tap-business-cards">
             <Button className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] text-sm font-semibold leading-[102%] transition-all disabled:pointer-events-none disabled:opacity-50 border border-transparent bg-primary text-primary-foreground hover:bg-primary/80 h-10 px-5 py-2">
-              Get Your Smart Card
+              {t("duringEvent.cta")}
             </Button>
           </a>
           <p className="text-sm text-muted-foreground">
-            100% Lifetime Guarantee
+            {t("duringEvent.guarantee")}
           </p>
         </div>
       </div>

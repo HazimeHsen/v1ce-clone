@@ -1,20 +1,21 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function QuoteSection() {
+  const { t } = useTranslations();
   return (
     <section className="w-full bg-secondary">
       <div className="center-narrow flex flex-col items-center gap-5 py-10">
         <Badge className="inline-flex items-center gap-[10px] rounded-full border px-4 py-1 text-[14px] font-medium transition-colors focus:outline-none border-transparent bg-primary/10 text-primary">
-          Case Study
+          {t("quote.badge")}
         </Badge>
         <a
           className="max-w-[700px] text-center text-2xl font-bold hover:underline md:text-3xl"
           href="/case-studies/furniture-village-mibio-digital-business-card-review-cost-savings"
         >
           <q>
-            Managing cards for 40+ staff was chaos. Mibio made setup fast and
-            lead capture automatic.
+            {t("quote.quote")}
           </q>
         </a>
         <div className="flex items-center gap-2">
@@ -26,8 +27,8 @@ export default function QuoteSection() {
             />
           </Avatar>
           <div className="flex flex-col">
-            <span className="font-medium">Charlie Harrison</span>
-            <p className="text-muted-foreground">CEO - Furniture Village</p>
+            <span className="font-medium">{t("quote.author")}</span>
+            <p className="text-muted-foreground">{t("quote.title")}</p>
           </div>
         </div>
       </div>

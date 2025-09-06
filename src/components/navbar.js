@@ -17,7 +17,9 @@ import {
   SheetFooter,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import LanguageSwitcher from "./language-switcher";
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function Navbar() {
   const {
@@ -34,6 +36,11 @@ export default function Navbar() {
   const [loadingCartItems, setLoadingCartItems] = useState(false);
   const [updatingItems, setUpdatingItems] = useState(new Set());
   const router = useRouter();
+  const pathname = usePathname();
+
+  // Extract current locale from pathname
+  const currentLocale = pathname.split("/")[1] || "en";
+  const { t } = useTranslations();
 
   const cartItems = cart?.items || [];
 
@@ -234,25 +241,24 @@ export default function Navbar() {
               loading="lazy"
               width="100"
               height="32"
-              decoding="async"
-              src="/logo-dark.svg"
+              src="/assets/images/logo-dark.svg"
             />
           </Link>
           <nav className="hidden lg:block">
             <ul className="flex items-center space-x-6 text-[14px] font-semibold text-muted-foreground">
               <li>
                 <Link href="/products" className="hover:text-primary">
-                  Products
+                  {t("navbar.products")}
                 </Link>
               </li>
               <li>
                 <Link href="/#before" className="hover:text-primary">
-                  How It Works
+                  {t("navbar.howItWorks")}
                 </Link>
               </li>
               <li>
                 <Link href="/teams" className="hover:text-primary">
-                  Teams
+                  {t("navbar.teams")}
                 </Link>
               </li>
               <li>
@@ -260,7 +266,7 @@ export default function Navbar() {
                   href="/digital-business-card-reviews"
                   className="hover:text-primary"
                 >
-                  Reviews
+                  {t("navbar.reviews")}
                 </Link>
               </li>
               <li>
@@ -268,7 +274,7 @@ export default function Navbar() {
                   href="/policies/shipping-and-returns"
                   className="hover:text-primary"
                 >
-                  Shipping & Returns
+                  {t("navbar.shippingReturns")}
                 </Link>
               </li>
             </ul>
@@ -276,6 +282,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex gap-5">
+          <LanguageSwitcher currentLocale={currentLocale} />
           <Sheet
             open={isCartOpen}
             onOpenChange={(open) => (open ? openCart() : closeCart())}
@@ -299,22 +306,24 @@ export default function Navbar() {
               className="w-full sm:max-w-lg flex flex-col z-50"
             >
               <SheetHeader>
-                <SheetTitle>Your Cart ({totalItems})</SheetTitle>
+                <SheetTitle>
+                  {t("cart.title")} ({totalItems})
+                </SheetTitle>
                 <SheetDescription className="sr-only">
-                  Review your items and proceed to checkout.
+                  {t("cart.description")}
                 </SheetDescription>
               </SheetHeader>
               <div className="flex-1 overflow-y-auto py-4">
                 {cartItems.length === 0 ? (
                   <p className="text-center text-muted-foreground">
-                    Your cart is empty.
+                    {t("cart.empty")}
                   </p>
                 ) : loadingCartItems ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="flex items-center gap-3">
                       <Spinner size="sm" />
                       <p className="text-muted-foreground">
-                        Loading cart items...
+                        {t("cart.loading")}
                       </p>
                     </div>
                   </div>
@@ -394,7 +403,7 @@ export default function Navbar() {
                             >
                               <X className="h-4 w-4" />
                               <span className="sr-only">
-                                Remove {getItemTitle(item)}
+                                {t("cart.remove")} {getItemTitle(item)}
                               </span>
                             </Button>
                           </div>
@@ -409,13 +418,15 @@ export default function Navbar() {
               </div>
               <SheetFooter className="mt-auto pt-4 border-t">
                 <div className="flex justify-between w-full mb-4">
-                  <span className="text-lg font-semibold">Total:</span>
+                  <span className="text-lg font-semibold">
+                    {t("cart.total")}
+                  </span>
                   <span className="text-lg font-semibold">
                     €{formatPrice(totalPrice)}
                   </span>
                 </div>
                 <Button onClick={handleCheckout} className="w-full" size="lg">
-                  Proceed to Checkout
+                  {t("cart.proceedToCheckout")}
                 </Button>
               </SheetFooter>
             </SheetContent>
@@ -436,9 +447,9 @@ export default function Navbar() {
               className="w-full sm:max-w-xs flex flex-col"
             >
               <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
+                <SheetTitle>{t("mobileMenu.title")}</SheetTitle>
                 <SheetDescription className="sr-only">
-                  Main navigation links
+                  {t("mobileMenu.description")}
                 </SheetDescription>
               </SheetHeader>
               <nav className="flex flex-col gap-4 p-6">
@@ -446,31 +457,31 @@ export default function Navbar() {
                   href="/collections/tap-business-cards"
                   className="text-lg font-semibold hover:text-primary"
                 >
-                  Shop
+                  {t("mobileMenu.shop")}
                 </Link>
                 <Link
                   href="/#before"
                   className="text-lg font-semibold hover:text-primary"
                 >
-                  How It Works
+                  {t("mobileMenu.howItWorks")}
                 </Link>
                 <Link
                   href="/teams"
                   className="text-lg font-semibold hover:text-primary"
                 >
-                  Teams
+                  {t("mobileMenu.teams")}
                 </Link>
                 <Link
                   href="/digital-business-card-reviews"
                   className="text-lg font-semibold hover:text-primary"
                 >
-                  Reviews
+                  {t("mobileMenu.reviews")}
                 </Link>
                 <Link
                   href="/shipping-and-returns"
                   className="text-lg font-semibold hover:text-primary"
                 >
-                  Shipping & Returns
+                  {t("mobileMenu.shippingReturns")}
                 </Link>
               </nav>
             </SheetContent>

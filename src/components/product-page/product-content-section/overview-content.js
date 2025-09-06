@@ -4,8 +4,10 @@ import SalesPointsAccordion from "./sales-points-accordion"
 import HowToDesignSection from "./how-to-design-section"
 import WhySmartCardsWinSection from "./why-smart-cards-win-section"
 import TestimonialsSection from "./testimonials-section"
+import { useTranslations } from "@/hooks/use-translations"
 
 export default function OverviewContent({ salesPoints, testimonials }) {
+  const { t } = useTranslations("productPage");
   return (
     <div
       data-state="active"
@@ -16,9 +18,9 @@ export default function OverviewContent({ salesPoints, testimonials }) {
     >
       <div className="flex flex-col gap-8 container">
         <div className="flex flex-col gap-2 rounded-xl bg-secondary p-5 md:p-8">
-          <h2 className="text-center text-2xl font-bold md:text-4xl">How NFC Business Cards Work</h2>
+          <h2 className="text-center text-2xl font-bold md:text-4xl">{t("overview.title")}</h2>
           <p className="text-center text-sm text-muted-foreground">
-            Discover how V1CE's NFC cards save you time and help you stand out.
+            {t("overview.description")}
           </p>
           <div className="mt-4 flex gap-0 md:gap-16">
             <SalesPointsAccordion salesPoints={salesPoints} />

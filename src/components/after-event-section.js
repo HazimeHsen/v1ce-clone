@@ -9,42 +9,40 @@ import {
 import { Workflow, RefreshCw, GitGraph, ContactRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react"; // Import useState
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function AfterEventSection() {
+  const { t } = useTranslations();
   const accordionItems = [
     {
       value: "item-1",
       icon: Workflow,
-      title: "Automated Follow-Ups",
-      description:
-        "Send post-event follow-ups right inside your Mibio dashboard. Keep conversations warm and move leads further down your funnel without lifting a finger.",
+      title: t("afterEvent.items.automatedFollowUps.title"),
+      description: t("afterEvent.items.automatedFollowUps.description"),
       imageSrc:
         "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/3266f3bb-f934-442c-8323-15b64c8a4c00/public",
     },
     {
       value: "item-2",
       icon: RefreshCw,
-      title: "Auto-Save to Your CRM",
-      description:
-        "Automatically sync new contacts and lead data directly to your CRM, eliminating manual entry and ensuring data accuracy.",
+      title: t("afterEvent.items.autoSaveToCrm.title"),
+      description: t("afterEvent.items.autoSaveToCrm.description"),
       imageSrc:
         "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/84d64f5f-e61b-4bc3-f967-09e0e5b37200/thumbnail", // Placeholder image
     },
     {
       value: "item-3",
       icon: GitGraph,
-      title: "Track What Works",
-      description:
-        "Gain insights into your networking efforts with detailed analytics on profile views, lead captures, and follow-up effectiveness.",
+      title: t("afterEvent.items.trackWhatWorks.title"),
+      description: t("afterEvent.items.trackWhatWorks.description"),
       imageSrc:
         "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/4030f710-bbce-4a18-5591-66121185e100/thumbnail", // Placeholder image
     },
     {
       value: "item-4",
       icon: ContactRound,
-      title: "Smart Contact Book",
-      description:
-        "Build a comprehensive digital contact book with rich profiles for every person you meet, including notes and follow-up history.",
+      title: t("afterEvent.items.smartContactBook.title"),
+      description: t("afterEvent.items.smartContactBook.description"),
       imageSrc:
         "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/e57def69ba19ed255ef84e48cd030c8d4a6c8d7a-1054x1428.jpg", // Placeholder image
     },
@@ -62,10 +60,10 @@ export default function AfterEventSection() {
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="flex max-w-[750px] flex-col items-center gap-2">
             <h2 className="text-center text-3xl font-bold md:text-5xl">
-              After The Event
+              {t("afterEvent.title")}
             </h2>
             <p className="text-center text-muted-foreground">
-              Automate outreach, sync leads, and track engagement.
+              {t("afterEvent.description")}
             </p>
           </div>
         </div>
@@ -142,11 +140,11 @@ export default function AfterEventSection() {
         <div className="flex flex-col items-center gap-2">
           <a href="/collections/tap-business-cards">
             <Button className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] text-sm font-semibold leading-[102%] transition-all disabled:pointer-events-none disabled:opacity-50 border border-transparent bg-primary text-primary-foreground hover:bg-primary/80 h-10 px-5 py-2">
-              Get Your Smart Card
+              {t("afterEvent.cta")}
             </Button>
           </a>
           <p className="text-sm text-muted-foreground">
-            100% Lifetime Guarantee
+            {t("afterEvent.guarantee")}
           </p>
         </div>
       </div>

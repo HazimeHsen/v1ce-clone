@@ -1,3 +1,4 @@
+"use client";
 import { ContactForm } from "@/components/contact/contact-form";
 import { FeaturesSlider } from "@/components/features-slider";
 import Footer from "@/components/footer";

@@ -12,51 +12,53 @@ import {
   Boxes,
   Radio,
 } from "lucide-react";
-
-const features = [
-  {
-    icon: Clock,
-    title: "Save 10+ Hours a Month",
-    description: "Let Mibio handle follow-ups for you.",
-  },
-  {
-    icon: Rocket,
-    title: "Never Miss a Lead",
-    description: "Stay updated and connect to your CRM fast.",
-  },
-  {
-    icon: Trees,
-    title: "Eco-Friendly and Saves Money",
-    description: "Use less paper and save more cash.",
-  },
-  {
-    icon: ChartNoAxesColumn,
-    title: "Track Data Instantly",
-    description: "See who's interested and act quickly.",
-  },
-  {
-    icon: Wrench,
-    title: "Simple Team and Brand Tools",
-    description: "Keep links updated and manage everything fast.",
-  },
-  {
-    icon: Nfc,
-    title: "Impress on First Tap",
-    description: "Modern, sleek, and memorable.",
-  },
-  {
-    icon: Boxes,
-    title: "Built-In Lead Capture",
-    description: "Collect emails or contacts.",
-  },
-  {
-    icon: Radio,
-    title: "Real-Time Profile Edits",
-    description: "Update your links, info, and branding.",
-  },
-];
+import { useTranslations } from "@/hooks/use-translations";
 
 export function FeaturesSlider() {
+  const { t } = useTranslations();
+
+  const features = [
+    {
+      icon: Clock,
+      title: t("featuresSlider.features.0.title"),
+      description: t("featuresSlider.features.0.description"),
+    },
+    {
+      icon: Rocket,
+      title: t("featuresSlider.features.1.title"),
+      description: t("featuresSlider.features.1.description"),
+    },
+    {
+      icon: Trees,
+      title: t("featuresSlider.features.2.title"),
+      description: t("featuresSlider.features.2.description"),
+    },
+    {
+      icon: ChartNoAxesColumn,
+      title: t("featuresSlider.features.3.title"),
+      description: t("featuresSlider.features.3.description"),
+    },
+    {
+      icon: Wrench,
+      title: t("featuresSlider.features.4.title"),
+      description: t("featuresSlider.features.4.description"),
+    },
+    {
+      icon: Nfc,
+      title: t("featuresSlider.features.5.title"),
+      description: t("featuresSlider.features.5.description"),
+    },
+    {
+      icon: Boxes,
+      title: t("featuresSlider.features.6.title"),
+      description: t("featuresSlider.features.6.description"),
+    },
+    {
+      icon: Radio,
+      title: t("featuresSlider.features.7.title"),
+      description: t("featuresSlider.features.7.description"),
+    },
+  ];
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -87,7 +89,7 @@ export function FeaturesSlider() {
     <section className="overflow-hidden bg-secondary py-14">
       <div className="flex flex-col items-center justify-center gap-10">
         <h2 className="text-2xl font-bold max-w-xs px-8 text-center text-primary-foreground">
-          Get More Than a Business Card
+          {t("featuresSlider.title")}
         </h2>
 
         <div
@@ -130,7 +132,7 @@ export function FeaturesSlider() {
           variant="outline"
           size="lg"
         >
-          Create My NFC Card
+          {t("featuresSlider.cta")}
         </Button>
       </div>
     </section>

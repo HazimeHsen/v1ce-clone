@@ -1,8 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils"; // Import the cn utility function
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function ProductTabs({ activeTab, setActiveTab, faqItems }) {
+  const { t } = useTranslations("productPage");
   return (
     <div className="flex h-12 w-full gap-2 overflow-x-auto overflow-y-hidden rounded-lg py-1.5">
       <button
@@ -16,7 +18,7 @@ export default function ProductTabs({ activeTab, setActiveTab, faqItems }) {
         )}
         onClick={() => setActiveTab("overview")}
       >
-        Overview
+        {t("tabs.overview")}
       </button>
       <button
         type="button"
@@ -29,7 +31,7 @@ export default function ProductTabs({ activeTab, setActiveTab, faqItems }) {
         )}
         onClick={() => setActiveTab("details")}
       >
-        Details
+        {t("tabs.details")}
       </button>
       <button
         type="button"
@@ -42,7 +44,7 @@ export default function ProductTabs({ activeTab, setActiveTab, faqItems }) {
         )}
         onClick={() => setActiveTab("faq")}
       >
-        FAQ
+        {t("tabs.faq")}
       </button>
     </div>
   );

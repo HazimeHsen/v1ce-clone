@@ -1,7 +1,9 @@
 import Link from "next/link";
 import ColorSwatches from "./color-swatches";
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function ProductCard({ product }) {
+  const { t } = useTranslations();
   const { handle, thumbnail, title, variants } = product;
 
   const colorSwatches = variants?.map((variant) => {
@@ -19,7 +21,7 @@ export default function ProductCard({ product }) {
             currency: variants[0].calculated_price?.currency_code || "USD",
           }
         )
-      : "Contact for Price";
+      : t("product.contactForPrice");
 
   return (
     <Link

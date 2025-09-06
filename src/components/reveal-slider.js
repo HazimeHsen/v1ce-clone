@@ -5,16 +5,16 @@ import SliderImageCard from "./slider-image-card";
 
 const sliderImages = [
   {
-    before: "/before-and-after-1.png",
-    after: "/before-and-after-2.png",
+    before: "/assets/images/before-and-after-1.png",
+    after: "/assets/images/before-and-after-2.png",
   },
   {
-    before: "/before-and-after-1.png",
-    after: "/before-and-after-2.png",
+    before: "/assets/images/before-and-after-1.png",
+    after: "/assets/images/before-and-after-2.png",
   },
   {
-    before: "/before-and-after-1.png",
-    after: "/before-and-after-2.png",
+    before: "/assets/images/before-and-after-1.png",
+    after: "/assets/images/before-and-after-2.png",
   },
 ];
 

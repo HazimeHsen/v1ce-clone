@@ -10,7 +10,7 @@ import VideoStepSection from "@/components/products/video-step-section";
 import QuoteSection from "@/components/quote-section";
 import RefundSection from "@/components/refund-section";
 import { useStore } from "@/context/store-context";
-import { ProductsPageLoader } from "@/components/ui/loader";
+import { PageLoader } from "@/components/ui/loader";
 
 const Products = () => {
   const { products, fetchProducts } = useStore();
@@ -28,7 +28,7 @@ const Products = () => {
     return (
       <>
         <Navbar />
-        <ProductsPageLoader />
+        <PageLoader />
         <Footer />
       </>
     );

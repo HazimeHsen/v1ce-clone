@@ -2,21 +2,21 @@
 
 import { useStore } from "../context/store-context";
 import ProductCard from "./product-card";
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function CardCollections() {
   const { products } = useStore();
+  const { t } = useTranslations();
 
   return (
     <section className="center-narrow py-14">
       <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
         <div className="flex max-w-[650px] flex-col items-center gap-3 px-6 text-center">
           <h2 className="text-center text-3xl font-bold md:text-5xl">
-            One Tap Replaces a Stack
+            {t("cardCollections.title")}
           </h2>
           <p className="text-muted-foreground">
-            From sales teams to global brands, Mibio helps you share details,
-            capture leads, and follow up automatically without paper or lost
-            leads.
+            {t("cardCollections.description")}
           </p>
         </div>
       </div>

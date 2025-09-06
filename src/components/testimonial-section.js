@@ -2,15 +2,16 @@
 
 import { useRef, useState, useEffect } from "react";
 import TestimonialItem from "./testimonial-item";
+import { useTranslations } from "@/hooks/use-translations";
 
 const testimonials = [
   {
     logoSrc: "/placeholder.svg?height=35&width=150",
     logoAlt: "AFC Bournemouth Logo",
-    quote: "No more forgotten contacts—V1CE auto-saves every Contact.",
+    quote: "No more forgotten contacts—Mibio auto-saves every Contact.",
     name: "Rob Mitchell",
     title: "Commercial Director - AFC Bournemouth",
-    thumbnailSrc: "/placeholder.svg?height=500&width=500",
+    thumbnailSrc: "/assets/images/placeholder.svg",
     thumbnailAlt: "Rob Mitchell Testimonial Thumbnail",
   },
   {
@@ -19,16 +20,16 @@ const testimonials = [
     quote: "Feels good knowing I’m always ready.",
     name: "Chris Sarjant",
     title: "AGM - Dillards",
-    thumbnailSrc: "/placeholder.svg?height=500&width=500",
+    thumbnailSrc: "/assets/images/placeholder.svg",
     thumbnailAlt: "Chris Sarjant Testimonial Thumbnail",
   },
   {
     logoSrc: "/placeholder.svg?height=35&width=150",
     logoAlt: "Thrive Club Logo",
-    quote: "V1CE helped me make 3x more connections at networking events.",
+    quote: "Mibio helped me make 3x more connections at networking events.",
     name: "Luna Williams",
     title: "CEO - Thrive Club",
-    thumbnailSrc: "/placeholder.svg?height=500&width=500",
+    thumbnailSrc: "/assets/images/placeholder.svg",
     thumbnailAlt: "Luna Williams Testimonial Thumbnail",
   },
   {
@@ -37,7 +38,7 @@ const testimonials = [
     quote: "I used to forget my cards. Now I don’t even think about it.",
     name: "Josh",
     title: "Entrepreneur - Tokyo",
-    thumbnailSrc: "/placeholder.svg?height=500&width=500",
+    thumbnailSrc: "/assets/images/placeholder.svg",
     thumbnailAlt: "Josh Testimonial Thumbnail",
   },
   {
@@ -46,39 +47,40 @@ const testimonials = [
     quote: "Transformed my networking—every meeting is now trackable.",
     name: "Faisal Pakar",
     title: "Head Of IT - Tim Hortons UAE",
-    thumbnailSrc: "/placeholder.svg?height=500&width=500",
+    thumbnailSrc: "/assets/images/placeholder.svg",
     thumbnailAlt: "Faisal Pakar Testimonial Thumbnail",
   },
   {
     logoSrc: "/placeholder.svg?height=35&width=150",
     logoAlt: "Gilmar Logo",
-    quote: "Networking is now 5x faster with V1CE.",
+    quote: "Networking is now 5x faster with Mibio.",
     name: "Ignacio Mallagray",
     title: "Marketing Director - Gilmar",
-    thumbnailSrc: "/placeholder.svg?height=500&width=500",
+    thumbnailSrc: "/assets/images/placeholder.svg",
     thumbnailAlt: "Ignacio Mallagray Testimonial Thumbnail",
   },
   {
     logoSrc: "/placeholder.svg?height=35&width=150",
     logoAlt: "Furniture Village Logo",
-    quote: "No more running out of cards—one V1CE card lasts forever.",
+    quote: "No more running out of cards—one Mibio card lasts forever.",
     name: "Charlie Harrison",
     title: "CEO & Co-Founder - Furniture Village",
-    thumbnailSrc: "/placeholder.svg?height=500&width=500",
+    thumbnailSrc: "/assets/images/placeholder.svg",
     thumbnailAlt: "Charlie Harrison Testimonial Thumbnail",
   },
   {
     logoSrc: "/placeholder.svg?height=35&width=150",
     logoAlt: "Acre Logo",
-    quote: "V1CE made networking 80% faster and more accurate for our team!",
+    quote: "Mibio made networking 80% faster and more accurate for our team!",
     name: "Julia",
     title: "CEO - Acre",
-    thumbnailSrc: "/placeholder.svg?height=500&width=500",
+    thumbnailSrc: "/assets/images/placeholder.svg",
     thumbnailAlt: "Julia Testimonial Thumbnail",
   },
 ];
 
 export default function TestimonialSection() {
+  const { t } = useTranslations();
   const carouselRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -127,11 +129,10 @@ export default function TestimonialSection() {
         <div className="flex w-full flex-col items-center justify-center gap-3 text-center">
           <div className="flex max-w-[850px] flex-col items-center gap-3 px-6 text-center">
             <h2 className="text-center text-3xl font-bold md:text-5xl">
-              Trusted by 500,000+ Professionals and Teams
+              {t("testimonials.title")}
             </h2>
             <p className="text-muted-foreground">
-              See how our customers use smart, NFC-enabled business cards to
-              capture leads and connect faster.
+              {t("testimonials.description")}
             </p>
           </div>
         </div>
@@ -165,7 +166,7 @@ export default function TestimonialSection() {
             <button
               type="button"
               className="flex aspect-square items-center rounded-full border border-border p-1 disabled:opacity-50"
-              aria-label="Previous testimonial"
+              aria-label={t("testimonials.previousTestimonial")}
               onClick={() => scrollCarousel("left")}
               disabled={!canScrollLeft}
             >
@@ -187,7 +188,7 @@ export default function TestimonialSection() {
             <button
               type="button"
               className="flex aspect-square items-center rounded-full border border-border p-1 disabled:opacity-50"
-              aria-label="Next testimonial"
+              aria-label={t("testimonials.nextTestimonial")}
               onClick={() => scrollCarousel("right")}
               disabled={!canScrollRight}
             >

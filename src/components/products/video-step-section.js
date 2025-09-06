@@ -8,11 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "@/hooks/use-translations";
 
 const STEP_DURATION_MS = 6800;
 const PROGRESS_INTERVAL_MS = 100;
 
 export default function VideoStepSection() {
+  const { t } = useTranslations();
   const [activeStep, setActiveStep] = useState(1);
   const [stepProgress, setStepProgress] = useState(0);
   const timeoutRef = useRef(null);
@@ -69,22 +71,20 @@ export default function VideoStepSection() {
     {
       id: 1,
       icon: ShoppingBasket,
-      title: "1. Pick Your Card",
-      description:
-        "Choose a card that matches your brand: classic, bold, or eco-friendly.",
+      title: t("product.easySteps.steps.pickCard.title"),
+      description: t("product.easySteps.steps.pickCard.description"),
     },
     {
       id: 2,
       icon: Brush,
-      title: "2. Place Your Order",
-      description:
-        "Fill out a quick design form. We'll create your card for free.",
+      title: t("product.easySteps.steps.placeOrder.title"),
+      description: t("product.easySteps.steps.placeOrder.description"),
     },
     {
       id: 3,
       icon: Share2,
-      title: "3. Share",
-      description: "Get your card fast and ready to share. No apps needed.",
+      title: t("product.easySteps.steps.share.title"),
+      description: t("product.easySteps.steps.share.description"),
     },
   ];
 
@@ -92,17 +92,15 @@ export default function VideoStepSection() {
     <section className="py-[50px] md:py-20">
       <div className="max-w-4xl mx-auto px-4 space-y-6 flex flex-col items-center text-center">
         <div className="flex flex-col items-center gap-3">
-          <Badge variant="accent">Easy As 1-2-3</Badge>
+          <Badge variant="accent">{t("product.easySteps.badge")}</Badge>
           <h2 className="text-3xl font-bold md:text-5xl">
-            {" "}
-            Order In 3 Easy Steps
+            {t("product.easySteps.title")}
           </h2>
           <p className="text-lg lg:max-w-[70%]">
-            We design all orders in-house for free because your first impression
-            is ours too.
+            {t("product.easySteps.description")}
           </p>
           <Link href="/collections/tap-business-cards">
-            <Button variant="default">Get Your V1CE Card</Button>
+            <Button variant="default">{t("product.easySteps.cta")}</Button>
           </Link>
         </div>
         <div className="flex flex-col-reverse gap-6 sm:flex-col w-full">

@@ -1,0 +1,197 @@
+{
+  "testimonials": [
+    {
+      "quote": "No more forgotten contacts—Mibio auto-saves every Contact.",
+      "name": "Rob Mitchell",
+      "title": "Commercial Director - AFC Bournemouth"
+    },
+    {
+      "quote": "Feels good knowing I'm always ready.",
+      "name": "Chris Sarjant",
+      "title": "AGM - Dillards"
+    },
+    {
+      "quote": "Everyone asks where I got it. It just works.",
+      "name": "Jenni Reveulta",
+      "title": "Marketing Manager - Salon Services"
+    },
+    {
+      "quote": "Mibio helped me make 3x more connections at networking events.",
+      "name": "Luna Williams",
+      "title": "CEO - Thrive Club"
+    },
+    {
+      "quote": "I used to forget my cards. Now I don't even think about it.",
+      "name": "Josh",
+      "title": "Entrepreneur - Tokyo"
+    },
+    {
+      "quote": "Transformed my networking—every meeting is now trackable.",
+      "name": "Faisal Pakar",
+      "title": "Head Of IT - Tim Hortons UAE"
+    },
+    {
+      "quote": "No more running out of cards—one Mibio card lasts forever.",
+      "name": "Charlie Harrison",
+      "title": "CEO & Co-Founder - Furniture Village"
+    },
+    {
+      "quote": "Networking is now 5x faster with Mibio.",
+      "name": "Ignacio Mallagray",
+      "title": "Marketing Director - Gilmar"
+    },
+    {
+      "quote": "Mibio made networking 80% faster and more accurate for our team!",
+      "name": "Julia",
+      "title": "CEO - Acre"
+    }
+  ],
+  "salesPoints": [
+    {
+      "title": "Share Your Info in Seconds",
+      "content": "Instantly share your contact details, social media, website, and more with a simple tap or scan. No apps needed for the receiver."
+    },
+    {
+      "title": "Get Their Details Back",
+      "content": "Capture new leads effortlessly. When you share your card, they can save your contact and send you theirs with one click."
+    },
+    {
+      "title": "Update Anytime",
+      "content": "Your Mibio card is dynamic. Update your profile details, links, and contact info anytime, and your card will instantly reflect the changes. No reprints needed."
+    },
+    {
+      "title": "Share Beyond a Card",
+      "content": "Your Mibio profile is a powerful tool. Share it via email, text, or social media, even without your physical card. It's always accessible."
+    },
+    {
+      "title": "See Who's Using Your Card",
+      "content": "Find out who's viewing your card so you can follow up with confidence, knowing they're interested."
+    }
+  ],
+  "faqItems": {
+    "usingCard": {
+      "title": "Using Your Mibio Card",
+      "items": [
+        {
+          "question": "How do NFC business cards work?",
+          "answer": "NFC (Near Field Communication) cards contain a small chip that can wirelessly transmit information to compatible smartphones. When you tap your Mibio card on an NFC-enabled phone, your digital profile instantly appears on their screen, allowing them to save your contact details or access your links with a single tap. For phones without NFC, a QR code on the back of the card can be scanned."
+        },
+        {
+          "question": "Do I need an app to use the card?",
+          "answer": "No, neither you nor the person receiving your information needs an app to use the Mibio card. Your digital profile opens directly in their phone's web browser. This makes sharing seamless and accessible to everyone."
+        },
+        {
+          "question": "Will this card work on all phones?",
+          "answer": "Mibio cards are compatible with most modern smartphones. All iPhones (XR, XS, 11, 12, 13, 14, 15 and newer) have native NFC reading capabilities. Most Android phones released after 2012 are NFC-enabled. For older phones or those without NFC, a QR code on the back of the card can be scanned using any camera app."
+        },
+        {
+          "question": "Can I add my card to Apple Wallet or Google Wallet?",
+          "answer": "While Mibio cards don't directly integrate with Apple Wallet or Google Wallet like payment cards, your digital profile can be saved as a contact in their phone's address book. This ensures your information is always accessible and easy to find."
+        },
+        {
+          "question": "Can someone without NFC still view my card?",
+          "answer": "Yes! Every Mibio card comes with a unique QR code printed on the back. If a phone doesn't have NFC capabilities, or if the user prefers, they can simply scan the QR code with their camera to access your digital profile."
+        }
+      ]
+    },
+    "metalSpecific": {
+      "title": "Metal Specific",
+      "items": [
+        {
+          "question": "What is the 24K Luxury Digital Business Card made of?",
+          "answer": "Our 24K Luxury Digital Business Card is crafted from high-quality stainless steel, meticulously plated with 24-karat gold. It features a durable PVC backing to ensure optimal NFC functionality and a sleek, premium feel."
+        },
+        {
+          "question": "How durable is the metal card?",
+          "answer": "Designed for longevity, the 24K Luxury Digital Business Card is highly durable. The stainless steel core provides strength, while the 24K gold plating is resistant to tarnishing and wear. It's built to withstand daily use and maintain its luxurious appearance."
+        },
+        {
+          "question": "Can the metal card be customized?",
+          "answer": "We offer free professional design services with unlimited revisions. You can customize your metal card with your logo, name, and other branding elements, all precision fibre laser engraved for a sharp, lasting finish."
+        },
+        {
+          "question": "Is the gold plating real gold?",
+          "answer": "Yes, the card features genuine 24-karat gold plating, giving it an unparalleled luxurious look and feel. This ensures a premium aesthetic that stands out."
+        },
+        {
+          "question": "How heavy is the metal card?",
+          "answer": "The 24K Luxury Digital Business Card weighs approximately 50 grams, providing a substantial and premium feel in hand, similar to a high-end credit card."
+        }
+      ]
+    },
+    "accountUsage": {
+      "title": "Account & Usage",
+      "items": [
+        {
+          "question": "Can I update my profile after ordering?",
+          "answer": "Yes, you can update your digital profile anytime through your Mibio account. All changes are instant and automatically reflected when someone taps or scans your card. No need for reprints!"
+        },
+        {
+          "question": "What if my card stops working?",
+          "answer": "Mibio cards are built to last. In the rare event that your card stops working due to a manufacturing defect, we offer a money-back promise. Please contact our support team for assistance."
+        },
+        {
+          "question": "Can I use multiple cards with one profile?",
+          "answer": "Yes, you can link multiple Mibio cards to a single digital profile. This is ideal for teams or individuals who want to have backup cards or different cards for various purposes, all pointing to the same up-to-date information."
+        },
+        {
+          "question": "Can I order metal cards for a team or business?",
+          "answer": "We offer custom solutions for teams and businesses, including bulk orders and personalized branding. Contact our sales team to discuss your specific needs and get a tailored quote."
+        },
+        {
+          "question": "Is this better than a free digital card?",
+          "answer": "Mibio cards offer a premium, tangible experience that free digital cards cannot match. Our cards provide a professional first impression, advanced analytics, and a seamless sharing experience, all backed by our design and support services."
+        },
+        {
+          "question": "How fast will my metal card ship?",
+          "answer": "Our design team typically completes mockups within 6 hours. Once you approve the design, we offer fast and secure delivery, with 1-3 day shipping available from our offices in the UK, USA, or UAE, depending on your location."
+        }
+      ]
+    }
+  },
+  "tabs": {
+    "overview": "Overview",
+    "details": "Details",
+    "faq": "FAQ"
+  },
+  "overview": {
+    "title": "How NFC Business Cards Work",
+    "description": "Discover how Mibio's NFC cards save you time and help you stand out."
+  },
+  "howToDesign": {
+    "title": "How To Design",
+    "description": "Your first impression is ours too.",
+    "steps": {
+      "placeOrder": {
+        "title": "Place Your Order",
+        "description": "Choose a card that fits your brand and place your order online."
+      },
+      "weDesign": {
+        "title": "We Design",
+        "description": "Fill out a quick form, and we'll design your card with unlimited revisions."
+      },
+      "printShip": {
+        "title": "Print & Ship",
+        "description": "Approve your design, and we'll print and deliver your card, hassle-free."
+      }
+    }
+  },
+  "whySmartCardsWin": {
+    "title": "Why Smart Cards Win",
+    "description": "Paper cards get lost, tossed, or forgotten. Mibio cards stay updated, save leads, and follow up automatically.",
+    "paperCards": {
+      "cantBeUpdated": "Can't be updated",
+      "easyToLose": "Easy to lose or forget",
+      "mustTypeContacts": "Must type in every contact",
+      "noFollowUps": "No automatic follow-ups",
+      "onlyBasicInfo": "Only basic info"
+    },
+    "viceCards": {
+      "updateAnytime": "Update anytime",
+      "worksAnywhere": "Works anywhere",
+      "savesContacts": "Saves contacts for you",
+      "automaticFollowUps": "Sends automatic follow-ups",
+      "shareMore": "Share more"
+    }
+  }
+}

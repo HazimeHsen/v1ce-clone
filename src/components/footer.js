@@ -1,7 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Facebook, Instagram, Twitter, Linkedin, Youtube } from "lucide-react";
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function Footer() {
+  const { t } = useTranslations();
   return (
     <footer className="pt-12">
       <div className="flex flex-col gap-[40px]">
@@ -9,19 +12,16 @@ export default function Footer() {
           <div className="flex flex-col items-center justify-between gap-4 lg:items-start">
             <div className="flex flex-col items-center justify-center gap-4 text-center lg:items-start lg:justify-start lg:text-left">
               <Link className="" href="/">
-                <img
+                <Image
                   alt="Mibio logo"
-                  loading="lazy"
-                  width="90"
-                  height="32"
-                  decoding="async"
-                  style={{ color: "transparent" }}
-                  src="/logo-dark.svg"
+                  width={90}
+                  height={32}
+                  src="/assets/images/logo-dark.svg"
+                  priority={false}
                 />
               </Link>
               <p className="text-center leading-[18px] text-foreground lg:max-w-[360px] lg:text-left">
-                Mibio is your all-in-one smart, contactless business card
-                designed to turn every meeting into money.
+                {t("footer.description")}
               </p>
               <div className="flex w-full flex-row items-center justify-center gap-4 text-muted-foreground lg:w-auto lg:justify-normal">
                 <a
@@ -71,33 +71,34 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-            <img
-              src="/payment.png"
-              width="300"
-              height="24"
+            <Image
+              src="/assets/images/payment.png"
+              width={300}
+              height={24}
               alt="Mibio Payment Methods"
+              priority={false}
             />
           </div>
           <div className="grid w-full grid-cols-2 gap-6 sm:grid-cols-4 lg:w-fit lg:justify-end lg:gap-8">
             <div className="flex w-full flex-col gap-4 text-muted-foreground lg:w-auto">
-              <p className="font-semibold text-foreground">V1CE</p>
+              <p className="font-semibold text-foreground">{t("footer.mibio")}</p>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/collections/all-products"
               >
-                <p className="text-sm">Products</p>
+                <p className="text-sm">{t("footer.products")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/features"
               >
-                <p className="text-sm">Features</p>
+                <p className="text-sm">{t("footer.features")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/pricing"
               >
-                <p className="text-sm">Pricing</p>
+                <p className="text-sm">{t("footer.pricing")}</p>
               </Link>
               <a
                 target="_blank"
@@ -105,79 +106,79 @@ export default function Footer() {
                 href="https://ecologi.com/mibio"
                 rel="noreferrer"
               >
-                <p className="text-sm">Sustainability</p>
+                <p className="text-sm">{t("footer.sustainability")}</p>
               </a>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/our-story"
               >
-                <p className="text-sm">Our Story</p>
+                <p className="text-sm">{t("footer.ourStory")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/digital-business-card-reviews"
               >
-                <p className="text-sm">Reviews</p>
+                <p className="text-sm">{t("footer.reviews")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/case-studies"
               >
-                <p className="text-sm">Case Studies</p>
+                <p className="text-sm">{t("footer.caseStudies")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/blog"
               >
-                <p className="text-sm">Blogs</p>
+                <p className="text-sm">{t("footer.blogs")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/partners"
               >
-                <p className="text-sm">Partners</p>
+                <p className="text-sm">{t("footer.partners")}</p>
               </Link>
             </div>
             <div className="flex w-full flex-col gap-4 text-muted-foreground lg:w-auto">
-              <p className="font-semibold text-foreground">Products</p>
+              <p className="font-semibold text-foreground">{t("footer.products")}</p>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/digital-business-cards"
               >
-                <p className="text-sm">Digital Business Cards</p>
+                <p className="text-sm">{t("footer.digitalBusinessCards")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/product/original-nfc-business-card"
               >
-                <p className="text-sm">Original NFC Cards</p>
+                <p className="text-sm">{t("footer.originalNfcCards")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/product/bamboo-nfc-business-cards"
               >
-                <p className="text-sm">Bamboo NFC Cards</p>
+                <p className="text-sm">{t("footer.bambooNfcCards")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/product/metal-nfc-business-cards"
               >
-                <p className="text-sm">Metal NFC Cards</p>
+                <p className="text-sm">{t("footer.metalNfcCards")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/product/nfc-phone-cards"
               >
-                <p className="text-sm">Tap Phone Cards</p>
+                <p className="text-sm">{t("footer.tapPhoneCards")}</p>
               </Link>
             </div>
             <div className="flex w-full flex-col gap-4 text-muted-foreground lg:w-auto">
-              <p className="font-semibold text-foreground">Help</p>
+              <p className="font-semibold text-foreground">{t("footer.help")}</p>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/contact-sales"
               >
-                <p className="text-sm">Contact Sales</p>
+                <p className="text-sm">{t("footer.contactSales")}</p>
               </Link>
               <a
                 target="_blank"
@@ -185,64 +186,64 @@ export default function Footer() {
                 href="https://mibiohelp.zohodesk.eu/portal/en/home"
                 rel="noreferrer"
               >
-                <p className="text-sm">Help Center</p>
+                <p className="text-sm">{t("footer.helpCenter")}</p>
               </a>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/business-card-design"
               >
-                <p className="text-sm">Design Guidelines</p>
+                <p className="text-sm">{t("footer.designGuidelines")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/faq"
               >
-                <p className="text-sm">FAQs</p>
+                <p className="text-sm">{t("footer.faqs")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/policies/shipping-and-returns"
               >
-                <p className="text-sm">Shipping &amp; Returns</p>
+                <p className="text-sm">{t("footer.shippingReturns")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/policies/warranty"
               >
-                <p className="text-sm">Warranty</p>
+                <p className="text-sm">{t("footer.warranty")}</p>
               </Link>
               <Link
                 href="/feature-requests"
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
               >
-                <p className="text-sm">Feature Requests</p>
+                <p className="text-sm">{t("footer.featureRequests")}</p>
               </Link>
               <Link
                 href="/roadmap"
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
               >
-                <p className="text-sm">Roadmap</p>
+                <p className="text-sm">{t("footer.roadmap")}</p>
               </Link>
             </div>
             <div className="flex w-full flex-col gap-4 text-muted-foreground lg:w-auto">
-              <p className="font-semibold text-foreground">Compare</p>
+              <p className="font-semibold text-foreground">{t("footer.compare")}</p>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/compare/blinq-vs-mibio-digital-business-card"
               >
-                <p className="text-sm">vs Blinq</p>
+                <p className="text-sm">{t("footer.vsBlinq")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/compare/linq-vs-mibio-digital-business-card"
               >
-                <p className="text-sm">vs Linq</p>
+                <p className="text-sm">{t("footer.vsLinq")}</p>
               </Link>
               <Link
                 className="flex items-center gap-2 text-sm font-medium leading-[19px] text-foreground underline-offset-4 hover:underline"
                 href="/compare/mobilo-vs-mibio-digital-business-card"
               >
-                <p className="text-sm">vs Mobilo</p>
+                <p className="text-sm">{t("footer.vsMobilo")}</p>
               </Link>
             </div>
           </div>
@@ -252,17 +253,17 @@ export default function Footer() {
             <p className="text-sm font-medium">
               © {"2025"} Mibio LTD. All rights reserved.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               <Link href="/policies/terms-of-service">
                 <p className="text-sm font-medium underline">
-                  Terms of Service
+                  {t("footer.termsOfService")}
                 </p>
               </Link>
               <Link href="/policies/privacy-policy">
-                <p className="text-sm font-medium underline">Privacy Policy</p>
+                <p className="text-sm font-medium underline">{t("footer.privacyPolicy")}</p>
               </Link>
               <Link href="/policies/cookies">
-                <p className="text-sm font-medium underline">Cookie Policy</p>
+                <p className="text-sm font-medium underline">{t("footer.cookiePolicy")}</p>
               </Link>
             </div>
           </div>

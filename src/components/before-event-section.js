@@ -14,51 +14,48 @@ import {
   WalletMinimal,
 } from "lucide-react";
 import { useState } from "react"; // Import useState
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function BeforeEventSection() {
+  const { t } = useTranslations();
   const accordionItems = [
     {
       value: "item-1",
       icon: Check,
-      title: "Show Up Ready to Impress",
-      description:
-        "Prepare your digital profile to make a lasting first impression at any event.",
+      title: t("beforeEvent.items.showUpReady.title"),
+      description: t("beforeEvent.items.showUpReady.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/d57acb13277d25f3d42dec5691410144?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
     {
       value: "item-2",
       icon: Nfc,
-      title: "Build Your Digital Profile",
-      description:
-        "Customize your Mibio profile with all your essential contact details, social links, and more.",
+      title: t("beforeEvent.items.buildProfile.title"),
+      description: t("beforeEvent.items.buildProfile.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/c59cef20fc4ccf0e84b5e28cd5fafeff?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
     {
       value: "item-3",
       icon: ToggleRight,
-      title: "Turn On Lead Capture",
-      description:
-        "Make every tap two-way. Collect contact details automatically so you can follow up and close the loop after the event.",
+      title: t("beforeEvent.items.turnOnLeadCapture.title"),
+      description: t("beforeEvent.items.turnOnLeadCapture.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/f32f56a27580fcbba0574bac25f89e9e?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
     {
       value: "item-4",
       icon: RefreshCw,
-      title: "Sync to Your CRM",
-      description:
-        "Integrate seamlessly with your CRM to automatically save new contacts and streamline your workflow.",
+      title: t("beforeEvent.items.syncToCrm.title"),
+      description: t("beforeEvent.items.syncToCrm.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/59bcd7afe25721306454cba71985e99e?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
     {
       value: "item-5",
       icon: WalletMinimal,
-      title: "Add Your Card to Wallet",
-      description:
-        "Keep your digital card one tap away by saving it to your phone wallet. Perfect for quick shares even when your physical card isn't on you.",
+      title: t("beforeEvent.items.addToWallet.title"),
+      description: t("beforeEvent.items.addToWallet.description"),
       videoSrc:
         "https://iframe.cloudflarestream.com/59bcd7afe25721306454cba71985e99e?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
     },
@@ -80,11 +77,10 @@ export default function BeforeEventSection() {
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="flex max-w-[750px] flex-col items-center gap-2">
             <h2 className="text-center text-3xl font-bold md:text-5xl">
-              Before The Event
+              {t("beforeEvent.title")}
             </h2>
             <p className="text-center text-muted-foreground">
-              Mibio makes it easy to share your details with a tap, scan, or
-              link. Here’s how it works.
+              {t("beforeEvent.description")}
             </p>
           </div>
         </div>
@@ -180,11 +176,11 @@ export default function BeforeEventSection() {
         <div className="flex flex-col items-center gap-2">
           <a href="/collections/tap-business-cards">
             <button className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] text-sm font-semibold leading-[102%] transition-all disabled:pointer-events-none disabled:opacity-50 border border-transparent bg-primary text-primary-foreground hover:bg-primary/80 h-10 px-5 py-2">
-              Get Your Smart Card
+              {t("beforeEvent.cta")}
             </button>
           </a>
           <p className="text-sm text-muted-foreground">
-            100% Lifetime Guarantee
+            {t("beforeEvent.guarantee")}
           </p>
         </div>
       </div>

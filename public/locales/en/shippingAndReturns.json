@@ -1,0 +1,77 @@
+{
+  "title": "Shipping & Returns",
+  "policies": {
+    "title": "Our Policies"
+  },
+  "shipping": {
+    "title": "Shipping Information",
+    "processingTime": {
+      "title": "Processing Time",
+      "description": "Orders are typically processed within {days} (Monday-Friday, excluding holidays) after payment confirmation. Custom or personalized items may require additional processing time, as specified on their product pages.",
+      "days": "1-3 business days"
+    },
+    "shippingMethods": {
+      "title": "Shipping Methods & Costs",
+      "description": "We offer various shipping options to meet your needs. Shipping costs are calculated at checkout based on your location, the weight of your order, and the selected shipping method.",
+      "options": {
+        "standard": {
+          "title": "Standard Shipping:",
+          "description": "Estimated delivery within 5-10 business days."
+        },
+        "expedited": {
+          "title": "Expedited Shipping:",
+          "description": "Estimated delivery within 2-4 business days."
+        },
+        "international": {
+          "title": "International Shipping:",
+          "description": "Delivery times vary by destination, typically 7-21 business days. Customs duties and taxes may apply and are the responsibility of the recipient."
+        }
+      }
+    },
+    "tracking": {
+      "title": "Tracking Your Order",
+      "description": "Once your order has shipped, you will receive a shipping confirmation email containing your tracking number. You can use this number to track your package's journey."
+    }
+  },
+  "returns": {
+    "title": "Returns Policy",
+    "eligibility": {
+      "title": "Eligibility for Returns",
+      "description": "We accept returns of unused and undamaged items within {days} of the purchase date. Items must be in their original packaging with all tags attached.",
+      "days": "30 days",
+      "nonReturnableTitle": "Non-returnable items include:",
+      "nonReturnableItems": {
+        "personalized": "Personalized or custom-made products.",
+        "digital": "Digital products or gift cards.",
+        "finalSale": "Items marked as final sale."
+      }
+    },
+    "initiate": {
+      "title": "How to Initiate a Return",
+      "description": "To start a return, please contact our customer service team at {email} with your order number and reason for return. We will provide you with instructions and a return shipping label if applicable.",
+      "email": "support@example.com"
+    },
+    "refunds": {
+      "title": "Refunds",
+      "description": "Once your return is received and inspected, we will notify you of the approval or rejection of your refund. If approved, your refund will be processed, and a credit will automatically be applied to your original method of payment within 7-10 business days."
+    }
+  },
+  "exchanges": {
+    "title": "Exchanges",
+    "exchanging": {
+      "title": "Exchanging an Item",
+      "description": "If you need to exchange an item for a different size, color, or product, please contact us. Exchanges are subject to product availability. We recommend returning the original item for a refund and placing a new order for the desired item to ensure a faster process."
+    },
+    "damaged": {
+      "title": "Damaged or Defective Items",
+      "description": "If you receive a damaged or defective item, please contact us immediately (within 7 days of delivery) with photos of the damage. We will arrange for a replacement or a full refund."
+    },
+    "shippingCosts": {
+      "title": "Return Shipping Costs",
+      "description": "Customers are responsible for return shipping costs unless the item is damaged, defective, or an error occurred on our part."
+    }
+  },
+  "contact": {
+    "description": "For any further questions regarding shipping or returns, please don't hesitate to contact our customer support."
+  }
+}

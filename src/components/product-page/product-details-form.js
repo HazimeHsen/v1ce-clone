@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import ColorSwatches from "@/components/color-swatches";
 import { useStore } from "@/context/store-context";
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function ProductDetailsForm({
   product,
@@ -29,17 +30,14 @@ export default function ProductDetailsForm({
   selectedColor,
   setSelectedColor,
 }) {
+  const { t } = useTranslations();
   const [quantity, setQuantity] = useState(1);
   const [selectedBundle, setSelectedBundle] = useState(null);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [cartError, setCartError] = useState(null);
   const [cartSuccess, setCartSuccess] = useState(false);
 
-  const {
-    addToCart,
-    error: storeError,
-    openCart,
-  } = useStore();
+  const { addToCart, error: storeError, openCart } = useStore();
 
   const mainCarouselRef = useRef(null);
   const thumbCarouselRef = useRef(null);
@@ -72,63 +70,83 @@ export default function ProductDetailsForm({
     (swatch) => swatch.title === selectedColor
   );
 
+  const selectedVariant = product?.variants?.find(
+    (v) => v.title === selectedColor
+  );
+
+  const basePrice = selectedVariant?.calculated_price?.calculated_amount || 25;
+  const currencyCode =
+    selectedVariant?.calculated_price?.currency_code || "eur";
+  const currencySymbol = currencyCode === "eur" ? "€" : "$";
+
+  const allPrices =
+    product?.variants?.map((v) => v.calculated_price?.calculated_amount) || [];
+  const uniquePrices = [...new Set(allPrices)];
+  const hasPriceVariation = uniquePrices.length > 1;
+  const minPrice = Math.min(...allPrices);
+  const maxPrice = Math.max(...allPrices);
+
+  const formatPrice = (amount) => {
+    return `${currencySymbol}${amount.toFixed(2)}`;
+  };
+
   const quantityBundles = [
     {
       id: "1-item",
-      name: "1 Item",
+      name: t("product.quantityBundles.oneItem"),
       quantity: 1,
-      price: "€25.00",
-      pricePerItem: "€25.00",
+      price: formatPrice(basePrice * 1),
+      pricePerItem: formatPrice(basePrice),
       save: null,
       popular: false,
       description: [
-        "Perfect for individual use",
-        "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
-        "Always Up to Date - Edit your info anytime. No reprints needed.",
+        t("product.quantityBundles.oneItemDescription.0"),
+        t("product.quantityBundles.oneItemDescription.1"),
+        t("product.quantityBundles.oneItemDescription.2"),
       ],
     },
     {
       id: "4-items",
-      name: "4 Items",
+      name: t("product.quantityBundles.fourItems"),
       quantity: 4,
-      price: "€100.00",
-      pricePerItem: "€25.00",
+      price: formatPrice(basePrice * 4),
+      pricePerItem: formatPrice(basePrice),
       save: null,
       popular: false,
       description: [
-        "Perfect starter pack for personal use",
-        "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
-        "Always Up to Date - Edit your info anytime. No reprints needed.",
+        t("product.quantityBundles.fourItemsDescription.0"),
+        t("product.quantityBundles.fourItemsDescription.1"),
+        t("product.quantityBundles.fourItemsDescription.2"),
       ],
     },
     {
       id: "8-items",
-      name: "8 Items",
+      name: t("product.quantityBundles.eightItems"),
       quantity: 8,
-      price: "€200.00",
-      pricePerItem: "€25.00",
+      price: formatPrice(basePrice * 8),
+      pricePerItem: formatPrice(basePrice),
       save: null,
       popular: true,
       description: [
-        "Great for small teams or frequent networking",
-        "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
-        "Smarter Follow-Ups - Send follow-ups from your V1CE dashboard or CRM.",
-        "Always Up to Date - Edit your info anytime. No reprints needed.",
+        t("product.quantityBundles.eightItemsDescription.0"),
+        t("product.quantityBundles.eightItemsDescription.1"),
+        t("product.quantityBundles.eightItemsDescription.2"),
+        t("product.quantityBundles.eightItemsDescription.3"),
       ],
     },
     {
       id: "12-items",
-      name: "12 Items",
+      name: t("product.quantityBundles.twelveItems"),
       quantity: 12,
-      price: "€300.00",
-      pricePerItem: "€25.00",
+      price: formatPrice(basePrice * 12),
+      pricePerItem: formatPrice(basePrice),
       save: null,
       popular: false,
       description: [
-        "Best value for businesses and heavy networkers",
-        "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
-        "Smarter Follow-Ups - Send follow-ups from your V1CE dashboard or CRM.",
-        "Always Up to Date - Edit your info anytime. No reprints needed.",
+        t("product.quantityBundles.twelveItemsDescription.0"),
+        t("product.quantityBundles.twelveItemsDescription.1"),
+        t("product.quantityBundles.twelveItemsDescription.2"),
+        t("product.quantityBundles.twelveItemsDescription.3"),
       ],
     },
   ];
@@ -227,9 +245,7 @@ export default function ProductDetailsForm({
     !selectedColor;
 
   return (
-    <section
-      className="relative flex w-full flex-col"
-    >
+    <section className="relative flex w-full flex-col">
       <div
         className="sticky"
         style={{ top: "-161px", transition: "top 0.4s ease-out" }}
@@ -468,6 +484,11 @@ export default function ProductDetailsForm({
                   <span className="font-medium text-white">
                     {selectedColor || "None selected"}
                   </span>
+                  {selectedColor && (
+                    <span className="ml-2 text-xs text-muted-foreground">
+                      ({formatPrice(basePrice)})
+                    </span>
+                  )}
                 </label>
                 <div className="ml-1.5">
                   <ColorSwatches
@@ -512,9 +533,7 @@ export default function ProductDetailsForm({
               </div>
             </div>
             <div>
-              <div
-                className="space-y-4"
-              >
+              <div className="space-y-4">
                 <Accordion
                   type="single"
                   collapsible
@@ -635,14 +654,14 @@ export default function ProductDetailsForm({
                 onClick={handleAddToCart}
                 disabled={isAddToCartDisabled}
                 loading={isAddingToCart}
-                loadingText="Adding..."
+                loadingText={t("product.adding")}
               >
-                Add To Cart
+                {t("product.addToCart")}
               </Button>
 
               {(!selectedBundle || !selectedColor) && (
                 <p className="text-center text-sm text-yellow-500 font-medium">
-                  Please select both a color and quantity to continue
+                  {t("product.selectColorAndQuantity")}
                 </p>
               )}
 
@@ -653,7 +672,7 @@ export default function ProductDetailsForm({
               )}
 
               <p className="min-w-full text-center text-xs font-medium text-muted-foreground">
-                Shipping Calculated at Checkout
+                {t("product.shippingCalculated")}
               </p>
             </div>
           </div>

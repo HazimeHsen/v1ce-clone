@@ -14,6 +14,7 @@ import QuoteSection2 from "@/components/quote-section-2";
 import AfterEventSection from "@/components/after-event-section";
 import CaseStudiesSection from "@/components/case-studies-section";
 import ProductReviewsSection from "@/components/product-reviews-section";
+import PricingSection from "@/components/pricing-section";
 import FAQSection from "@/components/faq-section";
 import Footer from "@/components/footer";
 import RefundSection from "@/components/refund-section";
@@ -34,12 +35,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return (
-      <PageLoader 
-        title="Loading Mibio Store" 
-        description="Preparing your digital business card experience..."
-      />
-    );
+    return <PageLoader />;
   }
 
   return (
@@ -81,15 +77,18 @@ export default function Home() {
       <FadeInSection delay={1.2} direction="up">
         <ProductReviewsSection />
       </FadeInSection>
+      <FadeInSection delay={1.3} direction="up">
+        <PricingSection />
+      </FadeInSection>
       <div className="bg-secondary pt-14">
-        <FadeInSection delay={1.3} direction="up">
+        <FadeInSection delay={1.4} direction="up">
           <RefundSection />
         </FadeInSection>
-        <FadeInSection delay={1.4} direction="up">
+        <FadeInSection delay={1.5} direction="up">
           <FAQSection />
         </FadeInSection>
       </div>
-      <FadeInSection delay={1.5} direction="up">
+      <FadeInSection delay={1.6} direction="up">
         <Footer />
       </FadeInSection>
     </main>

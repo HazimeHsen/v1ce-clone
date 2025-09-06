@@ -4,50 +4,45 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function FAQSection() {
+  const { t } = useTranslations();
   const faqItems = [
     {
-      value: "what-is-v1ce",
-      question: "What is V1CE?",
-      answer:
-        "V1CE is a smart business card that allows you to instantly share your contact details, social media, portfolio, and more with a single tap or scan. It's designed to make networking more efficient and sustainable.",
+      value: "what-is-mibio",
+      question: t("faq.items.whatIsMibio.question"),
+      answer: t("faq.items.whatIsMibio.answer"),
     },
     {
-      value: "where-does-v1ce-ship-to",
-      question: "Where does V1CE ship to?",
-      answer:
-        "V1CE ships globally to almost all countries. Shipping times and costs may vary based on your location.",
+      value: "where-does-mibio-ship-to",
+      question: t("faq.items.shipping.question"),
+      answer: t("faq.items.shipping.answer"),
     },
     {
-      value: "how-do-v1ce-smart-cards-work",
-      question: "How do V1CE smart cards work?",
-      answer:
-        "V1CE cards use NFC (Near Field Communication) technology and QR codes. Simply tap your card to a compatible smartphone or have someone scan the QR code to instantly share your digital profile, without them needing an app.",
+      value: "how-do-mibio-smart-cards-work",
+      question: t("faq.items.howItWorks.question"),
+      answer: t("faq.items.howItWorks.answer"),
     },
     {
-      value: "do-i-need-an-app-to-use-a-v1ce-card",
-      question: "Do I need an app to use a V1CE card?",
-      answer:
-        "No, neither you nor the person you're sharing with needs an app. Your digital profile opens directly in their browser.",
+      value: "do-i-need-an-app-to-use-a-mibio-card",
+      question: t("faq.items.appRequired.question"),
+      answer: t("faq.items.appRequired.answer"),
     },
     {
       value: "how-long-does-shipping-take",
-      question: "How long does shipping take?",
-      answer:
-        "Shipping time depends on your location, but most orders are processed within 24–48 hours and shipped via tracked delivery. You’ll receive updates every step of the way. Need it faster? We also offer express options.",
+      question: t("faq.items.shippingTime.question"),
+      answer: t("faq.items.shippingTime.answer"),
     },
     {
       value: "is-there-a-warranty-or-guarantee",
-      question: "Is there a warranty or guarantee?",
-      answer:
-        "Yes, V1CE offers a 100% lifetime guarantee on its smart cards. If you're not satisfied, you can get a refund.",
+      question: t("faq.items.warranty.question"),
+      answer: t("faq.items.warranty.answer"),
     },
     {
-      value: "do-v1ce-cards-work-with-iphones-and-android-phones",
-      question: "Do V1CE cards work with iPhones and Android phones?",
-      answer:
-        "Yes, V1CE cards are compatible with most modern iPhones and Android devices that support NFC technology.",
+      value: "do-mibio-cards-work-with-iphones-and-android-phones",
+      question: t("faq.items.compatibility.question"),
+      answer: t("faq.items.compatibility.answer"),
     },
   ];
 

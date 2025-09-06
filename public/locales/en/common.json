@@ -1,0 +1,591 @@
+{
+  "navbar": {
+    "products": "Products",
+    "howItWorks": "How It Works",
+    "teams": "Teams",
+    "reviews": "Reviews",
+    "shippingReturns": "Shipping & Returns",
+    "login": "Login",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "emptyCart": "Your cart is empty",
+    "continueShopping": "Continue Shopping"
+  },
+  "hero": {
+    "badge": "Smart. Contactless. Built to Convert.",
+    "title": "The Last Business Card You'll Ever Need",
+    "description": "Mibio is your all-in-one smart, contactless business card designed to turn every meeting into money. Share with a tap, capture contacts instantly, and sync everything to your CRM — no app required.",
+    "cta": "Get Your Smart Card",
+    "features": {
+      "noApp": "No app needed",
+      "allPhones": "Works on all phones",
+      "ecoFriendly": "Eco-friendly and reusable"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": {
+      "whatIsMibio": {
+        "question": "What is Mibio?",
+        "answer": "Mibio is a smart business card that allows you to instantly share your contact details, social media, portfolio, and more with a single tap or scan. It's designed to make networking more efficient and sustainable."
+      },
+      "shipping": {
+        "question": "Where does Mibio ship to?",
+        "answer": "Mibio ships globally to almost all countries. Shipping times and costs may vary based on your location."
+      },
+      "howItWorks": {
+        "question": "How do Mibio smart cards work?",
+        "answer": "Mibio cards use NFC (Near Field Communication) technology and QR codes. Simply tap your card to a compatible smartphone or have someone scan the QR code to instantly share your digital profile, without them needing an app."
+      },
+      "appRequired": {
+        "question": "Do I need an app to use a Mibio card?",
+        "answer": "No, neither you nor the person you're sharing with needs an app. Your digital profile opens directly in their browser."
+      },
+      "shippingTime": {
+        "question": "How long does shipping take?",
+        "answer": "Shipping time depends on your location, but most orders are processed within 24–48 hours and shipped via tracked delivery. You'll receive updates every step of the way. Need it faster? We also offer express options."
+      },
+      "warranty": {
+        "question": "Is there a warranty or guarantee?",
+        "answer": "Yes, Mibio offers a 100% lifetime guarantee on its smart cards. If you're not satisfied, you can get a refund."
+      },
+      "compatibility": {
+        "question": "Do Mibio cards work with iPhones and Android phones?",
+        "answer": "Yes, Mibio cards are compatible with most modern iPhones and Android devices that support NFC technology."
+      }
+    }
+  },
+  "footer": {
+    "company": "Company",
+    "products": "Products",
+    "support": "Support",
+    "legal": "Legal",
+    "followUs": "Follow Us",
+    "newsletter": "Newsletter",
+    "subscribe": "Subscribe",
+    "emailPlaceholder": "Enter your email",
+    "copyright": "© 2024 Mibio. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "shippingPolicy": "Shipping Policy",
+    "returnPolicy": "Return Policy",
+    "description": "Mibio is your all-in-one smart, contactless business card designed to turn every meeting into money.",
+    "mibio": "Mibio",
+    "features": "Features",
+    "pricing": "Pricing",
+    "sustainability": "Sustainability",
+    "ourStory": "Our Story",
+    "reviews": "Reviews",
+    "caseStudies": "Case Studies",
+    "blogs": "Blogs",
+    "partners": "Partners",
+    "help": "Help",
+    "contactSales": "Contact Sales",
+    "helpCenter": "Help Center",
+    "designGuidelines": "Design Guidelines",
+    "faqs": "FAQs",
+    "shippingReturns": "Shipping & Returns",
+    "warranty": "Warranty",
+    "featureRequests": "Feature Requests",
+    "roadmap": "Roadmap",
+    "compare": "Compare",
+    "vsBlinq": "vs Blinq",
+    "vsLinq": "vs Linq",
+    "vsMobilo": "vs Mobilo",
+    "digitalBusinessCards": "Digital Business Cards",
+    "originalNfcCards": "Original NFC Cards",
+    "bambooNfcCards": "Bamboo NFC Cards",
+    "metalNfcCards": "Metal NFC Cards",
+    "tapPhoneCards": "Tap Phone Cards",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "cookiePolicy": "Cookie Policy"
+  },
+  "cardCollections": {
+    "title": "One Tap Replaces a Stack",
+    "description": "From sales teams to global brands, Mibio helps you share details, capture leads, and follow up automatically without paper or lost leads."
+  },
+  "testimonials": {
+    "title": "Trusted by 500,000+ Professionals and Teams",
+    "description": "See how our customers use smart, NFC-enabled business cards to capture leads and connect faster.",
+    "previousTestimonial": "Previous testimonial",
+    "nextTestimonial": "Next testimonial"
+  },
+  "beforeAfter": {
+    "title": "Paper Vs Mibio",
+    "description": "88% of paper cards are tossed within 24 hours. With Mibio, your details are saved, theirs are captured, and follow-ups happen automatically.",
+    "paperCard": "Paper Business Card",
+    "mibioCard": "Mibio Smart Business Card",
+    "paperFeatures": {
+      "shareContact": {
+        "title": "Share your contact details",
+        "description": "Name, Number, Website."
+      },
+      "hopeFollowUp": {
+        "title": "Hope they follow up",
+        "description": "Wonder what they did with your card."
+      },
+      "crickets": {
+        "title": "Crickets..."
+      }
+    },
+    "mibioFeatures": {
+      "shareEverything": {
+        "title": "Share everything they need to know about you",
+        "description": "Name, number, website, socials, video, portfolio & more."
+      },
+      "captureDetails": {
+        "title": "Capture their details instantly",
+        "description": "One click and their contact info is saved to your dashboard."
+      },
+      "syncToCrm": {
+        "title": "Sync to CRM",
+        "description": "No more manual entry or lost leads."
+      },
+      "automateFollowUps": {
+        "title": "Automate your follow-ups",
+        "description": "Send personalized messages automatically."
+      },
+      "updateAnytime": {
+        "title": "Update your card anytime",
+        "description": "Change your details without reprinting"
+      },
+      "seeWhoViewed": {
+        "title": "See who viewed your info",
+        "description": "Get insights into who's interested."
+      }
+    },
+    "cta": "Get Your Smart Card",
+    "guarantee": "100% Lifetime Guarantee"
+  },
+  "refund": {
+    "title": "If It's Not for You, We'll Refund You",
+    "description": "Try Mibio for yourself. If it's not your thing, we'll give you your money back. No questions. No stress. No pressure.It's that simple, because we know once you try it, you'll never go back to paper.",
+    "cta": "Get Your Smart Card"
+  },
+  "quote": {
+    "badge": "Case Study",
+    "quote": "Managing cards for 40+ staff was chaos. Mibio made setup fast and lead capture automatic.",
+    "author": "Charlie Harrison",
+    "title": "CEO - Furniture Village"
+  },
+  "quote2": {
+    "badge": "Case Study",
+    "quote": "Our team shared profiles instantly, scanned badges, and synced leads in real time. No missed follow-ups, no data entry.",
+    "author": "Chris Sarjant",
+    "title": "AGM - Dillards"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "description": "Review your items and proceed to checkout.",
+    "empty": "Your cart is empty.",
+    "loading": "Loading cart items...",
+    "remove": "Remove",
+    "total": "Total:",
+    "proceedToCheckout": "Proceed to Checkout"
+  },
+  "mobileMenu": {
+    "title": "Menu",
+    "description": "Main navigation links",
+    "shop": "Shop",
+    "howItWorks": "How It Works",
+    "teams": "Teams",
+    "reviews": "Reviews",
+    "shippingReturns": "Shipping & Returns"
+  },
+  "product": {
+    "notFound": "Product Not Found",
+    "notFoundDescription": "The product you're looking for doesn't exist.",
+    "contactForPrice": "Contact for Price",
+    "addToCart": "Add To Cart",
+    "adding": "Adding...",
+    "selectColorAndQuantity": "Please select both a color and quantity to continue",
+    "shippingCalculated": "Shipping Calculated at Checkout",
+    "details": {
+      "title": "Key Details About Your Card",
+      "size": "Size",
+      "sizeValue": "54 mm x 86 mm x 1.35 mm (credit card size)",
+      "weight": "Weight",
+      "weightValue": "50 grams—thick and durable",
+      "material": "Material",
+      "materialValue": "24K gold-plated stainless steel with a PVC backing",
+      "durability": "Durability",
+      "durabilityValue": "Made to last with tough materials",
+      "printing": "Printing",
+      "printingValue": "Precision fibre laser engraving (black on gold)",
+      "design": "Design",
+      "designValue": "Sleek gold surface with bold, laser-etched black details",
+      "howItWorks": "How It Works",
+      "tapOrScan": "Tap or Scan",
+      "tapOrScanDescription": "Simply tap your card on any smartphone or scan the QR code",
+      "shareInfo": "Share Your Info",
+      "shareInfoDescription": "Your contact details, social media, and more are instantly shared",
+      "captureLeads": "Capture Leads",
+      "captureLeadsDescription": "Collect contact information from people you meet automatically",
+      "syncCrm": "Sync to CRM",
+      "syncCrmDescription": "All leads are automatically synced to your preferred CRM system",
+      "howToDesign": "How to Design Your NFC Card",
+      "chooseCard": "Choose Your Card",
+      "chooseCardDescription": "Pick your style and colour, then buy",
+      "designBrief": "Design Brief",
+      "designBriefDescription": "Fill out the email form we send you",
+      "mockupDesign": "Mockup Design",
+      "mockupDesignDescription": "We'll design your card and send a preview",
+      "unlimitedRevisions": "Unlimited Revisions",
+      "unlimitedRevisionsDescription": "Make changes until it's perfect",
+      "printingShipping": "Printing and Shipping",
+      "printingShippingDescription": "Approve the design, and we'll print and ship it"
+    },
+    "quantityBundles": {
+      "oneItem": "1 Item",
+      "fourItems": "4 Items",
+      "eightItems": "8 Items",
+      "twelveItems": "12 Items",
+      "oneItemDescription": {
+        "0": "Perfect for individual use",
+        "1": "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
+        "2": "Always Up to Date - Edit your info anytime. No reprints needed."
+      },
+      "fourItemsDescription": {
+        "0": "Perfect starter pack for personal use",
+        "1": "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
+        "2": "Always Up to Date - Edit your info anytime. No reprints needed."
+      },
+      "eightItemsDescription": {
+        "0": "Great for small teams or frequent networking",
+        "1": "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
+        "2": "Smarter Follow-Ups - Send follow-ups from your Mibio dashboard or CRM.",
+        "3": "Always Up to Date - Edit your info anytime. No reprints needed."
+      },
+      "twelveItemsDescription": {
+        "0": "Best value for businesses and heavy networkers",
+        "1": "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
+        "2": "Smarter Follow-Ups - Send follow-ups from your Mibio dashboard or CRM.",
+        "3": "Always Up to Date - Edit your info anytime. No reprints needed."
+      }
+    },
+    "loading": {
+      "title": "Loading...",
+      "description": "Please wait while we load the products"
+    },
+    "easySteps": {
+      "badge": "Easy As 1-2-3",
+      "title": "Order In 3 Easy Steps",
+      "description": "We design all orders in-house for free because your first impression is ours too.",
+      "cta": "Get Your Mibio Card",
+      "steps": {
+        "pickCard": {
+          "title": "1. Pick Your Card",
+          "description": "Choose a card that matches your brand: classic, bold, or eco-friendly."
+        },
+        "placeOrder": {
+          "title": "2. Place Your Order",
+          "description": "Fill out a quick design form. We'll create your card for free."
+        },
+        "share": {
+          "title": "3. Share",
+          "description": "Get your card fast and ready to share. No apps needed."
+        }
+      }
+    }
+  },
+  "beforeEvent": {
+    "title": "Before The Event",
+    "description": "Mibio makes it easy to share your details with a tap, scan, or link. Here's how it works.",
+    "items": {
+      "showUpReady": {
+        "title": "Show Up Ready to Impress",
+        "description": "Prepare your digital profile to make a lasting first impression at any event."
+      },
+      "buildProfile": {
+        "title": "Build Your Digital Profile",
+        "description": "Customize your Mibio profile with all your essential contact details, social links, and more."
+      },
+      "turnOnLeadCapture": {
+        "title": "Turn On Lead Capture",
+        "description": "Make every tap two-way. Collect contact details automatically so you can follow up and close the loop after the event."
+      },
+      "syncToCrm": {
+        "title": "Sync to Your CRM",
+        "description": "Integrate seamlessly with your CRM to automatically save new contacts and streamline your workflow."
+      },
+      "addToWallet": {
+        "title": "Add Your Card to Wallet",
+        "description": "Keep your digital card one tap away by saving it to your phone wallet. Perfect for quick shares even when your physical card isn't on you."
+      }
+    },
+    "cta": "Get Your Smart Card",
+    "guarantee": "100% Lifetime Guarantee"
+  },
+  "duringEvent": {
+    "title": "During The Event",
+    "description": "Share your details, capture theirs, and sync with CRM.",
+    "items": {
+      "shareDetails": {
+        "title": "Share Your Details Instantly",
+        "description": "Tap your NFC business card to share your full profile in seconds. No paper, no typing, just one smooth tap that makes you look professional and stay remembered."
+      },
+      "scanCards": {
+        "title": "Scan Paper Cards and Event Badges",
+        "description": "Quickly scan traditional paper business cards or event badges to capture contact information directly into your Mibio dashboard."
+      },
+      "sendEmails": {
+        "title": "Send Instant Welcome Emails",
+        "description": "Automate personalized welcome emails to new contacts immediately after sharing your details, ensuring a prompt follow-up."
+      },
+      "switchProfiles": {
+        "title": "Switch Profiles in Seconds",
+        "description": "Easily switch between different digital profiles on your card, allowing you to tailor the information you share for various contacts or events."
+      },
+      "mappedMemories": {
+        "title": "Mapped Memories",
+        "description": "See exactly where you met each contact so you can follow up with context and confidence even days later."
+      }
+    },
+    "cta": "Get Your Smart Card",
+    "guarantee": "100% Lifetime Guarantee"
+  },
+  "afterEvent": {
+    "title": "After The Event",
+    "description": "Automate outreach, sync leads, and track engagement.",
+    "items": {
+      "automatedFollowUps": {
+        "title": "Automated Follow-Ups",
+        "description": "Send post-event follow-ups right inside your Mibio dashboard. Keep conversations warm and move leads further down your funnel without lifting a finger."
+      },
+      "autoSaveToCrm": {
+        "title": "Auto-Save to Your CRM",
+        "description": "Automatically sync new contacts and lead data directly to your CRM, eliminating manual entry and ensuring data accuracy."
+      },
+      "trackWhatWorks": {
+        "title": "Track What Works",
+        "description": "Gain insights into your networking efforts with detailed analytics on profile views, lead captures, and follow-up effectiveness."
+      },
+      "smartContactBook": {
+        "title": "Smart Contact Book",
+        "description": "Build a comprehensive digital contact book with rich profiles for every person you meet, including notes and follow-up history."
+      }
+    },
+    "cta": "Get Your Smart Card",
+    "guarantee": "100% Lifetime Guarantee"
+  },
+  "caseStudies": {
+    "viewAll": "View All Case Studies",
+    "adaptix": {
+      "badge": "Sustainability",
+      "title": "How Adaptix Updated 500+ NFC Business Cards in Minutes with Mibio",
+      "description": "See how Adaptix streamlined their networking by updating over 500 NFC business cards in minutes using Mibio.",
+      "readTime": "10 min read"
+    },
+    "furnitureVillage": {
+      "badge": "Retail",
+      "title": "How Furniture Village Cut Costs by 70% with Mibio Digital Business Cards",
+      "description": "Furniture Village saved 3,000 admin hours and 75,000 paper cards using Mibio digital business cards. Discover their sustainable success.",
+      "readTime": "8 min read"
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "description": "Let us know how we can help. Our average response time is 3 hours. Get started today.",
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "country": "Country",
+      "companyName": "Company Name",
+      "companySize": "Company Size",
+      "message": "Provide More Details",
+      "send": "Send",
+      "placeholders": {
+        "country": "Select your country",
+        "companyName": "Mibio LTD",
+        "companySize": "Select company size",
+        "message": "Tell us what you need help with (e.g., bulk orders, custom solutions)."
+      },
+      "companySizes": {
+        "1-99": "1-99 employees",
+        "100-299": "100-299 employees",
+        "300-1999": "300-1999 employees",
+        "2000+": "2000+ employees"
+      }
+    }
+  },
+  "featuresSlider": {
+    "title": "Get More Than a Business Card",
+    "cta": "Create My NFC Card",
+    "features": [
+      {
+        "title": "Save 10+ Hours a Month",
+        "description": "Let Mibio handle follow-ups for you."
+      },
+      {
+        "title": "Never Miss a Lead",
+        "description": "Stay updated and connect to your CRM fast."
+      },
+      {
+        "title": "Eco-Friendly and Saves Money",
+        "description": "Use less paper and save more cash."
+      },
+      {
+        "title": "Track Data Instantly",
+        "description": "See who's interested and act quickly."
+      },
+      {
+        "title": "Simple Team and Brand Tools",
+        "description": "Keep links updated and manage everything fast."
+      },
+      {
+        "title": "Impress on First Tap",
+        "description": "Modern, sleek, and memorable."
+      },
+      {
+        "title": "Built-In Lead Capture",
+        "description": "Collect emails or contacts."
+      },
+      {
+        "title": "Real-Time Profile Edits",
+        "description": "Update your links, info, and branding."
+      }
+    ]
+  },
+  "productReviews": {
+    "title": "What Our Customers Say",
+    "subtitle": "Join thousands of professionals who've upgraded their networking",
+    "reviews": [
+      {
+        "name": "Nikki Mitchell",
+        "reviewText": "We're always looking for ways to reduce waste and work more sustainably, so we're excited to start using our new NFC-enabled business cards from Mibio. Instead of handing out printed cards, our team now use a single, reusable digital card that shares their contact details instantly with a tap or QR code scan. No more stacks of paper cards - just simple, smart networking that cuts down on waste. Not only does this reduce paper use, it also means we can update details in real time, so we're always sharing accurate information with clients and contacts. A small step, but another move towards more sustainable, efficient ways of working."
+      },
+      {
+        "name": "Graham B., Director of Photography / B2 Videography",
+        "reviewText": "I've worked in creative production for over a decade, so I've seen more networking gimmicks than I can count. The Mibio card looks impressive and always gets a comment, but that's just the opener. The real value lies in what happens after someone taps it. The software does the follow-up for me. It captures leads, syncs with my CRM, and even lets me pre-load content I want people to see. I've gone from handing out cards and hoping people call, to knowing they already saved me, saw my reel, and have a meeting link in their inbox. That shift in workflow from hopeful to proactive is what makes this a staple in my kit now."
+      },
+      {
+        "name": "Ian B.",
+        "reviewText": "I am a Heating & Plumbing engineer, in and out of houses all day, forever getting asked for business cards, which are easily lost. The Mibio card has been a real game changer, clients can now save my contact card with all my information on which has also got a direct link to my google review page. Ive seen some reviews saying it was difficult to set up, Id personally disagree but thats just my opinion."
+      },
+      {
+        "name": "Rosie H.",
+        "reviewText": "Love it! Super super happy with this product. It saves the printing and shipping of paper cards and it really leaves an impression on people. I love that you can adjust what link people get any time you like. What a great idea. I wont turn back after using this, super happy customer. Also it looks great and was made so quickly. I really appreciate all the videos demonstrating how to use the card too. Its very well considered."
+      },
+      {
+        "name": "Anna M.",
+        "reviewText": "I'm not very techy, but this was super simple to set up. And now I don't have to explain what I do—my Mibio profile does it for me in 5 seconds."
+      },
+      {
+        "name": "David K.",
+        "reviewText": "This is not only a great product that works flawlessly, it impresses EVERYONE who sees it in action. But even more impressive is the support team at Mibio, they are unequalled and go out of their way to assure customer satisfaction and provide technical assistance at every stage if you need it. My company now uses more than 17 (black metal) cards and I'm certain we will be offering more. Congrats to a great company, with a great product, and a great team."
+      },
+      {
+        "name": "Sarah L.",
+        "reviewText": "I'm a property consultant. I build funnels, I track conversions, I measure every inch of a customer journey. I say this with zero exaggeration: the automated follow-up inside Mibio is one of the most profitable tools I've used this year. I connected it to my calendar and CRM. Every time someone taps my card or scans the table talker at an event, they're not just getting my info they're receiving a personalised email from me 30 minutes later, with a call link and tailored next steps."
+      },
+      {
+        "name": "Mike R.",
+        "reviewText": "For those who are attending, in our efforts to reduce our carbon footprint, we've gone paperless! Simply tap and hold or scan the barcode on our MibioCONNECTIONS table tents. This will take you to a link tree that hosts all of our social media accounts (it's now easier than ever to follow us😉), our website, and finally, links to all of our product range brochures on the stand."
+      },
+      {
+        "name": "John D.",
+        "reviewText": "I am a real estate agent in the Coachella Valley. This will be a huge time saver and also make me look like a techno saavy kind of guy. Very pleased i order this!"
+      },
+      {
+        "name": "Lisa P.",
+        "reviewText": "I am a photographer and the Mibio card has helped me connect with clients quicker. I am happy I made the decision to get the Mibio card."
+      },
+      {
+        "name": "Tom W.",
+        "reviewText": "So pleased I gave Mibio ago, brilliant idea and a great business card, looks very professional indeed. Setting up is easy and I like the linktr.ee concept. I could customize it to my needs and events easily and super fast. The product is high quality and easy to use. Thanks Mibio."
+      },
+      {
+        "name": "Emma T.",
+        "reviewText": "Honestly didn't think a card could make such a difference. But at my last event, I made 12 new connections. Real ones. People remembered me because of that smooth tap-to-save moment. It just feels modern, slick, and effortless."
+      },
+      {
+        "name": "Alex C.",
+        "reviewText": "The Mibio digital card has been a game changer for its classy look, speed to connect with my networks and supporting sustainability. BONUS point, I can custom my business card to different needs and profiles of my network. Super amazing & highly recommended for business professionals!"
+      },
+      {
+        "name": "Rachel M.",
+        "reviewText": "As someone who's in and out of meetings all week, I need to travel light. Adding my Mibio card to my Apple Wallet might sound like a small feature, but it's had a big impact. Now, even when I forget my physical card, I'm still ready. I can share my profile in seconds, straight from my phone. Clients have actually complimented how smooth and polished it feels. It's one of those little things that, once you have it, becomes second nature. And in business, those little things matter."
+      },
+      {
+        "name": "Builder",
+        "reviewText": "Im a builder. Mibio makes business cards a thing of the past."
+      },
+      {
+        "name": "Vianney",
+        "reviewText": "I got my Mibio card last year! Its been amazing for my work, people always ask me how did I do that with a card?! (Im a creative director) and Im working for this company Don Caballero this is the owner and I decided to offer him a new amazing presentation card he was truly in love! He already knew how it works since I use my card with him to Introduce myself before. Thank you!! Im getting happy new clients"
+      },
+      {
+        "name": "Customer",
+        "reviewText": "Its become my new AMEX card I never leave home without it!!"
+      },
+      {
+        "name": "Entrepreneur",
+        "reviewText": "Can't lie, I just wanted something cooler than the guys I was pitching next to. Turns out it also helped me close 3 deals. So… flex AND function? I'll take it."
+      }
+    ],
+    "teamReplies": {
+      "appreciateHonesty": "Appreciate the honesty, Ian — and love that it's been a game changer on the go! 👨‍🔧🔥",
+      "gladHittingMark": "Glad it's hitting the mark for you! Appreciate the love 🙌",
+      "soGladMakingWaves": "So glad it's making waves for you, Anna 🙌",
+      "techSavvyRealEstate": "Tech-savvy and time-saving? You're basically the 007 of real estate now. Glad it's working for you!",
+      "smoothIntro": "Now that's a smooth intro! We love hearing how it's helping you land those new clients, Vianney 👏"
+    },
+    "basedOnReviews": "Based on 1,250+ reviews",
+    "averageRating": "4.9/5 average rating",
+    "viewAllReviews": "View All Reviews"
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that's right for your business. No hidden fees, no surprises.",
+    "toggle": {
+      "monthly": "Pay Monthly",
+      "yearly": "Pay Yearly",
+      "savings": "2 Months Free"
+    },
+    "recommended": "Most Popular",
+    "additionalInfo": "All plans include our 100% lifetime guarantee. Cancel anytime.",
+    "plans": {
+      "free": {
+        "name": "Mibio Free",
+        "badge": "Free",
+        "tagline": "Ditch paper cards and never lose a lead.",
+        "price": "$0",
+        "description": "Free Forever. Use one card at a time. No cost.",
+        "cta": "Get Started For Free",
+        "features": [
+          "Completely Free",
+          "One Digital Business Card",
+          "Update Your Info Anytime",
+          "Capture Leads Details",
+          "Analytics (30 Days)"
+        ]
+      },
+      "plus": {
+        "name": "Mibio Plus",
+        "badge": "Plus",
+        "tagline": "Perfect for freelancers, small teams, and growing businesses.",
+        "priceMonthly": "$6.74 /mo",
+        "priceYearly": "$5.39 /mo",
+        "description": "Only pay for team members who use it.",
+        "cta": "Try It Free For 7 Days",
+        "features": [
+          "Pay-per-user pricing",
+          "Unlimited Digital Business Cards",
+          "Unlimited Analytics & Lead Capture",
+          "Unlimited customization & No Mibio Branding",
+          "Manage All Team Cards in One Account",
+          "CRM Integration",
+          "Networking Toolkit",
+          "Automated Follow-Ups",
+          "Priority Customer Support"
+        ]
+      }
+    }
+  }
+}

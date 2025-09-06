@@ -8,12 +8,13 @@ import Footer from "@/components/footer";
 import ProductReviewsSection from "@/components/product-reviews-section";
 import { useStore } from "@/context/store-context";
 import { useParams } from "next/navigation";
-import { ProductPageLoader } from "@/components/ui/loader";
+import { PageLoader } from "@/components/ui/loader";
+import { useTranslations } from "@/hooks/use-translations";
 
 const testimonials = [
   {
     logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/525f4875-2e87-45ec-31c2-811be0abb100/public",
-    quote: "No more forgotten contacts—V1CE auto-saves every Contact.",
+    quote: "No more forgotten contacts—Mibio auto-saves every Contact.",
     name: "Rob Mitchell",
     title: "Commercial Director - AFC Bournemouth",
     thumbnail:
@@ -37,7 +38,7 @@ const testimonials = [
   },
   {
     logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/fe6d5ade-8d1b-401a-ec44-20e96cc51400/public",
-    quote: "V1CE helped me make 3x more connections at networking events.",
+    quote: "Mibio helped me make 3x more connections at networking events.",
     name: "Luna Williams",
     title: "CEO - Thrive Club",
     thumbnail:
@@ -61,7 +62,7 @@ const testimonials = [
   },
   {
     logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/32e94e94-f663-46d1-2998-ad6da246ea00/public",
-    quote: "No more running out of cards—one V1CE card lasts forever.",
+    quote: "No more running out of cards—one Mibio card lasts forever.",
     name: "Charlie Harrison",
     title: "CEO & Co-Founder - Furniture Village",
     thumbnail:
@@ -69,7 +70,7 @@ const testimonials = [
   },
   {
     logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/1af2689b-78c8-4ba5-b9ac-51b84d248d00/thumbnail",
-    quote: "Networking is now 5x faster with V1CE.",
+    quote: "Networking is now 5x faster with Mibio.",
     name: "Ignacio Mallagray",
     title: "Marketing Director - Gilmar",
     thumbnail:
@@ -77,7 +78,7 @@ const testimonials = [
   },
   {
     logo: "https://imagedelivery.net/N6_NAPmq3Z6gEZfBCN4EDA/5675ae51-e5e7-4db8-cca9-c6153ea92c00/public",
-    quote: "V1CE made networking 80% faster and more accurate for our team!",
+    quote: "Mibio made networking 80% faster and more accurate for our team!",
     name: "Julia",
     title: "CEO - Acre",
     thumbnail:
@@ -103,14 +104,14 @@ const salesPoints = [
   {
     title: "Update Anytime",
     content:
-      "Your V1CE card is dynamic. Update your profile details, links, and contact info anytime, and your card will instantly reflect the changes. No reprints needed.",
+      "Your Mibio card is dynamic. Update your profile details, links, and contact info anytime, and your card will instantly reflect the changes. No reprints needed.",
     videoSrc:
       "https://iframe.cloudflarestream.com/63ed60dcce3d74a2b499f169e5a261ed?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
   },
   {
     title: "Share Beyond a Card",
     content:
-      "Your V1CE profile is a powerful tool. Share it via email, text, or social media, even without your physical card. It's always accessible.",
+      "Your Mibio profile is a powerful tool. Share it via email, text, or social media, even without your physical card. It's always accessible.",
     videoSrc:
       "https://iframe.cloudflarestream.com/63ed60dcce3d74a2b499f169e5a261ed?letterboxColor=transparent&muted=true&preload=true&loop=true&autoplay=true&controls=false",
   },
@@ -124,31 +125,31 @@ const salesPoints = [
 ];
 
 const faqItems = {
-  "Using Your V1CE Card": [
+  "Using Your Mibio Card": [
     {
       question: "How do NFC business cards work?",
       answer:
-        "NFC (Near Field Communication) cards contain a small chip that can wirelessly transmit information to compatible smartphones. When you tap your V1CE card on an NFC-enabled phone, your digital profile instantly appears on their screen, allowing them to save your contact details or access your links with a single tap. For phones without NFC, a QR code on the back of the card can be scanned.",
+        "NFC (Near Field Communication) cards contain a small chip that can wirelessly transmit information to compatible smartphones. When you tap your Mibio card on an NFC-enabled phone, your digital profile instantly appears on their screen, allowing them to save your contact details or access your links with a single tap. For phones without NFC, a QR code on the back of the card can be scanned.",
     },
     {
       question: "Do I need an app to use the card?",
       answer:
-        "No, neither you nor the person receiving your information needs an app to use the V1CE card. Your digital profile opens directly in their phone's web browser. This makes sharing seamless and accessible to everyone.",
+        "No, neither you nor the person receiving your information needs an app to use the Mibio card. Your digital profile opens directly in their phone's web browser. This makes sharing seamless and accessible to everyone.",
     },
     {
       question: "Will this card work on all phones?",
       answer:
-        "V1CE cards are compatible with most modern smartphones. All iPhones (XR, XS, 11, 12, 13, 14, 15 and newer) have native NFC reading capabilities. Most Android phones released after 2012 are NFC-enabled. For older phones or those without NFC, a QR code on the back of the card can be scanned using any camera app.",
+        "Mibio cards are compatible with most modern smartphones. All iPhones (XR, XS, 11, 12, 13, 14, 15 and newer) have native NFC reading capabilities. Most Android phones released after 2012 are NFC-enabled. For older phones or those without NFC, a QR code on the back of the card can be scanned using any camera app.",
     },
     {
       question: "Can I add my card to Apple Wallet or Google Wallet?",
       answer:
-        "While V1CE cards don't directly integrate with Apple Wallet or Google Wallet like payment cards, your digital profile can be saved as a contact in their phone's address book. This ensures your information is always accessible and easy to find.",
+        "While Mibio cards don't directly integrate with Apple Wallet or Google Wallet like payment cards, your digital profile can be saved as a contact in their phone's address book. This ensures your information is always accessible and easy to find.",
     },
     {
       question: "Can someone without NFC still view my card?",
       answer:
-        "Yes! Every V1CE card comes with a unique QR code printed on the back. If a phone doesn't have NFC capabilities, or if the user prefers, they can simply scan the QR code with their camera to access your digital profile.",
+        "Yes! Every Mibio card comes with a unique QR code printed on the back. If a phone doesn't have NFC capabilities, or if the user prefers, they can simply scan the QR code with their camera to access your digital profile.",
     },
   ],
   "Metal Specific": [
@@ -182,17 +183,17 @@ const faqItems = {
     {
       question: "Can I update my profile after ordering?",
       answer:
-        "Yes, you can update your digital profile anytime through your V1CE account. All changes are instant and automatically reflected when someone taps or scans your card. No need for reprints!",
+        "Yes, you can update your digital profile anytime through your Mibio account. All changes are instant and automatically reflected when someone taps or scans your card. No need for reprints!",
     },
     {
       question: "What if my card stops working?",
       answer:
-        "V1CE cards are built to last. In the rare event that your card stops working due to a manufacturing defect, we offer a money-back promise. Please contact our support team for assistance.",
+        "Mibio cards are built to last. In the rare event that your card stops working due to a manufacturing defect, we offer a money-back promise. Please contact our support team for assistance.",
     },
     {
       question: "Can I use multiple cards with one profile?",
       answer:
-        "Yes, you can link multiple V1CE cards to a single digital profile. This is ideal for teams or individuals who want to have backup cards or different cards for various purposes, all pointing to the same up-to-date information.",
+        "Yes, you can link multiple Mibio cards to a single digital profile. This is ideal for teams or individuals who want to have backup cards or different cards for various purposes, all pointing to the same up-to-date information.",
     },
     {
       question: "Can I order metal cards for a team or business?",
@@ -202,7 +203,7 @@ const faqItems = {
     {
       question: "Is this better than a free digital card?",
       answer:
-        "V1CE cards offer a premium, tangible experience that free digital cards cannot match. Our cards provide a professional first impression, advanced analytics, and a seamless sharing experience, all backed by our design and support services.",
+        "Mibio cards offer a premium, tangible experience that free digital cards cannot match. Our cards provide a professional first impression, advanced analytics, and a seamless sharing experience, all backed by our design and support services.",
     },
     {
       question: "How fast will my metal card ship?",
@@ -213,6 +214,7 @@ const faqItems = {
 };
 
 export default function ProductPage() {
+  const { t } = useTranslations("productPage");
   const [mainCarouselIndex, setMainCarouselIndex] = useState(0);
   const [thumbCarouselIndex, setThumbCarouselIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -222,6 +224,51 @@ export default function ProductPage() {
 
   const { fetchProduct, region } = useStore();
   const { handle } = useParams();
+
+  // Get translated testimonials
+  const getTranslatedTestimonials = () => {
+    return testimonials.map((testimonial, index) => ({
+      ...testimonial, // Keep original logo and thumbnail URLs
+      quote: t(`testimonials.${index}.quote`),
+      name: t(`testimonials.${index}.name`),
+      title: t(`testimonials.${index}.title`),
+    }));
+  };
+
+  // Get translated sales points
+  const getTranslatedSalesPoints = () => {
+    return salesPoints.map((salesPoint, index) => ({
+      ...salesPoint, // Keep original videoSrc URLs
+      title: t(`salesPoints.${index}.title`),
+      content: t(`salesPoints.${index}.content`),
+    }));
+  };
+
+  // Get translated FAQ items
+  const getTranslatedFaqItems = () => {
+    const translatedFaq = {};
+    const faqSections = ["usingCard", "metalSpecific", "accountUsage"];
+    
+    faqSections.forEach((section, index) => {
+      const sectionTitle = t(`faqItems.${section}.title`);
+      const sectionItems = [];
+      
+      // Get the number of items in this section
+      const originalSection = Object.keys(faqItems)[index];
+      const originalItems = faqItems[originalSection];
+      
+      originalItems.forEach((item, itemIndex) => {
+        sectionItems.push({
+          question: t(`faqItems.${section}.items.${itemIndex}.question`),
+          answer: t(`faqItems.${section}.items.${itemIndex}.answer`),
+        });
+      });
+      
+      translatedFaq[sectionTitle] = sectionItems;
+    });
+    
+    return translatedFaq;
+  };
 
   const createColorImageMap = (productData) => {
     if (!productData?.variants) return {};
@@ -320,7 +367,7 @@ export default function ProductPage() {
     return (
       <>
         <Navbar />
-        <ProductPageLoader />
+        <PageLoader />
         <Footer />
       </>
     );
@@ -332,9 +379,9 @@ export default function ProductPage() {
         <Navbar />
         <div className="center-wide mt-10 flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <h1 className="text-2xl font-semibold mb-2">Product Not Found</h1>
+            <h1 className="text-2xl font-semibold mb-2">{t("product.notFound")}</h1>
             <p className="text-muted-foreground">
-              The product you're looking for doesn't exist.
+              {t("product.notFoundDescription")}
             </p>
           </div>
         </div>
@@ -350,9 +397,9 @@ export default function ProductPage() {
       <div className="center-wide mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 lg:gap-20">
         <ProductContentSection
           images={currentImages}
-          testimonials={testimonials}
-          salesPoints={salesPoints}
-          faqItems={faqItems}
+          testimonials={getTranslatedTestimonials()}
+          salesPoints={getTranslatedSalesPoints()}
+          faqItems={getTranslatedFaqItems()}
         />
         <ProductDetailsForm
           product={product}

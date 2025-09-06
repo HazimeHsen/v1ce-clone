@@ -77,12 +77,10 @@ export default function ReviewCard({
         {reply && (
           <div className="flex flex-col gap-2 rounded-md p-3">
             <div className="flex items-center gap-2">
-              <div className="flex size-7 items-center justify-center rounded-full bg-card">
+              <div className="flex size-7 items-center justify-center rounded-full overflow-hidden bg-card">
                 <img
                   alt={reply.author}
                   loading="lazy"
-                  width="20"
-                  height="20"
                   decoding="async"
                   src={reply.logoSrc || "/placeholder.svg"}
                   style={{ color: "transparent" }}

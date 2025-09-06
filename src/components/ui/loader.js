@@ -27,7 +27,7 @@ export const Spinner = ({ size = "md", color = "text-primary", className }) => {
 
   const containerSize = {
     sm: "h-6 w-6",
-    md: "h-8 w-8", 
+    md: "h-8 w-8",
     lg: "h-12 w-12",
   }[size];
 
@@ -61,41 +61,15 @@ export const Spinner = ({ size = "md", color = "text-primary", className }) => {
   );
 };
 
-export function PageLoader({ 
-  title = "Loading...", 
-  description,
-  className 
-}) {
+export function PageLoader({ className }) {
   return (
-    <div className={cn(
-      "flex h-screen w-full items-center justify-center",
-      className
-    )}>
-      <div className="text-center space-y-4">
-        <Spinner size="lg" className="mx-auto" />
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-foreground">{title}</h2>
-          {description && (
-            <p className="text-muted-foreground">{description}</p>
-          )}
-        </div>
-      </div>
+    <div
+      className={cn(
+        "flex h-screen w-full items-center justify-center",
+        className
+      )}
+    >
+      <Spinner size="lg" className="mx-auto" />
     </div>
   );
 }
-
-export function ProductPageLoader() {
-  return (
-    <div className="flex items-center justify-center min-h-[100dvh] w-full">
-        <Spinner size="lg" />
-    </div>
-  );
-}
-
-export function ProductsPageLoader() {
-  return (
-    <div className="flex items-center justify-center min-h-[100dvh] w-full">
-        <Spinner size="lg" />
-    </div>
-  );
-} 

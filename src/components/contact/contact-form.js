@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslations } from "@/hooks/use-translations";
 
 const countries = [
   "United Kingdom",
@@ -228,14 +229,10 @@ const countries = [
   "Zimbabwe",
 ];
 
-const companySizes = [
-  { value: "1-99", label: "1-99 employees" },
-  { value: "100-299", label: "100-299 employees" },
-  { value: "300-1999", label: "300-1999 employees" },
-  { value: "2000+", label: "2000+ employees" },
-];
+// Company sizes will be created inside the component to use translations
 
 export function ContactForm() {
+  const { t } = useTranslations();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -245,6 +242,13 @@ export function ContactForm() {
     companySize: "",
     message: "",
   });
+
+  const companySizes = [
+    { value: "1-99", label: t("contact.form.companySizes.1-99") },
+    { value: "100-299", label: t("contact.form.companySizes.100-299") },
+    { value: "300-1999", label: t("contact.form.companySizes.300-1999") },
+    { value: "2000+", label: t("contact.form.companySizes.2000+") },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -260,11 +264,10 @@ export function ContactForm() {
       <div className="flex flex-col gap-8 md:flex-row md:gap-16">
         <div className="flex basis-1/2 flex-col gap-2">
           <h1 className="max-w-[440px] text-4xl font-bold md:text-6xl">
-            Get In Touch
+            {t("contact.title")}
           </h1>
           <p className="text-muted-foreground">
-            Let us know how we can help. Our average response time is 3 hours.
-            Get started today.
+            {t("contact.description")}
           </p>
         </div>
 
@@ -274,7 +277,7 @@ export function ContactForm() {
         >
           <div className="flex w-full gap-4">
             <div className="w-full space-y-2">
-              <Label htmlFor="firstName">First Name *</Label>
+              <Label htmlFor="firstName">{t("contact.form.firstName")} *</Label>
               <Input
                 id="firstName"
                 name="firstName"
@@ -284,7 +287,7 @@ export function ContactForm() {
               />
             </div>
             <div className="w-full space-y-2">
-              <Label htmlFor="lastName">Last Name *</Label>
+              <Label htmlFor="lastName">{t("contact.form.lastName")} *</Label>
               <Input
                 id="lastName"
                 name="lastName"
@@ -296,7 +299,7 @@ export function ContactForm() {
           </div>
 
           <div className="w-full space-y-2">
-            <Label htmlFor="email">Email *</Label>
+            <Label htmlFor="email">{t("contact.form.email")} *</Label>
             <Input
               id="email"
               name="email"
@@ -308,13 +311,13 @@ export function ContactForm() {
           </div>
 
           <div className="w-full space-y-2">
-            <Label htmlFor="country">Country *</Label>
+            <Label htmlFor="country">{t("contact.form.country")} *</Label>
             <Select
               value={formData.country}
               onValueChange={(value) => handleInputChange("country", value)}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select your country" />
+                <SelectValue placeholder={t("contact.form.placeholders.country")} />
               </SelectTrigger>
               <SelectContent className="max-h-[300px] ">
                 {countries.map((country) => (
@@ -328,11 +331,11 @@ export function ContactForm() {
 
           <div className="grid grid-cols-2 gap-4 w-full">
             <div className="w-flex-1 space-y-2">
-              <Label htmlFor="companyName">Company Name *</Label>
+              <Label htmlFor="companyName">{t("contact.form.companyName")} *</Label>
               <Input
                 id="companyName"
                 name="companyName"
-                placeholder="Mibio LTD"
+                placeholder={t("contact.form.placeholders.companyName")}
                 value={formData.companyName}
                 onChange={(e) =>
                   handleInputChange("companyName", e.target.value)
@@ -341,7 +344,7 @@ export function ContactForm() {
               />
             </div>
             <div className="flex-1 space-y-2">
-              <Label htmlFor="companySize">Company Size *</Label>
+              <Label htmlFor="companySize">{t("contact.form.companySize")} *</Label>
               <Select
                 value={formData.companySize}
                 onValueChange={(value) =>
@@ -349,7 +352,7 @@ export function ContactForm() {
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select company size"/>
+                  <SelectValue placeholder={t("contact.form.placeholders.companySize")}/>
                 </SelectTrigger>
                 <SelectContent>
                   {companySizes.map((size) => (
@@ -363,11 +366,11 @@ export function ContactForm() {
           </div>
 
           <div className="w-full space-y-2">
-            <Label htmlFor="message">Provide More Details *</Label>
+            <Label htmlFor="message">{t("contact.form.message")} *</Label>
             <Textarea
               id="message"
               name="message"
-              placeholder="Tell us what you need help with (e.g., bulk orders, custom solutions)."
+              placeholder={t("contact.form.placeholders.message")}
               value={formData.message}
               onChange={(e) => handleInputChange("message", e.target.value)}
               required
@@ -375,7 +378,7 @@ export function ContactForm() {
           </div>
 
           <Button type="submit" className="w-full">
-            Send
+            {t("contact.form.send")}
           </Button>
         </form>
       </div>
