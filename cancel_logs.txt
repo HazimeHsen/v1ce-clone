@@ -1,0 +1,6 @@
+[2025-09-07T13:10:46.893Z] CANCEL
+PaymentID: 1DC562A6-11D7-4432-B439-B7C79327F756
+ResponseCode: 07
+ResponseMessage: Reversal is impossible for current transaction state
+Opaque: 
+---
