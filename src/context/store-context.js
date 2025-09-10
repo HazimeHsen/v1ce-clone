@@ -9,10 +9,7 @@ const medusa = new Medusa({
   baseUrl: "http://localhost:9000",
   maxRetries: 3,
   publishableApiKey:
-    "pk_7a8eb333fbe02975ba20a652877ddbb432d53a4131c8c2a05348933cf7333c03",
-    customHeaders:{
-      "x-publishable-api-key": "pk_7a8eb333fbe02975ba20a652877ddbb432d53a4131c8c2a05348933cf7333c03"
-    }
+  process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 });
 
 export const StoreProvider = ({ children }) => {
@@ -399,10 +396,7 @@ export const StoreProvider = ({ children }) => {
         throw new Error("No cart available");
       }
 
-      const res = await medusa.shippingOptions.listCartOptions(cart.id, {
-        "x-publishable-api-key": "pk_7a8eb333fbe02975ba20a652877ddbb432d53a4131c8c2a05348933cf7333c03"
-
-      });
+      const res = await medusa.shippingOptions.listCartOptions(cart.id);
       return res.shipping_options || [];
     } catch (err) {
       console.error("Failed to get shipping options:", err);

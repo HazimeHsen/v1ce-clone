@@ -4,3 +4,39 @@ ResponseCode: 07
 ResponseMessage: Reversal is impossible for current transaction state
 Opaque: 
 ---
+[2025-09-07T13:49:58.819Z] CANCEL
+PaymentID: 6028A2F9-635D-4EAA-913A-29983130109E
+ResponseCode: 00
+ResponseMessage: Success
+Opaque: 
+---
+[2025-09-07T13:50:15.695Z] CANCEL
+PaymentID: 6028A2F9-635D-4EAA-913A-29983130109E
+ResponseCode: 07
+ResponseMessage: Reversal is impossible for current transaction state
+Opaque: 
+---
+[2025-09-07T13:52:11.650Z] CANCEL
+PaymentID: 993A9ED5-BF9C-4BA8-92FE-8FC2A993F03C
+ResponseCode: 07
+ResponseMessage: Reversal is impossible for current transaction state
+Opaque: 
+---
+[2025-09-07T13:52:30.133Z] CANCEL
+PaymentID: 993A9ED5-BF9C-4BA8-92FE-8FC2A993F03C
+ResponseCode: 07
+ResponseMessage: Reversal is impossible for current transaction state
+Opaque: 
+---
+[2025-09-07T13:54:59.582Z] CANCEL
+PaymentID: 993A9ED5-BF9C-4BA8-92FE-8FC2A993F03C
+ResponseCode: 07
+ResponseMessage: Reversal is impossible for current transaction state
+Opaque: 
+---
+[2025-09-07T14:04:55.458Z] CANCEL
+PaymentID: 08208F2E-7228-465C-8B78-888875ABA696
+ResponseCode: 00
+ResponseMessage: Success
+Opaque: 
+---

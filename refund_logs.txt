@@ -5,3 +5,10 @@ ResponseCode: 07
 ResponseMessage: Refund is impossible for current transaction state
 Opaque: 
 ---
+[2025-09-07T13:54:34.372Z] REFUND
+PaymentID: 993A9ED5-BF9C-4BA8-92FE-8FC2A993F03C
+RefundAmount: 10
+ResponseCode: 07
+ResponseMessage: Refund is impossible for current transaction state
+Opaque: 
+---

@@ -1,0 +1,54 @@
+[2025-09-07T14:02:52.519Z] GET_PAYMENT_DETAILS
+PaymentID: 3B734BFA-D8C6-4165-B2E4-475529E25B23
+ResponseCode: 0-100
+PaymentState: payment_started
+OrderStatus: 0
+Amount: 10
+Currency: 051
+OrderID: 3890006
+---
+[2025-09-07T14:03:32.019Z] GET_PAYMENT_DETAILS
+PaymentID: 08208F2E-7228-465C-8B78-888875ABA696
+ResponseCode: 00
+PaymentState: payment_approved
+OrderStatus: 1
+Amount: 10
+Currency: 051
+OrderID: 3890004
+---
+[2025-09-07T14:06:32.702Z] GET_PAYMENT_DETAILS
+PaymentID: 6028A2F9-635D-4EAA-913A-29983130109E
+ResponseCode: 00
+PaymentState: payment_void
+OrderStatus: 3
+Amount: 10
+Currency: 051
+OrderID: 3890001
+---
+[2025-09-07T14:07:18.909Z] GET_PAYMENT_DETAILS
+PaymentID: 993A9ED5-BF9C-4BA8-92FE-8FC2A993F03C
+ResponseCode: 05
+PaymentState: payment_declined
+OrderStatus: 6
+Amount: 10
+Currency: 051
+OrderID: 3890002
+---
+[2025-09-07T14:07:28.547Z] GET_PAYMENT_DETAILS
+PaymentID: 08208F2E-7228-465C-8B78-888875ABA696
+ResponseCode: 00
+PaymentState: payment_void
+OrderStatus: 3
+Amount: 10
+Currency: 051
+OrderID: 3890004
+---
+[2025-09-07T14:08:34.406Z] GET_PAYMENT_DETAILS
+PaymentID: 5F6D82D9-7D29-4E5E-97F1-187114C276A0
+ResponseCode: 00
+PaymentState: payment_approved
+OrderStatus: 1
+Amount: 10
+Currency: 051
+OrderID: 3890007
+---

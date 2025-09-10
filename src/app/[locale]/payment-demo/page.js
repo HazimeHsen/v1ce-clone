@@ -10,9 +10,9 @@ import { Spinner } from '@/components/ui/loader';
 
 export default function PaymentDemoPage() {
   const [formData, setFormData] = useState({
-    amount: '',
-    orderID: '',
-    description: '',
+    amount: '10', // Test environment requires 10 AMD
+    orderID: '3890001', // Test environment range: 3890001-3891000
+    description: 'Test Payment',
     currency: '051', // AMD by default
     backURL: '',
     opaque: '',
@@ -86,9 +86,12 @@ export default function PaymentDemoPage() {
                   step="0.01"
                   value={formData.amount}
                   onChange={handleInputChange}
-                  placeholder="100.00"
+                  placeholder="10.00"
                   required
                 />
+                <p className="text-sm text-blue-600 mt-1">
+                  Test environment requires exactly 10 AMD
+                </p>
               </div>
               
               <div>
@@ -99,9 +102,14 @@ export default function PaymentDemoPage() {
                   type="number"
                   value={formData.orderID}
                   onChange={handleInputChange}
-                  placeholder="12345"
+                  placeholder="3890001"
+                  min="3890001"
+                  max="3891000"
                   required
                 />
+                <p className="text-sm text-blue-600 mt-1">
+                  Test range: 3890001-3891000
+                </p>
               </div>
             </div>
 
@@ -227,6 +235,27 @@ export default function PaymentDemoPage() {
               </AlertDescription>
             </Alert>
           )}
+
+          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h3 className="font-semibold mb-2 text-yellow-800">Test Environment Requirements:</h3>
+            <ul className="text-sm text-yellow-700 space-y-1">
+              <li>• <strong>OrderID:</strong> Must be in range 3890001-3891000</li>
+              <li>• <strong>Amount:</strong> Must be exactly 10 AMD</li>
+              <li>• <strong>Testing Goal:</strong> At least 5 successful payments, refunds, and cancellations</li>
+              <li>• <strong>Two-step payments:</strong> Require additional authority from AmeriaBank</li>
+            </ul>
+          </div>
+
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <h3 className="font-semibold mb-2 text-red-800">Important Two-Step Payment Notes:</h3>
+            <ul className="text-sm text-red-700 space-y-1">
+              <li>• <strong>Cancel Payment:</strong> Must be sent TWICE for "Deposited" status</li>
+              <li>• <strong>First Cancel:</strong> Changes status from "Deposited" to "Approved"</li>
+              <li>• <strong>Second Cancel:</strong> Changes status to "Void"</li>
+              <li>• <strong>Warning:</strong> If second cancel is not sent, money returns after 30 days</li>
+              <li>• <strong>Refund vs Cancel:</strong> These are different operations - both needed for testing</li>
+            </ul>
+          </div>
         </CardContent>
       </Card>
     </div>

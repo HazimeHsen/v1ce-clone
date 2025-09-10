@@ -386,7 +386,6 @@ console.log({selectedShippingOption,shippingOptions});
 
     } catch (error) {
       console.error('Payment submission error:', error);
-      toast.error(error.message || 'Failed to process payment. Please try again.');
     } finally {
       setIsProcessingOrder(false);
     }

@@ -42,21 +42,11 @@ export default function ProductDetailsForm({
   const mainCarouselRef = useRef(null);
   const thumbCarouselRef = useRef(null);
 
-  const colorSwatches =
-    product?.variants?.map((variant) => {
-      const title = variant.title || "Default";
-
-      const colorMap = {
-        "Red & Pink": ["#dc2626", "#ec4899"],
-        "Blue & White": ["#2563eb", "#ffffff"],
-        "black & Green": ["#000000", "#16a34a"],
-      };
-
-      return {
-        title,
-        colors: colorMap[title] || ["#6b7280", "#9ca3af"],
-      };
-    }) || [];
+  const colorSwatches = product?.variants?.map((variant) => {
+    const combo = variant.title;
+    const colors = combo.split("&").map((c) => c.trim().toLowerCase());
+    return { title: combo, colors };
+  });
 
   const handleSwatchSelect = (swatch, index) => {
     if (selectedColor === swatch.title) {
