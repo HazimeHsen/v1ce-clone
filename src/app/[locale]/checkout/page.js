@@ -11,10 +11,8 @@ import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import ShippingStep from "./components/ShippingStep";
-import PaymentStep from "./components/PaymentStep";
 import OrderSummary from "./components/OrderSummary";
-import CheckoutProgress from "./components/CheckoutProgress";
-import ShippingSummary from "./components/ShippingSummary";
+import ShippingMethodForm from "./components/ShippingMethodForm";
 
 const shippingSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -27,14 +25,6 @@ const shippingSchema = z.object({
   country: z.string().min(1, "Country is required"),
 });
 
-const paymentSchema = z.object({
-  cardNumber: z.string().min(16, "Card number must be 16 digits"),
-  expiryDate: z
-    .string()
-    .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, "Invalid expiry date (MM/YY)"),
-  cvv: z.string().min(3, "CVV must be 3-4 digits"),
-  cardholderName: z.string().min(2, "Cardholder name is required"),
-});
 
 export default function CheckoutPage() {
   const {
@@ -61,7 +51,6 @@ export default function CheckoutPage() {
   const [enrichedCartItems, setEnrichedCartItems] = useState([]);
   const [loadingCartItems, setLoadingCartItems] = useState(false);
   const [updatingItems, setUpdatingItems] = useState(new Set());
-  const [currentStep, setCurrentStep] = useState(1);
   const [shippingOptions, setShippingOptions] = useState([]);
   const [selectedShippingOption, setSelectedShippingOption] = useState(null);
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
@@ -115,15 +104,6 @@ console.log({selectedShippingOption,shippingOptions});
     },
   });
 
-  const paymentForm = useForm({
-    resolver: zodResolver(paymentSchema),
-    defaultValues: {
-      cardNumber: "",
-      expiryDate: "",
-      cvv: "",
-      cardholderName: "",
-    },
-  });
 
   const cartItems = cart?.items || [];
 
@@ -322,46 +302,12 @@ console.log({selectedShippingOption,shippingOptions});
       if (!selectedShippingOption && shippingOptions.length > 0) {
         setSelectedShippingOption(shippingOptions[0]);
         await addShippingMethod(shippingOptions[0].id);
-      }
-
-      setCurrentStep(2);
-    } catch (error) {
-      console.error("Failed to process shipping information:", error);
-    } finally {
-      setIsProcessingOrder(false);
-    }
-  };
-
-  const handlePaymentSubmit = async (data) => {
-    try {
-      setIsProcessingOrder(true);
-
-      // Debug: Log current cart state
-      console.log('Current cart state before payment:', {
-        cartId: cart?.id,
-        hasEmail: !!cart?.email,
-        hasShippingAddress: !!cart?.shipping_address,
-        hasBillingAddress: !!cart?.billing_address,
-        hasShippingMethods: cart?.shipping_methods?.length > 0,
-        shippingMethodsCount: cart?.shipping_methods?.length || 0,
-        selectedShippingOption: selectedShippingOption,
-        shippingOptionsAvailable: shippingOptions?.length || 0
-      });
-
-      // Ensure shipping method is selected before proceeding
-      if (!selectedShippingOption && shippingOptions.length > 0) {
-        console.log('No shipping option selected, selecting first available:', shippingOptions[0]);
-        setSelectedShippingOption(shippingOptions[0]);
-        await addShippingMethod(shippingOptions[0].id);
       } else if (selectedShippingOption) {
         // Make sure the selected shipping method is set in the cart
-        console.log('Adding selected shipping method to cart:', selectedShippingOption.id);
         await addShippingMethod(selectedShippingOption.id);
-      } else if (cart?.items?.some(item => item.requires_shipping)) {
-        throw new Error('No shipping options available for items that require shipping');
       }
 
-      // Initialize payment sessions
+      // Initialize payment session and redirect
       const initResponse = await fetch('/api/payment-sessions', {
         method: 'POST',
         headers: {
@@ -378,116 +324,23 @@ console.log({selectedShippingOption,shippingOptions});
       const { cart: updatedCart } = await initResponse.json();
       
       const firstSession = updatedCart?.payment_collection?.payment_sessions?.[0];
-      console.log(firstSession);
       
       if (!firstSession) {
         throw new Error('No payment providers available');
       }
 
+      // Redirect to payment provider
       window.location.href = firstSession.data.redirect_url;
-
-      // Set the payment session (uncommented to ensure it's properly set)
-      // const setSessionResponse = await fetch('/api/payment-sessions', {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ 
-      //     cartId: cart.id,
-      //     providerId: firstSession.provider_id
-      //   }),
-      // });
-
-      // if (!setSessionResponse.ok) {
-      //   const error = await setSessionResponse.json();
-      //   throw new Error(error.error);
-      // }
-
-      // Complete the cart to create order
-      // const orderResponse = await fetch('/api/orders', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ cartId: cart.id }),
-      // });
-
-      // if (!orderResponse.ok) {
-      //   const error = await orderResponse.json();
-      //   console.error('Order creation failed:', error);
-        
-      //   // Provide more specific error messages
-      //   if (error.details && Array.isArray(error.details)) {
-      //     throw new Error(`Order validation failed: ${error.details.join(', ')}`);
-      //   } else if (error.message) {
-      //     throw new Error(error.message);
-      //   } else {
-      //     throw new Error(error.error || 'Failed to create order');
-      //   }
-      // }
-
-      // const orderResult = await orderResponse.json();
       
-      // if (orderResult.success && orderResult.type === "order") {
-      //   // Clear cart from local state and storage
-      //   setCart(null);
-      //   localStorage.removeItem("cart_id");
-      //   console.log(orderResult);
-        
-      //   // Redirect to success page with order ID
-      //   router.push(`/order/confirmed/${orderResult.order.id}`);
-      // } else {
-      //   throw new Error(orderResult.message || 'Failed to complete order');
-      // }
-
     } catch (error) {
-      console.error('Payment submission error:', error);
-      setError(error.message || 'Failed to process payment');
+      console.error("Failed to process shipping information:", error);
+      setError(error.message || 'Failed to process shipping and payment');
     } finally {
       setIsProcessingOrder(false);
     }
   };
 
-  const handleCompleteOrder = async () => {
-    try {
-      setIsProcessingOrder(true);
 
-      const shippingValid = await shippingForm.trigger();
-      const paymentValid = await paymentForm.trigger();
-
-      if (!shippingValid) {
-        setCurrentStep(1);
-        return;
-      }
-
-      if (!paymentValid) {
-        setCurrentStep(2);
-        return;
-      }
-
-      if (currentStep === 1) {
-        await onShippingSubmit(shippingForm.getValues());
-      }
-
-      if (currentStep <= 2) {
-        await handlePaymentSubmit(paymentForm.getValues());
-      }
-
-      // const result = await completeCart(); // This line is now handled by handlePaymentSubmit
-
-      // if (result.type === "order") { // This block is now handled by handlePaymentSubmit
-      //   console.log("Order completed successfully:", result.order);
-
-      //   router.push(`/order/confirmed/${result.order.id}`);
-      // } else { // This block is now handled by handlePaymentSubmit
-      //   console.log("Cart needs more information:", result.cart);
-      // }
-    } catch (error) {
-      console.error("Failed to complete order:", error);
-    } finally {
-      setIsProcessingOrder(false);
-    }
-  };
 
   if (cartItems.length === 0) {
     return (
@@ -562,37 +415,14 @@ console.log({selectedShippingOption,shippingOptions});
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          <CheckoutProgress currentStep={currentStep} />
-
           <div className="order-1 lg:order-1 space-y-6">
-            {currentStep >= 1 && (
-              <ShippingStep
-                currentStep={currentStep}
-                shippingForm={shippingForm}
-                onShippingSubmit={onShippingSubmit}
-                isProcessingOrder={isProcessingOrder}
-                loading={loading || loadingShippingOptions}
-                setCurrentStep={setCurrentStep}
-                shippingOptions={shippingOptions}
-                selectedShippingOption={selectedShippingOption}
-                setSelectedShippingOption={setSelectedShippingOption}
-                addShippingMethod={addShippingMethod}
-                formatPrice={formatPrice}
-              />
-            )}
+            <ShippingStep
+              shippingForm={shippingForm}
+              onShippingSubmit={onShippingSubmit}
+              isProcessingOrder={isProcessingOrder}
+              loading={loading || loadingShippingOptions}
+            />
 
-            {currentStep >= 2 && (
-              <PaymentStep
-                currentStep={currentStep}
-                paymentForm={paymentForm}
-                onPaymentSubmit={handlePaymentSubmit}
-                isProcessingOrder={isProcessingOrder}
-                loading={loading}
-                setCurrentStep={setCurrentStep}
-                totalPrice={totalPrice}
-                formatPrice={formatPrice}
-              />
-            )}
           </div>
 
           <div className="order-2 lg:order-2 space-y-6">
@@ -610,20 +440,20 @@ console.log({selectedShippingOption,shippingOptions});
               totalPrice={totalPrice}
               isProcessingOrder={isProcessingOrder}
               loading={loading}
-              handleCompleteOrder={handleCompleteOrder}
               getItemImage={getItemImage}
               getItemTitle={getItemTitle}
               getItemVariantTitle={getItemVariantTitle}
               formatPrice={formatPrice}
             />
 
-            <ShippingSummary
-              currentStep={currentStep}
-              shippingForm={shippingForm}
+            <ShippingMethodForm
+              shippingOptions={shippingOptions}
               selectedShippingOption={selectedShippingOption}
-              setCurrentStep={setCurrentStep}
+              setSelectedShippingOption={setSelectedShippingOption}
+              addShippingMethod={addShippingMethod}
               formatPrice={formatPrice}
             />
+
           </div>
         </div>
       </div>

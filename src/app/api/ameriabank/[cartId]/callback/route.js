@@ -7,10 +7,14 @@ const MEDUSA_BACKEND_URL =
   process.env.MEDUSA_BASE_URL || "http://localhost:9000";
 const AMERIABANK_BASE_URL = "https://servicestest.ameriabank.am/VPOS/api/VPOS";
 
-export async function GET(req) {
+export async function GET(req, { params }) {
   const timestamp = new Date().toISOString();
 
   try {
+    // Await params before accessing its properties
+    const resolvedParams = await params;
+    const cartId = resolvedParams.cartId;
+    
     const url = new URL(req.url);
     const paymentID = url.searchParams.get("paymentID");
     const orderID = url.searchParams.get("orderID");
@@ -28,6 +32,7 @@ export async function GET(req) {
       responseCode,
       opaque,
       description,
+      cartId,
       fullUrl: req.url,
       userAgent: req.headers.get("user-agent") || "unknown",
     };
@@ -173,10 +178,8 @@ export async function GET(req) {
       }
     }
 
-    // Step 4: Determine cart ID from order ID parameter
-    // The orderID from the callback URL corresponds to our cart ID
-    // This is the orderID we passed when initializing the payment
-    const cartId = "cart_01K4W525HPRK1VMPM5K46BYFXS";
+    // Step 4: Use cart ID from route parameters
+    // The cart ID is extracted from the URL path parameters
 
     console.log(
       `Processing payment completion for cart: ${cartId}, payment: ${paymentID}`
@@ -233,6 +236,12 @@ export async function GET(req) {
   } catch (err) {
     console.error("Ameria callback error:", err);
 
+    // Parse URL for error logging
+    const url = new URL(req.url);
+    
+    // Await params for error logging
+    const resolvedParams = await params;
+    
     // Log error
     logToFile("callback_logs.txt", {
       timestamp,
@@ -244,6 +253,7 @@ export async function GET(req) {
       responseCode:
         url.searchParams.get("responseCode") ||
         url.searchParams.get("resposneCode"),
+      cartId: resolvedParams.cartId,
     });
 
     return NextResponse.redirect(
