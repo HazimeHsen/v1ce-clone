@@ -106,3 +106,31 @@ Description: Test Payment
 ResponseCode: 1
 Message: OK
 ---
+[2025-09-11T11:19:32.659Z] FAILED
+PaymentID: N/A
+OrderID: 3890001
+Amount: 10
+Currency: 051
+Description: Test Payment
+ResponseCode: 30
+Message: Incorrect Order ID
+---
+[2025-09-11T11:19:45.636Z] FAILED
+PaymentID: N/A
+OrderID: 3890001
+Amount: 10
+Currency: 051
+Description: Test Payment
+ResponseCode: 30
+Message: Incorrect Order ID
+---
+[2025-09-11T11:19:58.111Z] SUCCESS
+PaymentID: 6C01E8F6-E9C0-4A75-9AF0-6D9572FC4CEE
+OrderID: 3890016
+Amount: 10
+Currency: 051
+Description: Test Payment
+ResponseCode: 1
+Message: OK
+---
+{"timestamp":"2025-09-11T15:49:03.707Z","action":"confirm_payment","paymentID":"0e547819-6b1c-4f37-8971-0e42342089e7","amount":10,"responseCode":"00","responseMessage":"Success"}

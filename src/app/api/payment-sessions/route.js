@@ -52,7 +52,10 @@ export async function POST(request) {
     const collectionData = await collectionRes.json();
     if (!collectionRes.ok) {
       return NextResponse.json(
-        { error: "Failed to create payment collection", details: collectionData },
+        {
+          error: "Failed to create payment collection",
+          details: collectionData,
+        },
         { status: collectionRes.status }
       );
     }
@@ -75,7 +78,7 @@ export async function POST(request) {
     }
 
     const providerId = providersData.payment_providers[0].id;
-console.log(providerId);
+    console.log(providerId);
 
     const sessionRes = await fetch(
       `${MEDUSA_BACKEND_URL}/store/payment-collections/${collectionId}/payment-sessions`,
@@ -85,7 +88,10 @@ console.log(providerId);
           "Content-Type": "application/json",
           "x-publishable-api-key": PUBLISHABLE_KEY,
         },
-        body: JSON.stringify({ provider_id: providerId }),
+        body: JSON.stringify({
+          provider_id: providerId,
+          data: { order_id: 3890011 },
+        }),
       }
     );
     const sessionData = await sessionRes.json();
@@ -97,9 +103,12 @@ console.log(providerId);
     }
 
     // Step 4: Fetch the updated cart with payment sessions
-    const updatedCartRes = await fetch(`${MEDUSA_BACKEND_URL}/store/carts/${cartId}`, {
-      headers: { "x-publishable-api-key": PUBLISHABLE_KEY },
-    });
+    const updatedCartRes = await fetch(
+      `${MEDUSA_BACKEND_URL}/store/carts/${cartId}`,
+      {
+        headers: { "x-publishable-api-key": PUBLISHABLE_KEY },
+      }
+    );
     const updatedCartData = await updatedCartRes.json();
     if (!updatedCartRes.ok) {
       return NextResponse.json(
@@ -112,7 +121,10 @@ console.log(providerId);
   } catch (error) {
     console.error("Payment init error:", error);
     return NextResponse.json(
-      { error: "Failed to initialize payment collection", details: error.message },
+      {
+        error: "Failed to initialize payment collection",
+        details: error.message,
+      },
       { status: 500 }
     );
   }

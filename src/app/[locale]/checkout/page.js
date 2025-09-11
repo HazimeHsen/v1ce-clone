@@ -39,11 +39,13 @@ const paymentSchema = z.object({
 export default function CheckoutPage() {
   const {
     cart,
+    setCart,
     removeFromCart,
     updateCartItem,
     fetchCartItemsWithProducts,
     loading,
     error,
+    setError,
 
     addShippingAddress,
     addBillingAddress,
@@ -334,6 +336,31 @@ console.log({selectedShippingOption,shippingOptions});
     try {
       setIsProcessingOrder(true);
 
+      // Debug: Log current cart state
+      console.log('Current cart state before payment:', {
+        cartId: cart?.id,
+        hasEmail: !!cart?.email,
+        hasShippingAddress: !!cart?.shipping_address,
+        hasBillingAddress: !!cart?.billing_address,
+        hasShippingMethods: cart?.shipping_methods?.length > 0,
+        shippingMethodsCount: cart?.shipping_methods?.length || 0,
+        selectedShippingOption: selectedShippingOption,
+        shippingOptionsAvailable: shippingOptions?.length || 0
+      });
+
+      // Ensure shipping method is selected before proceeding
+      if (!selectedShippingOption && shippingOptions.length > 0) {
+        console.log('No shipping option selected, selecting first available:', shippingOptions[0]);
+        setSelectedShippingOption(shippingOptions[0]);
+        await addShippingMethod(shippingOptions[0].id);
+      } else if (selectedShippingOption) {
+        // Make sure the selected shipping method is set in the cart
+        console.log('Adding selected shipping method to cart:', selectedShippingOption.id);
+        await addShippingMethod(selectedShippingOption.id);
+      } else if (cart?.items?.some(item => item.requires_shipping)) {
+        throw new Error('No shipping options available for items that require shipping');
+      }
+
       // Initialize payment sessions
       const initResponse = await fetch('/api/payment-sessions', {
         method: 'POST',
@@ -350,42 +377,72 @@ console.log({selectedShippingOption,shippingOptions});
 
       const { cart: updatedCart } = await initResponse.json();
       
-      // Get the first available payment session
-      const firstSession = updatedCart.payment_sessions?.[0];
+      const firstSession = updatedCart?.payment_collection?.payment_sessions?.[0];
+      console.log(firstSession);
       
       if (!firstSession) {
         throw new Error('No payment providers available');
       }
 
-      // Set the payment session
-      const setSessionResponse = await fetch('/api/payment-sessions', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          cartId: cart.id,
-          providerId: firstSession.provider_id
-        }),
-      });
+      window.location.href = firstSession.data.redirect_url;
 
-      if (!setSessionResponse.ok) {
-        const error = await setSessionResponse.json();
-        throw new Error(error.error);
-      }
+      // Set the payment session (uncommented to ensure it's properly set)
+      // const setSessionResponse = await fetch('/api/payment-sessions', {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ 
+      //     cartId: cart.id,
+      //     providerId: firstSession.provider_id
+      //   }),
+      // });
 
-      // Complete the cart/order
-      const result = await completeCart();
+      // if (!setSessionResponse.ok) {
+      //   const error = await setSessionResponse.json();
+      //   throw new Error(error.error);
+      // }
+
+      // Complete the cart to create order
+      // const orderResponse = await fetch('/api/orders', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ cartId: cart.id }),
+      // });
+
+      // if (!orderResponse.ok) {
+      //   const error = await orderResponse.json();
+      //   console.error('Order creation failed:', error);
+        
+      //   // Provide more specific error messages
+      //   if (error.details && Array.isArray(error.details)) {
+      //     throw new Error(`Order validation failed: ${error.details.join(', ')}`);
+      //   } else if (error.message) {
+      //     throw new Error(error.message);
+      //   } else {
+      //     throw new Error(error.error || 'Failed to create order');
+      //   }
+      // }
+
+      // const orderResult = await orderResponse.json();
       
-      if (result.type === "order") {
-        // Redirect to success page with order ID
-        router.push(`/order/confirmed/${result.order.id}`);
-      } else {
-        throw new Error('Failed to complete order');
-      }
+      // if (orderResult.success && orderResult.type === "order") {
+      //   // Clear cart from local state and storage
+      //   setCart(null);
+      //   localStorage.removeItem("cart_id");
+      //   console.log(orderResult);
+        
+      //   // Redirect to success page with order ID
+      //   router.push(`/order/confirmed/${orderResult.order.id}`);
+      // } else {
+      //   throw new Error(orderResult.message || 'Failed to complete order');
+      // }
 
     } catch (error) {
       console.error('Payment submission error:', error);
+      setError(error.message || 'Failed to process payment');
     } finally {
       setIsProcessingOrder(false);
     }
