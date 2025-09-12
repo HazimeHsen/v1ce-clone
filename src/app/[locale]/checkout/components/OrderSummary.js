@@ -25,7 +25,8 @@ export default function OrderSummary({
   getItemImage,
   getItemTitle,
   getItemVariantTitle,
-  formatPrice
+  formatPrice,
+  t
 }) {
   return (
     <Card className="bg-card/80 border-border/50 sticky top-8">
@@ -34,7 +35,7 @@ export default function OrderSummary({
           <div className="p-2 rounded-full bg-primary/10">
             <CreditCard className="h-5 w-5 text-primary" />
           </div>
-          Order Summary
+          {t("checkout.orderSummary")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -42,7 +43,7 @@ export default function OrderSummary({
           <div className="flex items-center justify-center py-8">
             <div className="flex items-center gap-3">
               <Spinner size="sm" />
-              <p className="text-muted-foreground">Loading cart items...</p>
+              <p className="text-muted-foreground">{t("cart.loading")}</p>
             </div>
           </div>
         ) : (
@@ -137,16 +138,16 @@ export default function OrderSummary({
 
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Subtotal ({totalItems} items)</span>
+            <span className="text-muted-foreground">{t("checkout.subtotal")} ({totalItems} items)</span>
             <span className="text-foreground">€{formatPrice(subtotal)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Shipping</span>
+            <span className="text-muted-foreground">{t("checkout.shipping")}</span>
             <span className="text-foreground">€{formatPrice(3)}</span>
           </div>
           <Separator className="bg-border/50" />
           <div className="flex justify-between text-lg font-semibold text-foreground">
-            <span>Total</span>
+            <span>{t("checkout.total")}</span>
             <span className="text-primary">€{formatPrice(totalPrice)}</span>
           </div>
         </div>

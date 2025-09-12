@@ -2,29 +2,21 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useStore } from "@/context/store-context";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, CreditCard } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useTranslations } from "@/hooks/use-translations";
 
 import { Button } from "@/components/ui/button";
 import ShippingStep from "./components/ShippingStep";
 import OrderSummary from "./components/OrderSummary";
 import ShippingMethodForm from "./components/ShippingMethodForm";
+import { PageLoader } from "@/components/ui/loader";
 
-const shippingSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number is required"),
-  address: z.string().min(5, "Address must be at least 5 characters"),
-  city: z.string().min(2, "City is required"),
-  postalCode: z.string().min(3, "Postal code is required"),
-  country: z.string().min(1, "Country is required"),
-});
-
+// Schema will be created inside component to use translations
 
 export default function CheckoutPage() {
   const {
@@ -48,40 +40,100 @@ export default function CheckoutPage() {
   } = useStore();
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { t } = useTranslations();
+  
+  // Create schema with translations
+  const shippingSchema = z.object({
+    firstName: z.string().min(2, t("checkout.validation.firstNameMin")),
+    lastName: z.string().min(2, t("checkout.validation.lastNameMin")),
+    email: z.string().email(t("checkout.validation.emailInvalid")),
+    phone: z.string().min(10, t("checkout.validation.phoneRequired")),
+    address: z.string().min(5, t("checkout.validation.addressMin")),
+    city: z.string().min(2, t("checkout.validation.cityRequired")),
+    postalCode: z.string().min(3, t("checkout.validation.postalCodeRequired")),
+    country: z.string().min(1, t("checkout.validation.countryRequired")),
+  });
+
   const [enrichedCartItems, setEnrichedCartItems] = useState([]);
-  const [loadingCartItems, setLoadingCartItems] = useState(false);
+  const [loadingCartItems, setLoadingCartItems] = useState(true);
   const [updatingItems, setUpdatingItems] = useState(new Set());
   const [shippingOptions, setShippingOptions] = useState([]);
   const [selectedShippingOption, setSelectedShippingOption] = useState(null);
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
-  const [loadingShippingOptions, setLoadingShippingOptions] = useState(false);
-console.log({selectedShippingOption,shippingOptions});
+  const [loadingShippingOptions, setLoadingShippingOptions] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [urlError, setUrlError] = useState(null);
+
+  const cartItems = cart?.items || [];
+
+  // Handle URL error parameters from callback
+  useEffect(() => {
+    const errorParam = searchParams.get('error');
+    if (errorParam) {
+      const errorMessages = {
+        'missing_payment_id': t("checkout.errors.missingPaymentId"),
+        'missing_order_id': t("checkout.errors.missingOrderId"),
+        'payment_cancelled': t("checkout.errors.paymentCancelled"),
+        'payment_failed': t("checkout.errors.paymentFailed"),
+        'invalid_payment': t("checkout.errors.invalidPayment"),
+        'payment_processing_error': t("checkout.errors.paymentProcessingError"),
+        'network_error': t("checkout.errors.networkError"),
+        'server_error': t("checkout.errors.serverError"),
+      };
+      
+      const errorMessage = errorMessages[errorParam] || t("checkout.errors.unknownError");
+      setUrlError(errorMessage);
+      setError(errorMessage);
+      
+      // Clear the error from URL after showing it
+      const newUrl = new URL(window.location);
+      newUrl.searchParams.delete('error');
+      router.replace(newUrl.pathname + newUrl.search, { scroll: false });
+    }
+  }, [searchParams, t, setError, router]);
+
+  console.log("Checkout loading states:", {
+    cart: !!cart,
+    loading,
+    loadingShippingOptions,
+    loadingCartItems,
+    isPageLoading,
+    cartItemsLength: cartItems.length,
+  });
 
   useEffect(() => {
     const fetchShippingOptions = async () => {
-      if (!cart?.id) return;
-      
+      if (!cart?.id) {
+        // If no cart yet, keep loading state as is (don't set to false)
+        return;
+      }
+
       try {
         setLoadingShippingOptions(true);
-        const shippingResponse = await fetch(`/api/shipping?cartId=${cart.id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const shippingResponse = await fetch(
+          `/api/shipping?cartId=${cart.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!shippingResponse.ok) {
-          throw new Error('Failed to fetch shipping options');
+          throw new Error("Failed to fetch shipping options");
         }
 
         const options = await shippingResponse.json();
-        setShippingOptions(options?.shipping_options);
+        setShippingOptions(options?.shipping_options || []);
 
         if (options?.shipping_options?.length > 0) {
           setSelectedShippingOption(options?.shipping_options[0]);
         }
       } catch (error) {
         console.error("Failed to fetch shipping options:", error);
+        setShippingOptions([]);
       } finally {
         setLoadingShippingOptions(false);
       }
@@ -89,6 +141,15 @@ console.log({selectedShippingOption,shippingOptions});
 
     fetchShippingOptions();
   }, [cart?.id]);
+
+  // Set page loading to false when ALL data is loaded
+  useEffect(() => {
+    // Only hide loading when we have cart, store is not loading, and both shipping & cart items are done loading
+    if (cart && !loading && !loadingShippingOptions && !loadingCartItems) {
+      console.log("All data loaded, hiding page loader");
+      setIsPageLoading(false);
+    }
+  }, [cart, loading, loadingShippingOptions, loadingCartItems]);
 
   const shippingForm = useForm({
     resolver: zodResolver(shippingSchema),
@@ -104,12 +165,13 @@ console.log({selectedShippingOption,shippingOptions});
     },
   });
 
-
-  const cartItems = cart?.items || [];
-
   const fetchEnrichedItems = useCallback(async () => {
     if (cartItems.length === 0) {
       setEnrichedCartItems([]);
+      // Only set loading to false if we actually have a cart (meaning it's truly empty, not just not loaded yet)
+      if (cart) {
+        setLoadingCartItems(false);
+      }
       return;
     }
 
@@ -308,10 +370,10 @@ console.log({selectedShippingOption,shippingOptions});
       }
 
       // Initialize payment session and redirect
-      const initResponse = await fetch('/api/payment-sessions', {
-        method: 'POST',
+      const initResponse = await fetch("/api/payment-sessions", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ cartId: cart.id }),
       });
@@ -322,27 +384,26 @@ console.log({selectedShippingOption,shippingOptions});
       }
 
       const { cart: updatedCart } = await initResponse.json();
-      
-      const firstSession = updatedCart?.payment_collection?.payment_sessions?.[0];
-      
+
+      const firstSession =
+        updatedCart?.payment_collection?.payment_sessions?.[0];
+
       if (!firstSession) {
-        throw new Error('No payment providers available');
+        throw new Error("No payment providers available");
       }
 
       // Redirect to payment provider
       window.location.href = firstSession.data.redirect_url;
-      
     } catch (error) {
       console.error("Failed to process shipping information:", error);
-      setError(error.message || 'Failed to process shipping and payment');
+      setError(error.message || "Failed to process shipping and payment");
     } finally {
       setIsProcessingOrder(false);
     }
   };
 
-
-
-  if (cartItems.length === 0) {
+  // Show empty cart only when we're sure cart is loaded and actually empty
+  if (!isPageLoading && !loading && cart && cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10"></div>
@@ -375,6 +436,15 @@ console.log({selectedShippingOption,shippingOptions});
     );
   }
 
+  console.log("isPageLoading", isPageLoading);
+  console.log("loading", loading);
+  console.log("cart", cart);
+  console.log("isProcessingOrder", isProcessingOrder);
+
+  if ((isPageLoading || loading || !cart) && !isProcessingOrder) {
+    return <PageLoader />;
+  }
+
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const displayItems =
     enrichedCartItems.length > 0 ? enrichedCartItems : cartItems;
@@ -400,16 +470,16 @@ console.log({selectedShippingOption,shippingOptions});
             onClick={() => router.back()}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
+            {t("checkout.back")}
           </Button>
-          <h1 className="text-3xl font-bold text-foreground">Checkout</h1>
+          <h1 className="text-3xl font-bold text-foreground">{t("checkout.title")}</h1>
           <p className="text-muted-foreground mt-2">
-            Review your order and complete your purchase
+            {t("checkout.description")}
           </p>
 
           {error && (
             <div className="mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-              <p className="text-destructive font-medium">Error: {error}</p>
+              <p className="text-destructive font-medium">{t("checkout.error")}: {error}</p>
             </div>
           )}
         </div>
@@ -421,8 +491,8 @@ console.log({selectedShippingOption,shippingOptions});
               onShippingSubmit={onShippingSubmit}
               isProcessingOrder={isProcessingOrder}
               loading={loading || loadingShippingOptions}
+              t={t}
             />
-
           </div>
 
           <div className="order-2 lg:order-2 space-y-6">
@@ -444,6 +514,7 @@ console.log({selectedShippingOption,shippingOptions});
               getItemTitle={getItemTitle}
               getItemVariantTitle={getItemVariantTitle}
               formatPrice={formatPrice}
+              t={t}
             />
 
             <ShippingMethodForm
@@ -452,8 +523,8 @@ console.log({selectedShippingOption,shippingOptions});
               setSelectedShippingOption={setSelectedShippingOption}
               addShippingMethod={addShippingMethod}
               formatPrice={formatPrice}
+              t={t}
             />
-
           </div>
         </div>
       </div>

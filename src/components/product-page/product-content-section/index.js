@@ -6,12 +6,29 @@ import ProductTabs from "./product-tabs";
 import OverviewContent from "./overview-content";
 import DetailsContent from "./details-content";
 import FAQContent from "./faq-content";
+import MobileProductInfo from "./mobile-product-info";
 
 export default function ProductContentSection({
   images,
   testimonials,
   salesPoints,
   faqItems,
+  // Mobile product info props
+  product,
+  selectedColor,
+  setSelectedColor,
+  quantity,
+  setQuantity,
+  selectedBundle,
+  setSelectedBundle,
+  quantityBundles,
+  colorSwatches,
+  formatPrice,
+  basePrice,
+  selectedSwatchIndex,
+  handleSwatchSelect,
+  decrementQuantity,
+  incrementQuantity,
 }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [api, setApi] = useState();
@@ -36,8 +53,8 @@ export default function ProductContentSection({
   };
 
   return (
-    <section className="order-last flex flex-col gap-8 md:order-first">
-      <div className="hidden md:block">
+    <section className="flex flex-col gap-8">
+      <div>
         <ProductGallery
           images={images}
           api={api}
@@ -47,6 +64,25 @@ export default function ProductContentSection({
           handleThumbnailClick={handleThumbnailClick}
         />
       </div>
+      
+      {/* Mobile Product Info - shown only on mobile */}
+      <MobileProductInfo
+        product={product}
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
+        quantity={quantity}
+        setQuantity={setQuantity}
+        selectedBundle={selectedBundle}
+        setSelectedBundle={setSelectedBundle}
+        quantityBundles={quantityBundles}
+        colorSwatches={colorSwatches}
+        formatPrice={formatPrice}
+        basePrice={basePrice}
+        selectedSwatchIndex={selectedSwatchIndex}
+        handleSwatchSelect={handleSwatchSelect}
+        decrementQuantity={decrementQuantity}
+        incrementQuantity={incrementQuantity}
+      />
       <div
         dir="ltr"
         data-orientation="horizontal"

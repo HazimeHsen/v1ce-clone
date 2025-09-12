@@ -3,16 +3,18 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle, Package, Truck, CreditCard, MapPin, Mail, Phone } from "lucide-react";
+import { CheckCircle, Package, Truck, MapPin, Mail, Phone } from "lucide-react";
+import { PageLoader } from "@/components/ui/loader";
+import { useTranslations } from "@/hooks/use-translations";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 
 export default function OrderConfirmedPage() {
   const { orderId } = useParams();
   const router = useRouter();
+  const { t } = useTranslations();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,15 +41,40 @@ export default function OrderConfirmedPage() {
       }
     };
 
+    // Clear cart from localStorage since order is completed
+    const clearCart = () => {
+      try {
+        localStorage.removeItem("cart_id");
+        console.log("Cart cleared from localStorage after successful order completion");
+      } catch (error) {
+        console.error("Failed to clear cart from localStorage:", error);
+      }
+    };
+
     fetchOrder();
+    clearCart();
   }, [orderId]);
 
-  const formatPrice = (price, currencyCode = 'USD') => {
-    if (typeof price !== 'number') return '0.00';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currencyCode.toUpperCase(),
-    }).format(price / 100); // Medusa stores prices in cents
+  const formatPrice = (price, currencyCode = 'EUR') => {
+    if (price === null || price === undefined || isNaN(price)) return '€0.00';
+    
+    // Handle different currency formats
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+    
+    // Check if price is already in the correct format (not in cents)
+    const finalPrice = numPrice > 1000 ? numPrice / 100 : numPrice;
+    
+    try {
+      return new Intl.NumberFormat('en-EU', {
+        style: 'currency',
+        currency: currencyCode.toUpperCase(),
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(finalPrice);
+    } catch (error) {
+      console.error('Price formatting error:', error);
+      return `€${finalPrice.toFixed(2)}`;
+    }
   };
 
   const formatDate = (dateString) => {
@@ -60,53 +87,9 @@ export default function OrderConfirmedPage() {
     });
   };
 
-  const getPaymentStatusBadge = (status) => {
-    const statusConfig = {
-      captured: { variant: 'default', label: 'Paid', color: 'bg-green-100 text-green-800' },
-      authorized: { variant: 'secondary', label: 'Authorized', color: 'bg-blue-100 text-blue-800' },
-      awaiting: { variant: 'outline', label: 'Awaiting Payment', color: 'bg-yellow-100 text-yellow-800' },
-      canceled: { variant: 'destructive', label: 'Canceled', color: 'bg-red-100 text-red-800' },
-      not_paid: { variant: 'outline', label: 'Not Paid', color: 'bg-gray-100 text-gray-800' },
-      refunded: { variant: 'outline', label: 'Refunded', color: 'bg-purple-100 text-purple-800' },
-    };
-    
-    const config = statusConfig[status] || statusConfig.not_paid;
-    return (
-      <Badge className={config.color}>
-        {config.label}
-      </Badge>
-    );
-  };
-
-  const getFulfillmentStatusBadge = (status) => {
-    const statusConfig = {
-      fulfilled: { label: 'Fulfilled', color: 'bg-green-100 text-green-800' },
-      shipped: { label: 'Shipped', color: 'bg-blue-100 text-blue-800' },
-      delivered: { label: 'Delivered', color: 'bg-green-100 text-green-800' },
-      not_fulfilled: { label: 'Processing', color: 'bg-yellow-100 text-yellow-800' },
-      canceled: { label: 'Canceled', color: 'bg-red-100 text-red-800' },
-    };
-    
-    const config = statusConfig[status] || statusConfig.not_fulfilled;
-    return (
-      <Badge className={config.color}>
-        {config.label}
-      </Badge>
-    );
-  };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10"></div>
-        <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
-          <div className="text-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">Loading order details...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <PageLoader />;
   }
 
   if (error || !order) {
@@ -119,13 +102,13 @@ export default function OrderConfirmedPage() {
               <Package className="h-16 w-16 text-destructive" />
             </div>
             <h1 className="text-2xl font-bold text-foreground mb-4">
-              Order Not Found
+              {t("orderConfirmed.orderNotFound")}
             </h1>
             <p className="text-muted-foreground mb-8">
-              {error || "We couldn't find the order you're looking for."}
+              {error || t("orderConfirmed.orderNotFoundDescription")}
             </p>
             <Button asChild>
-              <Link href="/products">Continue Shopping</Link>
+              <Link href="/products">{t("orderConfirmed.continueShopping")}</Link>
             </Button>
           </div>
         </div>
@@ -142,19 +125,31 @@ export default function OrderConfirmedPage() {
       <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
         {/* Success Header */}
         <div className="text-center mb-8">
-          <div className="p-6 rounded-full bg-green-100 w-fit mx-auto mb-6">
+          <div className="p-6 rounded-full bg-green-100 w-fit mx-auto mb-6 relative">
             <CheckCircle className="h-16 w-16 text-green-600" />
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Order Confirmed!
+            {t("orderConfirmed.title")}
           </h1>
-          <p className="text-muted-foreground mb-4">
-            Thank you for your purchase. Your order has been received and is being processed.
+          <p className="text-muted-foreground mb-4 max-w-md mx-auto">
+            {t("orderConfirmed.description")}
           </p>
-          <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-            <span>Order #{order.display_id || order.id}</span>
-            <span>•</span>
-            <span>{formatDate(order.created_at)}</span>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm">
+            <div className="flex items-center gap-2 px-3 py-1 bg-secondary/20 rounded-full">
+              <span className="font-medium text-foreground">{t("orderConfirmed.orderNumber")}{order.display_id || order.id.slice(-8)}</span>
+            </div>
+            <span className="hidden sm:inline text-muted-foreground">•</span>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <span>{formatDate(order.created_at)}</span>
+            </div>
+            {order.total && (
+              <>
+                <span className="hidden sm:inline text-muted-foreground">•</span>
+                <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full">
+                  <span className="font-semibold text-primary">{formatPrice(order.total, order.currency_code)}</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -165,39 +160,59 @@ export default function OrderConfirmedPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Package className="h-5 w-5" />
-                  Order Items
+                  {t("orderConfirmed.orderItems")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {order.items?.map((item) => (
-                  <div key={item.id} className="flex gap-4 p-4 border rounded-lg">
-                    <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
-                      {item.thumbnail ? (
-                        <img
-                          src={item.thumbnail}
-                          alt={item.title}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <Package className="h-8 w-8 text-muted-foreground" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-medium">{item.title}</h4>
-                      {item.variant_title && (
-                        <p className="text-sm text-muted-foreground">{item.variant_title}</p>
-                      )}
-                      <div className="flex items-center justify-between mt-2">
-                        <span className="text-sm text-muted-foreground">
-                          Qty: {item.quantity}
-                        </span>
-                        <span className="font-medium">
-                          {formatPrice(item.unit_price, order.currency_code)}
-                        </span>
+                {order.items?.map((item) => {
+                  const itemImage = item.thumbnail || 
+                    (item.variant?.product?.thumbnail) || 
+                    (item.product?.thumbnail) ||
+                    (item.variant?.metadata?.images ? JSON.parse(item.variant.metadata.images)[0] : null);
+                  
+                  const itemTotal = (item.unit_price || 0) * (item.quantity || 1);
+                  
+                  return (
+                    <div key={item.id} className="flex gap-4 p-4 border rounded-lg bg-secondary/5 hover:bg-secondary/10 transition-colors">
+                      <div className="w-20 h-20 bg-muted rounded-lg flex items-center justify-center overflow-hidden">
+                        {itemImage ? (
+                          <img
+                            src={itemImage}
+                            alt={item.title || 'Product'}
+                            className="w-full h-full object-cover rounded-lg"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <Package className="h-8 w-8 text-muted-foreground" style={{display: itemImage ? 'none' : 'flex'}} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground">{item.title || t("orderConfirmed.unknownProduct")}</h4>
+                        {item.variant_title && (
+                          <p className="text-sm text-muted-foreground mt-1">{item.variant_title}</p>
+                        )}
+                        {item.description && (
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{item.description}</p>
+                        )}
+                        <div className="flex items-center justify-between mt-3">
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm text-muted-foreground">
+                              {t("orderConfirmed.quantity")}: <span className="font-medium text-foreground">{item.quantity}</span>
+                            </span>
+                            <span className="text-sm text-muted-foreground">
+                              {t("orderConfirmed.unit")}: <span className="font-medium text-foreground">{formatPrice(item.unit_price, order.currency_code)}</span>
+                            </span>
+                          </div>
+                          <span className="font-semibold text-lg text-primary">
+                            {formatPrice(itemTotal, order.currency_code)}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </CardContent>
             </Card>
 
@@ -207,7 +222,7 @@ export default function OrderConfirmedPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Truck className="h-5 w-5" />
-                    Shipping Information
+                    {t("orderConfirmed.shippingInformation")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -223,9 +238,11 @@ export default function OrderConfirmedPage() {
                           <p>{order.shipping_address.address_2}</p>
                         )}
                         <p>
-                          {order.shipping_address.city}, {order.shipping_address.province} {order.shipping_address.postal_code}
+                          {order.shipping_address.city}
+                          {order.shipping_address.province && `, ${order.shipping_address.province}`}
+                          {order.shipping_address.postal_code && ` ${order.shipping_address.postal_code}`}
                         </p>
-                        <p>{order.shipping_address.country?.display_name}</p>
+                        <p>{order.shipping_address.country?.display_name || order.shipping_address.country_code}</p>
                       </div>
                     </div>
                     {order.shipping_address.phone && (
@@ -250,68 +267,98 @@ export default function OrderConfirmedPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle>{t("orderConfirmed.orderSummary")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span>Subtotal</span>
-                    <span>{formatPrice(order.subtotal, order.currency_code)}</span>
+                    <span className="text-muted-foreground">{t("orderConfirmed.subtotal")}</span>
+                    <span className="font-medium">{formatPrice(order.subtotal, order.currency_code)}</span>
                   </div>
-                  {order.shipping_total > 0 && (
+                  
+                  {(order.shipping_total > 0 || order.shipping_methods?.length > 0) && (
                     <div className="flex justify-between text-sm">
-                      <span>Shipping</span>
-                      <span>{formatPrice(order.shipping_total, order.currency_code)}</span>
+                      <span className="text-muted-foreground">
+                        {t("orderConfirmed.shipping")}
+                        {order.shipping_methods?.[0]?.shipping_option?.name && (
+                          <span className="text-xs block text-muted-foreground/70">
+                            {order.shipping_methods[0].shipping_option.name}
+                          </span>
+                        )}
+                      </span>
+                      <span className="font-medium">
+                        {order.shipping_total > 0 ? 
+                          formatPrice(order.shipping_total, order.currency_code) : 
+                          t("orderConfirmed.free")
+                        }
+                      </span>
                     </div>
                   )}
+                  
                   {order.tax_total > 0 && (
                     <div className="flex justify-between text-sm">
-                      <span>Tax</span>
-                      <span>{formatPrice(order.tax_total, order.currency_code)}</span>
+                      <span className="text-muted-foreground">{t("orderConfirmed.tax")}</span>
+                      <span className="font-medium">{formatPrice(order.tax_total, order.currency_code)}</span>
                     </div>
                   )}
+                  
                   {order.discount_total > 0 && (
-                    <div className="flex justify-between text-sm text-green-600">
-                      <span>Discount</span>
-                      <span>-{formatPrice(order.discount_total, order.currency_code)}</span>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-600">{t("orderConfirmed.discount")}</span>
+                      <span className="font-medium text-green-600">-{formatPrice(order.discount_total, order.currency_code)}</span>
+                    </div>
+                  )}
+                  
+                  {order.gift_card_total > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-blue-600">{t("orderConfirmed.giftCard")}</span>
+                      <span className="font-medium text-blue-600">-{formatPrice(order.gift_card_total, order.currency_code)}</span>
                     </div>
                   )}
                 </div>
-                <Separator />
-                <div className="flex justify-between font-medium">
-                  <span>Total</span>
-                  <span>{formatPrice(order.total, order.currency_code)}</span>
+                
+                <Separator className="my-4" />
+                
+                <div className="flex justify-between text-lg font-bold">
+                  <span>{t("orderConfirmed.totalPaid")}</span>
+                  <span className="text-primary">{formatPrice(order.total, order.currency_code)}</span>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Order Status */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
-                  Order Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Payment Status</span>
-                  {getPaymentStatusBadge(order.payment_status)}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Fulfillment Status</span>
-                  {getFulfillmentStatusBadge(order.fulfillment_status)}
-                </div>
+                
+                {/* Payment Method Info */}
+                {order.payments?.length > 0 && (
+                  <div className="mt-4 p-3 bg-secondary/20 rounded-lg">
+                    <h4 className="text-sm font-medium mb-2">{t("orderConfirmed.paymentMethod")}</h4>
+                    {order.payments.map((payment) => (
+                      <div key={payment.id} className="text-xs text-muted-foreground">
+                        <span className="capitalize">{payment.provider_id?.replace('_', ' ')}</span>
+                        {payment.data?.last4 && (
+                          <span> •••• {payment.data.last4}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Ameria Bank Details */}
+                {order.metadata?.ameria_payment_id && (
+                  <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <h4 className="text-sm font-medium mb-2 text-blue-800">{t("orderConfirmed.paymentDetails")}</h4>
+                    <div className="space-y-1 text-xs text-blue-700">
+                      <div>{t("orderConfirmed.paymentId")}: {order.metadata.ameria_payment_id}</div>
+                      {order.metadata.ameria_order_id && (
+                        <div>{t("orderConfirmed.orderId")}: {order.metadata.ameria_order_id}</div>
+                      )}
+                      <div className="text-blue-600">{t("orderConfirmed.processedVia")}</div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
             {/* Actions */}
             <div className="space-y-3">
               <Button asChild className="w-full">
-                <Link href="/products">Continue Shopping</Link>
-              </Button>
-              <Button variant="outline" className="w-full" onClick={() => window.print()}>
-                Print Order
+                <Link href="/products">{t("orderConfirmed.continueShopping")}</Link>
               </Button>
             </div>
           </div>

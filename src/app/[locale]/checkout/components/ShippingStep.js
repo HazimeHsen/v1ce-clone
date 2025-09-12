@@ -14,7 +14,8 @@ export default function ShippingStep({
   shippingForm, 
   onShippingSubmit, 
   isProcessingOrder, 
-  loading
+  loading,
+  t
 }) {
 
   return (
@@ -26,7 +27,7 @@ export default function ShippingStep({
               <Truck className="h-5 w-5 text-primary" />
             </div>
             <span className="flex items-center gap-2">
-              Shipping Information
+              {t("checkout.shippingAndBilling")}
             </span>
           </CardTitle>
         </CardHeader>
@@ -39,7 +40,7 @@ export default function ShippingStep({
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">First Name</FormLabel>
+                      <FormLabel className="text-foreground">{t("checkout.firstName")}</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="John" 
@@ -56,7 +57,7 @@ export default function ShippingStep({
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">Last Name</FormLabel>
+                      <FormLabel className="text-foreground">{t("checkout.lastName")}</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="Doe" 
@@ -77,7 +78,7 @@ export default function ShippingStep({
                   <FormItem>
                     <FormLabel className="text-foreground flex items-center gap-2">
                       <Mail className="h-4 w-4 text-primary" />
-                      Email Address
+                      {t("checkout.email")}
                     </FormLabel>
                     <FormControl>
                       <Input 
@@ -97,7 +98,7 @@ export default function ShippingStep({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-foreground">Phone Number</FormLabel>
+                    <FormLabel className="text-foreground">{t("checkout.phone")}</FormLabel>
                     <FormControl>
                       <PhoneInput
                         placeholder="Enter phone number"
@@ -119,7 +120,7 @@ export default function ShippingStep({
                   <FormItem>
                     <FormLabel className="text-foreground flex items-center gap-2">
                       <MapPin className="h-4 w-4 text-primary" />
-                      Address
+                      {t("checkout.address")}
                     </FormLabel>
                     <FormControl>
                       <Input 
@@ -139,7 +140,7 @@ export default function ShippingStep({
                   name="city"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">City</FormLabel>
+                      <FormLabel className="text-foreground">{t("checkout.city")}</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="New York" 
@@ -156,7 +157,7 @@ export default function ShippingStep({
                   name="postalCode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">Postal Code</FormLabel>
+                      <FormLabel className="text-foreground">{t("checkout.postalCode")}</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="10001" 
@@ -175,11 +176,11 @@ export default function ShippingStep({
                 name="country"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-foreground">Country</FormLabel>
+                    <FormLabel className="text-foreground">{t("checkout.country")}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="bg-secondary/20 border-border/50 text-foreground w-full">
-                          <SelectValue placeholder="Select a country" />
+                          <SelectValue placeholder={t("checkout.selectCountry")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="bg-card border-border max-h-[300px]">
@@ -201,9 +202,9 @@ export default function ShippingStep({
                   className="w-full"
                   disabled={isProcessingOrder || loading}
                   loading={isProcessingOrder || loading}
-                  loadingText={isProcessingOrder ? "Processing..." : "Loading..."}
+                  loadingText={isProcessingOrder ? t("checkout.processing") : "Loading..."}
                 >
-                  Proceed to Payment
+                  {t("checkout.proceedToPayment")}
                 </Button>
               </div>
             </form>

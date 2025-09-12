@@ -221,6 +221,10 @@ export default function ProductPage() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [colorImageMap, setColorImageMap] = useState({});
+  
+  // Mobile product info state
+  const [quantity, setQuantity] = useState(1);
+  const [selectedBundle, setSelectedBundle] = useState(null);
 
   const { fetchProduct, region } = useStore();
   const { handle } = useParams();
@@ -288,7 +292,7 @@ export default function ProductPage() {
             type: "image",
           }));
         } catch (error) {
-          console.error("[v0] Error parsing variant images:", error);
+          console.error("Error parsing variant images:", error);
         }
       }
 
@@ -321,7 +325,7 @@ export default function ProductPage() {
       try {
         setLoading(true);
         const productData = await fetchProduct(handle);
-        console.log("[v0] Fetched product data:", productData);
+        console.log("Fetched product data:", productData);
 
         if (productData) {
           setProduct(productData);
@@ -330,7 +334,7 @@ export default function ProductPage() {
           setColorImageMap(dynamicColorMap);
         }
       } catch (error) {
-        console.error("[v0] Error fetching product:", error);
+        console.error("Error fetching product:", error);
       } finally {
         setLoading(false);
       }
@@ -373,6 +377,108 @@ export default function ProductPage() {
     );
   }
 
+  // Helper functions and data for mobile product info
+  const colorSwatches = product?.variants?.map((variant) => {
+    const combo = variant.title;
+    const colors = combo.split("&").map((c) => c.trim().toLowerCase());
+    return { title: combo, colors };
+  }) || [];
+
+  const selectedVariant = product?.variants?.find(
+    (v) => v.title === selectedColor
+  );
+
+  const basePrice = selectedVariant?.calculated_price?.calculated_amount || 25;
+  const currencyCode = selectedVariant?.calculated_price?.currency_code || "eur";
+  const currencySymbol = currencyCode === "eur" ? "€" : "$";
+
+  const formatPrice = (amount) => {
+    return `${currencySymbol}${amount.toFixed(2)}`;
+  };
+
+  const selectedSwatchIndex = colorSwatches.findIndex(
+    (swatch) => swatch.title === selectedColor
+  );
+
+  const handleSwatchSelect = (swatch, index) => {
+    if (selectedColor === swatch.title) {
+      setSelectedColor(null);
+    } else {
+      setSelectedColor(swatch.title);
+      setMainCarouselIndex(0);
+      setThumbCarouselIndex(0);
+    }
+  };
+
+  const incrementQuantity = () => {
+    setQuantity((prev) => Math.min(prev + 1, 100));
+  };
+
+  const decrementQuantity = () => {
+    setQuantity((prev) => Math.max(prev - 1, 1));
+  };
+
+  const quantityBundles = [
+    {
+      id: "1-item",
+      name: t("product.quantityBundles.oneItem"),
+      quantity: 1,
+      price: formatPrice(basePrice * 1),
+      pricePerItem: formatPrice(basePrice),
+      save: null,
+      popular: false,
+      description: [
+        t("product.quantityBundles.oneItemDescription.0"),
+        t("product.quantityBundles.oneItemDescription.1"),
+        t("product.quantityBundles.oneItemDescription.2"),
+      ],
+    },
+    {
+      id: "4-items",
+      name: t("product.quantityBundles.fourItems"),
+      quantity: 4,
+      price: formatPrice(basePrice * 4),
+      pricePerItem: formatPrice(basePrice),
+      save: null,
+      popular: false,
+      description: [
+        t("product.quantityBundles.fourItemsDescription.0"),
+        t("product.quantityBundles.fourItemsDescription.1"),
+        t("product.quantityBundles.fourItemsDescription.2"),
+      ],
+    },
+    {
+      id: "8-items",
+      name: t("product.quantityBundles.eightItems"),
+      quantity: 8,
+      price: formatPrice(basePrice * 8),
+      pricePerItem: formatPrice(basePrice),
+      save: null,
+      popular: true,
+      description: [
+        t("product.quantityBundles.eightItemsDescription.0"),
+        t("product.quantityBundles.eightItemsDescription.1"),
+        t("product.quantityBundles.eightItemsDescription.2"),
+        t("product.quantityBundles.eightItemsDescription.3"),
+      ],
+    },
+    {
+      id: "12-items",
+      name: t("product.quantityBundles.twelveItems"),
+      quantity: 12,
+      price: formatPrice(basePrice * 12),
+      pricePerItem: formatPrice(basePrice),
+      save: null,
+      popular: false,
+      description: [
+        t("product.quantityBundles.twelveItemsDescription.0"),
+        t("product.quantityBundles.twelveItemsDescription.1"),
+        t("product.quantityBundles.twelveItemsDescription.2"),
+        t("product.quantityBundles.twelveItemsDescription.3"),
+      ],
+    },
+  ];
+
   if (!product) {
     return (
       <>
@@ -400,6 +506,22 @@ export default function ProductPage() {
           testimonials={getTranslatedTestimonials()}
           salesPoints={getTranslatedSalesPoints()}
           faqItems={getTranslatedFaqItems()}
+          // Mobile product info props
+          product={product}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          selectedBundle={selectedBundle}
+          setSelectedBundle={setSelectedBundle}
+          quantityBundles={quantityBundles}
+          colorSwatches={colorSwatches}
+          formatPrice={formatPrice}
+          basePrice={basePrice}
+          selectedSwatchIndex={selectedSwatchIndex}
+          handleSwatchSelect={handleSwatchSelect}
+          decrementQuantity={decrementQuantity}
+          incrementQuantity={incrementQuantity}
         />
         <ProductDetailsForm
           product={product}

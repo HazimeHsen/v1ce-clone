@@ -10,7 +10,8 @@ export default function ShippingMethodForm({
   selectedShippingOption,
   setSelectedShippingOption,
   addShippingMethod,
-  formatPrice
+  formatPrice,
+  t
 }) {
   const handleShippingOptionChange = async (optionId) => {
     const option = shippingOptions.find(opt => opt.id === optionId);
@@ -31,7 +32,7 @@ export default function ShippingMethodForm({
           <div className="p-2 rounded-full bg-primary/10">
             <Truck className="h-5 w-5 text-primary" />
           </div>
-          Shipping Method
+          {t("checkout.shippingMethod")}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6">
@@ -50,14 +51,14 @@ export default function ShippingMethodForm({
                 <Label htmlFor={option.id} className="flex flex-col cursor-pointer">
                   <span className="font-medium text-foreground">{option.name}</span>
                   <span className="text-sm text-muted-foreground">
-                    {option.description || 'Estimated delivery: 3-5 business days'}
+                    {option.description || t("checkout.estimatedDelivery")}
                   </span>
                 </Label>
               </div>
               <div className="text-right">
                 <span className="font-medium text-foreground">
                   {option.amount === 0 ? (
-                    <span className="text-primary">Free</span>
+                    <span className="text-primary">{t("checkout.free")}</span>
                   ) : (
                     `€${formatPrice(option.amount)}`
                   )}
@@ -68,7 +69,7 @@ export default function ShippingMethodForm({
         </RadioGroup>
         {shippingOptions.length === 0 && (
           <div className="text-center text-muted-foreground py-4">
-            No shipping options available for your location.
+            {t("checkout.noShippingOptions")}
           </div>
         )}
       </CardContent>

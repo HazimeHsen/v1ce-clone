@@ -76,7 +76,7 @@ export async function GET(req, { params }) {
       const errorData = await paymentDetailsResponse.json();
       console.error("Failed to get payment details:", errorData);
       return NextResponse.redirect(
-        new URL("/checkout?error=payment_verification_failed", req.url)
+        new URL("/checkout?error=payment_processing_error", req.url)
       );
     }
 
@@ -213,13 +213,102 @@ export async function GET(req, { params }) {
       );
     }
 
-    // Step 6: Log successful order completion and redirect
+    // Step 6: Update order with Ameria Bank IDs
     const orderId = orderData.order?.id;
 
+    if (orderId) {
+      try {
+        // Update order metadata with Ameria Bank order ID and payment ID
+        // Try admin API first, fallback to logging only if admin key not available
+        const adminApiKey = process.env.MEDUSA_ADMIN_KEY;
+        
+        let updateOrderRes;
+        if (adminApiKey) {
+          // Use admin API to update order metadata
+          updateOrderRes = await fetch(
+            `${MEDUSA_BACKEND_URL}/admin/orders/${orderId}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-medusa-access-token": adminApiKey,
+              },
+              body: JSON.stringify({
+                metadata: {
+                  ameria_order_id: orderID,
+                  ameria_payment_id: paymentID,
+                  ameria_response_code: responseCode,
+                  ameria_amount: paymentDetails.Amount,
+                  ameria_currency: paymentDetails.Currency,
+                  payment_provider: "ameriabank"
+                }
+              }),
+            }
+          );
+        } else {
+          // No admin API key available - just log the data for manual update later
+          console.warn("MEDUSA_ADMIN_API_KEY not found - cannot update order metadata");
+          console.log("Order metadata to be added manually:", {
+            orderId,
+            ameria_order_id: orderID,
+            ameria_payment_id: paymentID,
+            ameria_response_code: responseCode,
+            ameria_amount: paymentDetails.Amount,
+            ameria_currency: paymentDetails.Currency,
+            payment_provider: "ameriabank"
+          });
+          
+          // Create a mock successful response so the flow continues
+          updateOrderRes = { ok: true };
+        }
+
+        if (!updateOrderRes.ok) {
+          const updateError = await updateOrderRes.json();
+          console.error("Failed to update order with Ameria Bank IDs:", updateError);
+          // Log the error but don't fail the whole process since order is already created
+          // The Ameria Bank IDs are still logged for reference
+          logToFile("callback_logs.txt", {
+            timestamp,
+            warning: "order_metadata_update_failed",
+            orderId,
+            paymentID,
+            orderID,
+            ameriaOrderId: orderID,
+            ameriaPaymentId: paymentID,
+            updateError,
+          });
+        } else {
+          const updateResult = await updateOrderRes.json();
+          console.log(`Order ${orderId} updated with Ameria Bank IDs: orderID=${orderID}, paymentID=${paymentID}`);
+          logToFile("callback_logs.txt", {
+            timestamp,
+            info: "order_metadata_updated",
+            orderId,
+            paymentID,
+            orderID,
+            ameriaOrderId: orderID,
+            ameriaPaymentId: paymentID,
+          });
+        }
+      } catch (updateErr) {
+        console.error("Error updating order metadata:", updateErr);
+        logToFile("callback_logs.txt", {
+          timestamp,
+          warning: "order_metadata_update_error",
+          orderId,
+          paymentID,
+          orderID,
+          error: updateErr.message,
+        });
+      }
+    }
+
+    // Step 7: Log successful order completion and redirect
     logToFile("callback_logs.txt", {
       timestamp,
       success: true,
       paymentID,
+      orderID,
       cartId,
       orderId,
       amount: paymentDetails.Amount,
@@ -227,7 +316,7 @@ export async function GET(req, { params }) {
     });
 
     console.log(
-      `Order completed successfully: ${orderId} for payment ${paymentID}`
+      `Order completed successfully: ${orderId} for Ameria payment ${paymentID}, order ${orderID}`
     );
 
     return NextResponse.redirect(
@@ -257,7 +346,7 @@ export async function GET(req, { params }) {
     });
 
     return NextResponse.redirect(
-      new URL(`/checkout?error=${encodeURIComponent(err.message)}`, req.url)
+      new URL("/checkout?error=payment_processing_error", req.url)
     );
   }
 }

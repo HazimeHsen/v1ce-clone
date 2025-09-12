@@ -214,14 +214,14 @@ export default function ProductDetailsForm({
         openCart();
       }, 500);
 
-      console.log("[v0] Successfully added to cart:", {
+      console.log("Successfully added to cart:", {
         variant: selectedVariant.title,
         bundleQuantity,
         userQuantity: quantity,
         totalQuantity,
       });
     } catch (error) {
-      console.error("[v0] Add to cart error:", error);
+      console.error("Add to cart error:", error);
       setCartError(error.message || "Failed to add item to cart");
     } finally {
       setIsAddingToCart(false);
@@ -238,14 +238,14 @@ export default function ProductDetailsForm({
     <section className="relative flex w-full flex-col">
       <div
         className="sticky"
-        style={{ top: "-161px", transition: "top 0.4s ease-out" }}
+        style={{ top: "-250px" }}
       >
         <div className="relative z-10 mb-6 flex flex-col gap-4">
-          <div className="flex flex-col gap-4 md:gap-6">
+          <div className="hidden md:flex flex-col gap-4 md:gap-6">
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="text-2xl font-semibold sm:text-3xl md:text-4xl">
-                  {product?.title || "Metal Digital Business Card"}
+                  {product?.title || t("product.quantityBundles.defaultTitle")}
                 </h1>
                 <h2 className="text-sm font-medium text-muted-foreground">
                   {product?.description ||
@@ -309,7 +309,7 @@ export default function ProductDetailsForm({
                 <span className="font-medium">Jul 23 - Jul 25</span>
               </p>
             </div>
-            <div className="block md:hidden">
+            <div className="hidden">
               <div className="flex flex-col gap-4">
                 <div
                   className="relative"
@@ -467,12 +467,12 @@ export default function ProductDetailsForm({
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-6">
+            <div className="hidden md:flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-small text-muted-foreground">
-                  Colour:{" "}
+                  {t("product.quantityBundles.colour")}{" "}
                   <span className="font-medium text-white">
-                    {selectedColor || "None selected"}
+                    {selectedColor || t("product.quantityBundles.noneSelected")}
                   </span>
                   {selectedColor && (
                     <span className="ml-2 text-xs text-muted-foreground">
@@ -493,7 +493,7 @@ export default function ProductDetailsForm({
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-small text-muted-foreground">
-                  Quantity:
+                  {t("product.quantityBundles.quantity")}
                 </label>
                 <div className="flex items-center gap-3">
                   <Button
@@ -522,7 +522,7 @@ export default function ProductDetailsForm({
                 </div>
               </div>
             </div>
-            <div>
+            <div className="hidden md:block">
               <div className="space-y-4">
                 <Accordion
                   type="single"
@@ -579,7 +579,7 @@ export default function ProductDetailsForm({
 
                   <div className="mt-4 rounded-xl bg-secondary p-4 border">
                     <h3 className="font-semibold mb-4 text-center">
-                      Limited Time Only
+                      {t("product.quantityBundles.limitedTimeOnly")}
                     </h3>
                     {quantityBundles
                       .filter((bundle) => bundle.id !== "1-item")
@@ -601,7 +601,7 @@ export default function ProductDetailsForm({
                           >
                             {bundle.popular && (
                               <div className="flex w-full justify-center rounded-t-xl border-transparent bg-primary/10 py-1 font-semibold text-primary">
-                                Most Popular
+                                {t("product.quantityBundles.mostPopular")}
                               </div>
                             )}
                             <div className="flex w-full">
