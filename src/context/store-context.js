@@ -6,7 +6,7 @@ import Medusa from "@medusajs/medusa-js";
 const StoreContext = createContext();
 
 const medusa = new Medusa({
-  baseUrl: "http://localhost:9000",
+  baseUrl: process.env.NEXT_PUBLIC_MEDUSA_BASE_URL,
   maxRetries: 3,
   publishableApiKey:
   process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY

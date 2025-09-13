@@ -4,7 +4,7 @@ import path from "path";
 
 const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
 const MEDUSA_BACKEND_URL =
-  process.env.MEDUSA_BASE_URL || "http://localhost:9000";
+  process.env.NEXT_PUBLIC_MEDUSA_BASE_URL || "http://localhost:9000";
 const AMERIABANK_BASE_URL = "https://servicestest.ameriabank.am/VPOS/api/VPOS";
 
 export async function GET(req, { params }) {

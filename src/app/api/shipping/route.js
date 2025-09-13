@@ -10,7 +10,7 @@ export async function POST(request) {
     const cartId = shippingData.cartId;
 
     const response = await fetch(
-        `http://localhost:9000/store/shipping-options?cart_id=${cartId}`,
+        `${process.env.NEXT_PUBLIC_MEDUSA_BASE_URL}/store/shipping-options?cart_id=${cartId}`,
         {
           method: 'GET',
           headers: {
@@ -49,7 +49,7 @@ export async function GET(request) {
       }
   
       const response = await fetch(
-        `http://localhost:9000/store/shipping-options?cart_id=${cartId}`,
+        `${process.env.NEXT_PUBLIC_MEDUSA_BASE_URL}/store/shipping-options?cart_id=${cartId}`,
         {
           method: "GET",
           headers: {

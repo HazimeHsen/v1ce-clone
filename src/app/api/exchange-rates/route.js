@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 
-const MEDUSA_BASE_URL = process.env.MEDUSA_BASE_URL || 'http://localhost:9000';
+const NEXT_PUBLIC_MEDUSA_BASE_URL = process.env.NEXT_PUBLIC_MEDUSA_BASE_URL || 'http://localhost:9000';
 
 export async function GET() {
   try {
     // Fetch all exchange rates from Medusa backend
-    const response = await fetch(`${MEDUSA_BASE_URL}/api/exchange-rate`, {
+    const response = await fetch(`${NEXT_PUBLIC_MEDUSA_BASE_URL}/api/exchange-rate`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -106,7 +106,6 @@ export default function CheckoutPage() {
   useEffect(() => {
     const fetchShippingOptions = async () => {
       if (!cart?.id) {
-        // If no cart yet, keep loading state as is (don't set to false)
         return;
       }
 

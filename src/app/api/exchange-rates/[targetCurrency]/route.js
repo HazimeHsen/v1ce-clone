@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const MEDUSA_BASE_URL = process.env.MEDUSA_BASE_URL || 'http://localhost:9000';
+const NEXT_PUBLIC_MEDUSA_BASE_URL = process.env.NEXT_PUBLIC_MEDUSA_BASE_URL || 'http://localhost:9000';
 
 export async function GET(request, { params }) {
   try {
@@ -13,7 +13,7 @@ export async function GET(request, { params }) {
       );
     }
 
-    let apiUrl = `${MEDUSA_BASE_URL}/exchange-rates/${targetCurrency}`;
+    let apiUrl = `${NEXT_PUBLIC_MEDUSA_BASE_URL}/exchange-rates/${targetCurrency}`;
 
     const response = await fetch(apiUrl, {
       method: 'GET',
