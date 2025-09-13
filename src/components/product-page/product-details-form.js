@@ -20,6 +20,7 @@ import { useStore } from "@/context/store-context";
 import { useCurrency } from "@/context/currency-context";
 import { useTranslations } from "@/hooks/use-translations";
 import { getDeliveryDateRange } from "@/lib/delivery-utils";
+import PriceDisplay from "@/components/ui/price-display";
 
 export default function ProductDetailsForm({
   product,
@@ -134,8 +135,8 @@ export default function ProductDetailsForm({
       id: "1-item",
       name: t("product.quantityBundles.oneItem"),
       quantity: 1,
-      price: formatPrice(basePrice * 1),
-      pricePerItem: formatPrice(basePrice),
+      price: basePrice * 1,
+      pricePerItem: basePrice,
       save: null,
       popular: false,
       description: [
@@ -148,8 +149,8 @@ export default function ProductDetailsForm({
       id: "4-items",
       name: t("product.quantityBundles.fourItems"),
       quantity: 4,
-      price: formatPrice(basePrice * 4),
-      pricePerItem: formatPrice(basePrice),
+      price: basePrice * 4,
+      pricePerItem: basePrice,
       save: null,
       popular: false,
       description: [
@@ -162,8 +163,8 @@ export default function ProductDetailsForm({
       id: "8-items",
       name: t("product.quantityBundles.eightItems"),
       quantity: 8,
-      price: formatPrice(basePrice * 8),
-      pricePerItem: formatPrice(basePrice),
+      price: basePrice * 8,
+      pricePerItem: basePrice,
       save: null,
       popular: true,
       description: [
@@ -177,8 +178,8 @@ export default function ProductDetailsForm({
       id: "12-items",
       name: t("product.quantityBundles.twelveItems"),
       quantity: 12,
-      price: formatPrice(basePrice * 12),
-      pricePerItem: formatPrice(basePrice),
+      price: basePrice * 12,
+      pricePerItem: basePrice,
       save: null,
       popular: false,
       description: [
@@ -524,11 +525,6 @@ export default function ProductDetailsForm({
                   <span className="font-medium text-white">
                     {selectedColor || t("product.quantityBundles.noneSelected")}
                   </span>
-                  {selectedColor && (
-                    <span className="ml-2 text-xs text-muted-foreground">
-                      ({formatPrice(basePrice)})
-                    </span>
-                  )}
                 </label>
                 <div className="ml-1.5">
                   <ColorSwatches
@@ -612,7 +608,7 @@ export default function ProductDetailsForm({
                                 </span>
                               </div>
                               <div className="ml-2 text-right font-semibold">
-                                {bundle.price}
+                                <PriceDisplay price={bundle.price} />
                               </div>
                             </div>
                           </div>
@@ -669,7 +665,7 @@ export default function ProductDetailsForm({
                                   </span>
                                 </div>
                                 <div className="ml-2 text-right font-semibold">
-                                  {bundle.price}
+                                  <PriceDisplay price={bundle.price} />
                                 </div>
                               </div>
                             </div>

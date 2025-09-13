@@ -4,7 +4,7 @@ const MEDUSA_BASE_URL = process.env.MEDUSA_BASE_URL || 'http://localhost:9000';
 
 export async function GET(request, { params }) {
   try {
-    const { targetCurrency } = params;
+    const { targetCurrency } = await params;
     
     if (!targetCurrency) {
       return NextResponse.json(
@@ -13,10 +13,8 @@ export async function GET(request, { params }) {
       );
     }
 
-    // Build the URL with target currency if provided
     let apiUrl = `${MEDUSA_BASE_URL}/exchange-rates/${targetCurrency}`;
 
-    // Fetch exchange rates from Medusa backend
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
@@ -29,9 +27,7 @@ export async function GET(request, { params }) {
     }
 
     const data = await response.json();
-    console.log('Medusa API response:', data);
     
-    // Transform the response to match expected format
     if (data.success && data.data && data.data.rows) {
       const transformedData = {
         success: true,

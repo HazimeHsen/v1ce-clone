@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useStore } from "@/context/store-context";
 import { useCurrency } from "@/context/currency-context";
 import { Spinner } from "@/components/ui/loader";
+import PriceDisplay from "./ui/price-display";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -281,6 +282,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex gap-5">
+          <CurrencySwitcher />
           <LanguageSwitcher currentLocale={currentLocale} />
           <Sheet
             open={isCartOpen}
@@ -348,7 +350,7 @@ export default function Navbar() {
                             </p>
                           )}
                           <p className="text-sm text-muted-foreground">
-                            {formatPrice(item.unit_price || 0)}
+                            <PriceDisplay price={item.unit_price || 0} />
                           </p>
                           <div className="flex items-center gap-2 mt-1">
                             <Button
@@ -408,7 +410,7 @@ export default function Navbar() {
                           </div>
                         </div>
                         <div className="font-semibold">
-                          {formatPrice((item.unit_price || 0) * item.quantity)}
+                          <PriceDisplay price={(item.unit_price || 0) * item.quantity} />
                         </div>
                       </div>
                     ))}
@@ -421,7 +423,7 @@ export default function Navbar() {
                     {t("cart.total")}
                   </span>
                   <span className="text-lg font-semibold">
-                    {formatPrice(totalPrice)}
+                    <PriceDisplay price={totalPrice} />
                   </span>
                 </div>
                 <Button onClick={handleCheckout} className="w-full" size="lg">

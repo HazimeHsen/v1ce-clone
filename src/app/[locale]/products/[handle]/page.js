@@ -223,7 +223,6 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [colorImageMap, setColorImageMap] = useState({});
   
-  // Mobile product info state
   const [quantity, setQuantity] = useState(1);
   const [selectedBundle, setSelectedBundle] = useState(null);
 
@@ -231,26 +230,23 @@ export default function ProductPage() {
   const { formatPrice } = useCurrency();
   const { handle } = useParams();
 
-  // Get translated testimonials
   const getTranslatedTestimonials = () => {
     return testimonials.map((testimonial, index) => ({
-      ...testimonial, // Keep original logo and thumbnail URLs
+      ...testimonial,
       quote: t(`testimonials.${index}.quote`),
       name: t(`testimonials.${index}.name`),
       title: t(`testimonials.${index}.title`),
     }));
   };
 
-  // Get translated sales points
   const getTranslatedSalesPoints = () => {
     return salesPoints.map((salesPoint, index) => ({
-      ...salesPoint, // Keep original videoSrc URLs
+      ...salesPoint,
       title: t(`salesPoints.${index}.title`),
       content: t(`salesPoints.${index}.content`),
     }));
   };
 
-  // Get translated FAQ items
   const getTranslatedFaqItems = () => {
     const translatedFaq = {};
     const faqSections = ["usingCard", "metalSpecific", "accountUsage"];
@@ -259,7 +255,6 @@ export default function ProductPage() {
       const sectionTitle = t(`faqItems.${section}.title`);
       const sectionItems = [];
       
-      // Get the number of items in this section
       const originalSection = Object.keys(faqItems)[index];
       const originalItems = faqItems[originalSection];
       
@@ -379,7 +374,6 @@ export default function ProductPage() {
     );
   }
 
-  // Helper functions and data for mobile product info
   const colorSwatches = product?.variants?.map((variant) => {
     const combo = variant.title;
     const colors = combo.split("&").map((c) => c.trim().toLowerCase());
@@ -391,10 +385,6 @@ export default function ProductPage() {
   );
 
   const basePrice = selectedVariant?.calculated_price?.calculated_amount || 25;
-  const currencyCode = selectedVariant?.calculated_price?.currency_code || "eur";
-  const currencySymbol = currencyCode === "eur" ? "€" : "$";
-
-  // Using formatPrice from currency context
 
   const selectedSwatchIndex = colorSwatches.findIndex(
     (swatch) => swatch.title === selectedColor
@@ -423,8 +413,8 @@ export default function ProductPage() {
       id: "1-item",
       name: t("product.quantityBundles.oneItem"),
       quantity: 1,
-      price: formatPrice(basePrice * 1),
-      pricePerItem: formatPrice(basePrice),
+      price: basePrice * 1,
+      pricePerItem: basePrice,
       save: null,
       popular: false,
       description: [
@@ -437,8 +427,8 @@ export default function ProductPage() {
       id: "4-items",
       name: t("product.quantityBundles.fourItems"),
       quantity: 4,
-      price: formatPrice(basePrice * 4),
-      pricePerItem: formatPrice(basePrice),
+      price: basePrice * 4,
+      pricePerItem: basePrice,
       save: null,
       popular: false,
       description: [
@@ -451,8 +441,8 @@ export default function ProductPage() {
       id: "8-items",
       name: t("product.quantityBundles.eightItems"),
       quantity: 8,
-      price: formatPrice(basePrice * 8),
-      pricePerItem: formatPrice(basePrice),
+      price: basePrice * 8,
+      pricePerItem: basePrice,
       save: null,
       popular: true,
       description: [
@@ -466,8 +456,8 @@ export default function ProductPage() {
       id: "12-items",
       name: t("product.quantityBundles.twelveItems"),
       quantity: 12,
-      price: formatPrice(basePrice * 12),
-      pricePerItem: formatPrice(basePrice),
+      price: basePrice * 12,
+      pricePerItem: basePrice,
       save: null,
       popular: false,
       description: [
@@ -506,7 +496,6 @@ export default function ProductPage() {
           testimonials={getTranslatedTestimonials()}
           salesPoints={getTranslatedSalesPoints()}
           faqItems={getTranslatedFaqItems()}
-          // Mobile product info props
           product={product}
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}

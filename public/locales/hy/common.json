@@ -683,7 +683,9 @@
   },
   "currencySwitcher": {
     "loading": "Բեռնվում է...",
-    "selectCurrency": "Ընտրեք արժույթը"
+    "selectCurrency": "Ընտրեք արժույթը",
+    "converting": "Փոխարկվում է...",
+    "fetchingRates": "Ստացվում են փոխարժեքները..."
   },
   "metadata": {
     "home": {

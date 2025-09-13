@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CreditCard, X } from "lucide-react";
 import { Spinner } from "@/components/ui/loader";
+import PriceDisplay from "@/components/ui/price-display";
 
 export default function OrderSummary({ 
   displayItems,
@@ -123,10 +124,10 @@ export default function OrderSummary({
                 
                 <div className="text-right">
                   <p className="text-sm text-muted-foreground">
-                    €{formatPrice(item.unit_price || 0)} each
+                    <PriceDisplay price={item.unit_price || 0} /> each
                   </p>
                   <p className="font-semibold text-foreground">
-                    €{formatPrice((item.unit_price || 0) * item.quantity)}
+                    <PriceDisplay price={(item.unit_price || 0) * item.quantity} />
                   </p>
                 </div>
               </div>
@@ -139,16 +140,16 @@ export default function OrderSummary({
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t("checkout.subtotal")} ({totalItems} items)</span>
-            <span className="text-foreground">€{formatPrice(subtotal)}</span>
+            <span className="text-foreground"><PriceDisplay price={subtotal} /></span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t("checkout.shipping")}</span>
-            <span className="text-foreground">€{formatPrice(3)}</span>
+            <span className="text-foreground"><PriceDisplay price={3} /></span>
           </div>
           <Separator className="bg-border/50" />
           <div className="flex justify-between text-lg font-semibold text-foreground">
             <span>{t("checkout.total")}</span>
-            <span className="text-primary">€{formatPrice(totalPrice)}</span>
+            <span className="text-primary"><PriceDisplay price={totalPrice} /></span>
           </div>
         </div>
       </CardContent>

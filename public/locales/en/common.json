@@ -683,7 +683,9 @@
   },
   "currencySwitcher": {
     "loading": "Loading...",
-    "selectCurrency": "Select Currency"
+    "selectCurrency": "Select Currency",
+    "converting": "Converting...",
+    "fetchingRates": "Fetching exchange rates..."
   },
   "metadata": {
     "home": {

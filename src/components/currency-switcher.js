@@ -27,12 +27,16 @@ export default function CurrencySwitcher() {
   } = useCurrency();
   const [isOpen, setIsOpen] = useState(false);
   const [converting, setConverting] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleCurrencyChange = async (currencyCode) => {
     setConverting(true);
-    await changeCurrency(currencyCode);
-    setConverting(false);
-    setIsOpen(false);
+    try {
+      await changeCurrency(currencyCode);
+    } finally {
+      setConverting(false);
+      setIsOpen(false);
+    }
   };
 
   if (isLoading) {
@@ -45,7 +49,6 @@ export default function CurrencySwitcher() {
       </div>
     );
   }
-const isMobile = useIsMobile();
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>

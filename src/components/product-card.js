@@ -1,11 +1,10 @@
 import Link from "next/link";
 import ColorSwatches from "./color-swatches";
+import PriceDisplay from "./ui/price-display";
 import { useTranslations } from "@/hooks/use-translations";
-import { useCurrency } from "@/context/currency-context";
 
 export default function ProductCard({ product }) {
   const { t } = useTranslations();
-  const { formatPrice } = useCurrency();
   const { handle, thumbnail, title, variants } = product;
 
   const colorSwatches = variants?.map((variant) => {
@@ -14,10 +13,8 @@ export default function ProductCard({ product }) {
     return { title: combo, colors };
   });
 
-  const price =
-    variants && variants.length > 0
-      ? formatPrice(variants[0].calculated_price?.calculated_amount || 0)
-      : t("product.contactForPrice");
+  const hasPrice = variants && variants.length > 0;
+  const price = hasPrice ? variants[0].calculated_price?.calculated_amount || 0 : null;
 
   return (
     <Link
@@ -60,7 +57,11 @@ export default function ProductCard({ product }) {
 
         <div className="flex items-center gap-2">
           <div className="text-l1 flex gap-1" id="price">
-            <span>{price}</span>
+            {hasPrice ? (
+              <PriceDisplay price={price} />
+            ) : (
+              <span>{t("product.contactForPrice")}</span>
+            )}
           </div>
         </div>
       </div>
