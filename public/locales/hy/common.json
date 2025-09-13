@@ -677,6 +677,10 @@
     "orderNotFound": "Պատվերը չի գտնվել",
     "orderNotFoundDescription": "Մենք չկարողացանք գտնել այն պատվերը, որը փնտրում եք:"
   },
+  "currencySwitcher": {
+    "loading": "Բեռնվում է...",
+    "selectCurrency": "Ընտրեք արժույթը"
+  },
   "metadata": {
     "home": {
       "title": "Mibio - Խելացի Բիզնես Քարտեր | Վերջին բիզնես քարտը, որը ձեզ հարկավոր կլինի",

@@ -677,6 +677,10 @@
     "orderNotFound": "Order Not Found",
     "orderNotFoundDescription": "We couldn't find the order you're looking for."
   },
+  "currencySwitcher": {
+    "loading": "Loading...",
+    "selectCurrency": "Select Currency"
+  },
   "metadata": {
     "home": {
       "title": "Mibio - Smart Business Cards | The Last Business Card You'll Ever Need",
