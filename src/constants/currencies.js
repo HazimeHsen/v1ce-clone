@@ -74,7 +74,7 @@ export const CURRENCIES = [
   { code: 'BZD', name: 'Belize Dollar', symbol: 'BZ$', country: 'BZ', flag: '/assets/images/flags/bz.png' },
   { code: 'XCD', name: 'East Caribbean Dollar', symbol: 'EC$', country: 'XCD', flag: '/assets/images/flags/ag.png' },
   { code: 'AWG', name: 'Aruban Florin', symbol: 'ƒ', country: 'AW', flag: '/assets/images/flags/aw.png' },
-  { code: 'ANG', name: 'Netherlands Antillean Guilder', symbol: 'ƒ', country: 'AN', flag: '/assets/images/flags/an.png' },
+  { code: 'ANG', name: 'Netherlands Antillean Guilder', symbol: 'ƒ', country: 'AN', flag: '/assets/images/flags/nl.png' },
   { code: 'SRD', name: 'Surinamese Dollar', symbol: '$', country: 'SR', flag: '/assets/images/flags/sr.png' },
   { code: 'GYD', name: 'Guyanese Dollar', symbol: 'G$', country: 'GY', flag: '/assets/images/flags/gy.png' },
   { code: 'BWP', name: 'Botswana Pula', symbol: 'P', country: 'BW', flag: '/assets/images/flags/bw.png' },
@@ -135,7 +135,6 @@ export const CURRENCIES = [
   { code: 'XPF', name: 'CFP Franc', symbol: '₣', country: 'XPF', flag: '/assets/images/flags/pf.png' }
 ];
 
-// Country to currency mapping for geolocation
 export const COUNTRY_CURRENCY_MAP = {
   'US': 'USD', 'CA': 'CAD', 'MX': 'MXN', 'GT': 'GTQ', 'HN': 'HNL', 'NI': 'NIO', 'CR': 'CRC', 'PA': 'PAB', 'DO': 'DOP', 'JM': 'JMD', 'TT': 'TTD', 'BB': 'BBD', 'BZ': 'BZD', 'AW': 'AWG', 'AN': 'ANG', 'SR': 'SRD', 'GY': 'GYD',
   'GB': 'GBP', 'IE': 'EUR', 'FR': 'EUR', 'DE': 'EUR', 'IT': 'EUR', 'ES': 'EUR', 'PT': 'EUR', 'NL': 'EUR', 'BE': 'EUR', 'AT': 'EUR', 'FI': 'EUR', 'LU': 'EUR', 'MT': 'EUR', 'CY': 'EUR', 'SI': 'EUR', 'SK': 'EUR', 'EE': 'EUR', 'LV': 'EUR', 'LT': 'EUR',
@@ -148,7 +147,6 @@ export const COUNTRY_CURRENCY_MAP = {
   'BR': 'BRL', 'AR': 'ARS', 'UY': 'UYU', 'BO': 'BOB', 'PE': 'PEN', 'CO': 'COP', 'VE': 'VES', 'GY': 'GYD', 'SR': 'SRD', 'PY': 'PYG', 'CL': 'CLP', 'EC': 'USD', 'FK': 'FKP', 'GF': 'EUR', 'GP': 'EUR', 'MQ': 'EUR', 'PM': 'EUR', 'BL': 'EUR', 'MF': 'EUR', 'SX': 'ANG', 'CW': 'ANG', 'BQ': 'USD', 'AW': 'AWG', 'AN': 'ANG', 'SR': 'SRD', 'GY': 'GYD', 'TT': 'TTD', 'BB': 'BBD', 'BZ': 'BZD', 'JM': 'JMD', 'HT': 'HTG', 'CU': 'CUP', 'DO': 'DOP', 'PR': 'USD', 'VI': 'USD', 'AG': 'XCD', 'DM': 'XCD', 'GD': 'XCD', 'KN': 'XCD', 'LC': 'XCD', 'VC': 'XCD', 'AI': 'XCD', 'MS': 'XCD', 'TC': 'USD', 'VG': 'USD', 'KY': 'KYD', 'BM': 'BMD', 'BS': 'BSD', 'TC': 'USD', 'VG': 'USD', 'KY': 'KYD', 'BM': 'BMD', 'BS': 'BSD'
 };
 
-// Get currency by country code
 export const getCurrencyByCountry = (countryCode) => {
   return COUNTRY_CURRENCY_MAP[countryCode] || 'USD';
 };
