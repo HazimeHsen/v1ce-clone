@@ -19,6 +19,7 @@ import ColorSwatches from "@/components/color-swatches";
 import { useStore } from "@/context/store-context";
 import { useCurrency } from "@/context/currency-context";
 import { useTranslations } from "@/hooks/use-translations";
+import { getDeliveryDateRange } from "@/lib/delivery-utils";
 
 export default function ProductDetailsForm({
   product,
@@ -305,8 +306,8 @@ export default function ProductDetailsForm({
                 />
               </div>
               <p>
-                <span>Order today for delivery: </span>
-                <span className="font-medium">Jul 23 - Jul 25</span>
+                <span>{t("product.orderTodayForDelivery")} </span>
+                <span className="font-medium">{getDeliveryDateRange(1, 3)}</span>
               </p>
             </div>
             <div className="hidden">

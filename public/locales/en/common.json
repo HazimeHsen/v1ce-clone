@@ -206,6 +206,7 @@
     "itemAddedSuccessfully": "Item added successfully!",
     "selectColorAndQuantity": "Please select both a color and quantity to continue",
     "shippingCalculated": "Shipping Calculated at Checkout",
+    "orderTodayForDelivery": "Order today for delivery:",
     "details": {
       "title": "Key Details About Your Card",
       "size": "Size",
