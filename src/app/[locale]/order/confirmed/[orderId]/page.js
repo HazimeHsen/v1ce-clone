@@ -128,7 +128,7 @@ export default function OrderConfirmedPage() {
               <>
                 <span className="hidden sm:inline text-muted-foreground">•</span>
                 <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full">
-                  <span className="font-semibold text-primary">{formatPrice(order.total, order.currency_code)}</span>
+                  <span className="font-semibold text-primary">{formatPrice(order.total, { code: order.currency_code })}</span>
                 </div>
               </>
             )}
@@ -184,11 +184,11 @@ export default function OrderConfirmedPage() {
                               {t("orderConfirmed.quantity")}: <span className="font-medium text-foreground">{item.quantity}</span>
                             </span>
                             <span className="text-sm text-muted-foreground">
-                              {t("orderConfirmed.unit")}: <span className="font-medium text-foreground">{formatPrice(item.unit_price, order.currency_code)}</span>
+                              {t("orderConfirmed.unit")}: <span className="font-medium text-foreground">{formatPrice(item.unit_price, { code: order.currency_code })}</span>
                             </span>
                           </div>
                           <span className="font-semibold text-lg text-primary">
-                            {formatPrice(itemTotal, order.currency_code)}
+                            {formatPrice(itemTotal, { code: order.currency_code })}
                           </span>
                         </div>
                       </div>
@@ -255,7 +255,7 @@ export default function OrderConfirmedPage() {
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">{t("orderConfirmed.subtotal")}</span>
-                    <span className="font-medium">{formatPrice(order.subtotal, order.currency_code)}</span>
+                    <span className="font-medium">{formatPrice(order.subtotal, { code: order.currency_code })}</span>
                   </div>
                   
                   {(order.shipping_total > 0 || order.shipping_methods?.length > 0) && (
@@ -270,7 +270,7 @@ export default function OrderConfirmedPage() {
                       </span>
                       <span className="font-medium">
                         {order.shipping_total > 0 ? 
-                          formatPrice(order.shipping_total, order.currency_code) : 
+                          formatPrice(order.shipping_total, { code: order.currency_code }) : 
                           t("orderConfirmed.free")
                         }
                       </span>
@@ -280,21 +280,21 @@ export default function OrderConfirmedPage() {
                   {order.tax_total > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">{t("orderConfirmed.tax")}</span>
-                      <span className="font-medium">{formatPrice(order.tax_total, order.currency_code)}</span>
+                      <span className="font-medium">{formatPrice(order.tax_total, { code: order.currency_code })}</span>
                     </div>
                   )}
                   
                   {order.discount_total > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-green-600">{t("orderConfirmed.discount")}</span>
-                      <span className="font-medium text-green-600">-{formatPrice(order.discount_total, order.currency_code)}</span>
+                      <span className="font-medium text-green-600">-{formatPrice(order.discount_total, { code: order.currency_code })}</span>
                     </div>
                   )}
                   
                   {order.gift_card_total > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-blue-600">{t("orderConfirmed.giftCard")}</span>
-                      <span className="font-medium text-blue-600">-{formatPrice(order.gift_card_total, order.currency_code)}</span>
+                      <span className="font-medium text-blue-600">-{formatPrice(order.gift_card_total, { code: order.currency_code })}</span>
                     </div>
                   )}
                 </div>
@@ -303,7 +303,7 @@ export default function OrderConfirmedPage() {
                 
                 <div className="flex justify-between text-lg font-bold">
                   <span>{t("orderConfirmed.totalPaid")}</span>
-                  <span className="text-primary">{formatPrice(order.total, order.currency_code)}</span>
+                  <span className="text-primary">{formatPrice(order.total, { code: order.currency_code })}</span>
                 </div>
                 
                 {/* Payment Method Info */}

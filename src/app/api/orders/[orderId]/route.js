@@ -6,7 +6,7 @@ const MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BASE_URL || "http://lo
 // GET - Retrieve a specific order by ID
 export async function GET(request, { params }) {
   try {
-    const { orderId } = params;
+    const { orderId } = await params;
 
     if (!orderId) {
       return NextResponse.json(

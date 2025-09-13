@@ -11,10 +11,6 @@ const medusa = new Medusa({
   publishableApiKey: PUBLISHABLE_KEY,
 });
 
-// --------------------
-// Alternative Payment Session Initialization (Fallback)
-// This bypasses the payment collection workflow and uses the traditional cart payment sessions
-// --------------------
 export async function POST(request) {
   try {
     const { cartId } = await request.json();
@@ -26,8 +22,6 @@ export async function POST(request) {
       );
     }
 
-    // Use the traditional Medusa cart payment session approach
-    // This bypasses the payment collection workflow that's causing issues
     const res = await medusa.carts.createPaymentSessions(cartId);
     
     console.log("Created payment sessions:", res.cart.payment_sessions);
@@ -46,9 +40,6 @@ export async function POST(request) {
   }
 }
 
-// --------------------
-// Set Payment Session (Fallback)
-// --------------------
 export async function PUT(request) {
   try {
     const { cartId, providerId } = await request.json();
