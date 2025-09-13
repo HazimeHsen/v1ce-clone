@@ -189,6 +189,7 @@
   "mobileMenu": {
     "title": "Menu",
     "description": "Main navigation links",
+    "settings": "Settings",
     "shop": "Shop",
     "howItWorks": "How It Works",
     "teams": "Teams",
@@ -201,6 +202,7 @@
     "contactForPrice": "Contact for Price",
     "addToCart": "Add To Cart",
     "adding": "Adding...",
+    "subtitle": "A premium metal card that instantly shares your details with just a tap, no app needed.",
     "addingToCart": "Adding to Cart...",
     "addedToCart": "Added to Cart!",
     "itemAddedSuccessfully": "Item added successfully!",
@@ -209,6 +211,7 @@
     "orderTodayForDelivery": "Order today for delivery:",
     "details": {
       "title": "Key Details About Your Card",
+      "description": "Description",
       "size": "Size",
       "sizeValue": "54 mm x 86 mm x 1.35 mm (credit card size)",
       "weight": "Weight",

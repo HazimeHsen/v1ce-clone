@@ -281,7 +281,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex gap-5">
-          <CurrencySwitcher />
           <LanguageSwitcher currentLocale={currentLocale} />
           <Sheet
             open={isCartOpen}
@@ -439,7 +438,7 @@ export default function Navbar() {
                 aria-label="Toggle menu"
                 className="block lg:hidden"
               >
-                <Menu className="lucide lucide-menu size-6 text-primary" />
+                <Menu className="lucide lucide-menu size-6" />
               </button>
             </SheetTrigger>
             <SheetContent
@@ -453,12 +452,20 @@ export default function Navbar() {
                 </SheetDescription>
               </SheetHeader>
               <nav className="flex flex-col gap-4 p-6">
-                <Link
-                  href="/collections/tap-business-cards"
-                  className="text-lg font-semibold hover:text-primary"
-                >
-                  {t("mobileMenu.shop")}
-                </Link>
+                <div className="text-sm font-medium text-muted-foreground">
+                  {t("mobileMenu.settings")}
+                </div>
+                <div className="w-fit">
+                  <CurrencySwitcher />
+                </div>
+                <div className="border-t pt-4">
+                  <Link
+                    href="/collections/tap-business-cards"
+                    className="text-lg font-semibold hover:text-primary"
+                  >
+                    {t("mobileMenu.shop")}
+                  </Link>
+                </div>
                 <Link
                   href="/#before"
                   className="text-lg font-semibold hover:text-primary"

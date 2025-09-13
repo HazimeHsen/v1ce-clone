@@ -99,7 +99,7 @@ export default function ProductContentSection({
             testimonials={testimonials}
           />
         )}
-        {activeTab === "details" && <DetailsContent />}
+        {activeTab === "details" && <DetailsContent product={product} />}
         {activeTab === "faq" && (
           <FAQContent
             faqItems={faqItems}

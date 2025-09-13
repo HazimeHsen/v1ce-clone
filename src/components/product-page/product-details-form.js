@@ -297,8 +297,7 @@ export default function ProductDetailsForm({
                   {product?.title || t("product.quantityBundles.defaultTitle")}
                 </h1>
                 <h2 className="text-sm font-medium text-muted-foreground">
-                  {product?.description ||
-                    "A premium metal card that instantly shares your details with just a tap, no app needed."}
+                  {product?.subtitle || t("product.subtitle")}
                 </h2>
               </div>
               <button className="reviews cursor-pointer" type="button">

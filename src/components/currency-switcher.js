@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/loader";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function CurrencySwitcher() {
   const { t } = useTranslations();
@@ -44,7 +45,7 @@ export default function CurrencySwitcher() {
       </div>
     );
   }
-
+const isMobile = useIsMobile();
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
@@ -73,7 +74,7 @@ export default function CurrencySwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="end"
+        align={isMobile ? "start" : "end"}
         className="w-64 max-h-80 overflow-y-auto space-y-1"
       >
         <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
