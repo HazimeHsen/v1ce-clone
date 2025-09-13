@@ -21,8 +21,8 @@ export async function POST(request) {
     // Prepare the request payload
     const cancelPaymentRequest = {
       PaymentID: paymentID,
-      Username: process.env.NEXT_PUBLIC_AMERIABANK_USERNAME,
-      Password: process.env.NEXT_PUBLIC_AMERIABANK_PASSWORD
+      Username: process.env.AMERIABANK_USERNAME,
+      Password: process.env.AMERIABANK_PASSWORD
     };
 
     // Make request to AmeriaBank API

@@ -51,8 +51,8 @@ export async function GET(req, { params }) {
 
     const paymentDetailsRequest = {
       PaymentID: paymentID,
-      Username: process.env.NEXT_PUBLIC_AMERIABANK_USERNAME,
-      Password: process.env.NEXT_PUBLIC_AMERIABANK_PASSWORD,
+      Username: process.env.AMERIABANK_USERNAME,
+      Password: process.env.AMERIABANK_PASSWORD,
     };
 
     const paymentDetailsResponse = await fetch(
@@ -121,8 +121,8 @@ export async function GET(req, { params }) {
     if (paymentDetails.PaymentState === "payment_approved") {
       const confirmRequest = {
         PaymentID: paymentID,
-        Username: process.env.NEXT_PUBLIC_AMERIABANK_USERNAME,
-        Password: process.env.NEXT_PUBLIC_AMERIABANK_PASSWORD,
+        Username: process.env.AMERIABANK_USERNAME,
+        Password: process.env.AMERIABANK_PASSWORD,
         Amount: paymentDetails.Amount,
       };
 

@@ -20,9 +20,9 @@ export async function POST(request) {
 
     // Prepare the request payload
     const initPaymentRequest = {
-      ClientID: process.env.NEXT_PUBLIC_AMERIABANK_CLIENT_ID,
-      Username: process.env.NEXT_PUBLIC_AMERIABANK_USERNAME,
-      Password: process.env.NEXT_PUBLIC_AMERIABANK_PASSWORD,
+      ClientID: process.env.AMERIABANK_CLIENT_ID,
+      Username: process.env.AMERIABANK_USERNAME,
+      Password: process.env.AMERIABANK_PASSWORD,
       Amount: parseFloat(amount),
       OrderID: parseInt(orderID),
       Description: description,
