@@ -17,6 +17,37 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+  
+  /* Custom scrollbar styling to match theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted) / 0.8);
+  }
+  
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  
+  /* Firefox scrollbar styling */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
   .animate-accordion-down {
     animation: accordion-down 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: height;

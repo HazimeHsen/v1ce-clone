@@ -1,9 +1,11 @@
 import Link from "next/link";
 import ColorSwatches from "./color-swatches";
 import { useTranslations } from "@/hooks/use-translations";
+import { useCurrency } from "@/context/currency-context";
 
 export default function ProductCard({ product }) {
   const { t } = useTranslations();
+  const { formatPrice } = useCurrency();
   const { handle, thumbnail, title, variants } = product;
 
   const colorSwatches = variants?.map((variant) => {
@@ -14,13 +16,7 @@ export default function ProductCard({ product }) {
 
   const price =
     variants && variants.length > 0
-      ? variants[0].calculated_price?.calculated_amount?.toLocaleString(
-          "en-US",
-          {
-            style: "currency",
-            currency: variants[0].calculated_price?.currency_code || "USD",
-          }
-        )
+      ? formatPrice(variants[0].calculated_price?.calculated_amount || 0)
       : t("product.contactForPrice");
 
   return (

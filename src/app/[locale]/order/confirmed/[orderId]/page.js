@@ -6,6 +6,7 @@ import Link from "next/link";
 import { CheckCircle, Package, Truck, MapPin, Mail, Phone } from "lucide-react";
 import { PageLoader } from "@/components/ui/loader";
 import { useTranslations } from "@/hooks/use-translations";
+import { useCurrency } from "@/context/currency-context";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +16,7 @@ export default function OrderConfirmedPage() {
   const { orderId } = useParams();
   const router = useRouter();
   const { t } = useTranslations();
+  const { formatPrice } = useCurrency();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -55,27 +57,7 @@ export default function OrderConfirmedPage() {
     clearCart();
   }, [orderId]);
 
-  const formatPrice = (price, currencyCode = 'EUR') => {
-    if (price === null || price === undefined || isNaN(price)) return '€0.00';
-    
-    // Handle different currency formats
-    const numPrice = typeof price === 'string' ? parseFloat(price) : price;
-    
-    // Check if price is already in the correct format (not in cents)
-    const finalPrice = numPrice > 1000 ? numPrice / 100 : numPrice;
-    
-    try {
-      return new Intl.NumberFormat('en-EU', {
-        style: 'currency',
-        currency: currencyCode.toUpperCase(),
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }).format(finalPrice);
-    } catch (error) {
-      console.error('Price formatting error:', error);
-      return `€${finalPrice.toFixed(2)}`;
-    }
-  };
+  // Using formatPrice from currency context
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {

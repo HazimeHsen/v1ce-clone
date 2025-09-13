@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import ColorSwatches from "@/components/color-swatches";
 import { useStore } from "@/context/store-context";
+import { useCurrency } from "@/context/currency-context";
 import { useTranslations } from "@/hooks/use-translations";
 
 export default function ProductDetailsForm({
@@ -38,6 +39,7 @@ export default function ProductDetailsForm({
   const [cartSuccess, setCartSuccess] = useState(false);
 
   const { addToCart, error: storeError, openCart } = useStore();
+  const { formatPrice } = useCurrency();
 
   const mainCarouselRef = useRef(null);
   const thumbCarouselRef = useRef(null);
@@ -76,9 +78,7 @@ export default function ProductDetailsForm({
   const minPrice = Math.min(...allPrices);
   const maxPrice = Math.max(...allPrices);
 
-  const formatPrice = (amount) => {
-    return `${currencySymbol}${amount.toFixed(2)}`;
-  };
+  // Using formatPrice from currency context
 
   const quantityBundles = [
     {

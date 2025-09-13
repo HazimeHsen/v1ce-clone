@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useStore } from "@/context/store-context";
+import { useCurrency } from "@/context/currency-context";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, CreditCard } from "lucide-react";
@@ -28,7 +29,6 @@ export default function CheckoutPage() {
     loading,
     error,
     setError,
-
     addShippingAddress,
     addBillingAddress,
     addEmail,
@@ -38,6 +38,7 @@ export default function CheckoutPage() {
     setPaymentSession,
     completeCart,
   } = useStore();
+  const { formatPrice } = useCurrency();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -296,10 +297,7 @@ export default function CheckoutPage() {
     return item.variant_title || item.variant?.title || "";
   };
 
-  const formatPrice = (price) => {
-    if (typeof price !== "number") return "0.00";
-    return price.toFixed(2);
-  };
+  // Using formatPrice from currency context
 
   const handleIncrease = async (lineItemId, currentQuantity) => {
     try {

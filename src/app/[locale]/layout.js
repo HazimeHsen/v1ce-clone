@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { StoreProvider } from "@/context/store-context";
+import { CurrencyProvider } from "@/context/currency-context";
 import { I18nProvider } from "@/components/i18n-provider";
 import { generateMetadata as generateLocalizedMetadata } from "@/lib/metadata";
 
@@ -18,7 +19,9 @@ export default async function RootLayout({ children, params }) {
     <html lang={locale}>
       <body className={inter.className}>
         <I18nProvider locale={locale}>
-          <StoreProvider>{children}</StoreProvider>
+          <CurrencyProvider>
+            <StoreProvider>{children}</StoreProvider>
+          </CurrencyProvider>
         </I18nProvider>
       </body>
     </html>

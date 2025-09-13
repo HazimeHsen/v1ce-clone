@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import ProductReviewsSection from "@/components/product-reviews-section";
 import { useStore } from "@/context/store-context";
+import { useCurrency } from "@/context/currency-context";
 import { useParams } from "next/navigation";
 import { PageLoader } from "@/components/ui/loader";
 import { useTranslations } from "@/hooks/use-translations";
@@ -227,6 +228,7 @@ export default function ProductPage() {
   const [selectedBundle, setSelectedBundle] = useState(null);
 
   const { fetchProduct, region } = useStore();
+  const { formatPrice } = useCurrency();
   const { handle } = useParams();
 
   // Get translated testimonials
@@ -392,9 +394,7 @@ export default function ProductPage() {
   const currencyCode = selectedVariant?.calculated_price?.currency_code || "eur";
   const currencySymbol = currencyCode === "eur" ? "€" : "$";
 
-  const formatPrice = (amount) => {
-    return `${currencySymbol}${amount.toFixed(2)}`;
-  };
+  // Using formatPrice from currency context
 
   const selectedSwatchIndex = colorSwatches.findIndex(
     (swatch) => swatch.title === selectedColor

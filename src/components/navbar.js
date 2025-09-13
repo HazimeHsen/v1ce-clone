@@ -5,6 +5,7 @@ import Image from "next/image";
 import { LogIn, ShoppingCart, Menu, X } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useStore } from "@/context/store-context";
+import { useCurrency } from "@/context/currency-context";
 import { Spinner } from "@/components/ui/loader";
 
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/sheet";
 import { useRouter, usePathname } from "next/navigation";
 import LanguageSwitcher from "./language-switcher";
+import CurrencySwitcher from "./currency-switcher";
 import { useTranslations } from "@/hooks/use-translations";
 
 export default function Navbar() {
@@ -31,6 +33,7 @@ export default function Navbar() {
     closeCart,
     fetchCartItemsWithProducts,
   } = useStore();
+  const { formatPrice } = useCurrency();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [enrichedCartItems, setEnrichedCartItems] = useState([]);
   const [loadingCartItems, setLoadingCartItems] = useState(false);
@@ -171,11 +174,7 @@ export default function Navbar() {
     return item.variant_title || item.variant?.title || "";
   };
 
-  const formatPrice = (price) => {
-    if (typeof price !== "number") return "0.00";
-
-    return price.toFixed(2);
-  };
+  // Remove the local formatPrice function since we're using the one from currency context
 
   const handleIncrease = async (lineItemId, currentQuantity) => {
     try {
@@ -282,6 +281,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex gap-5">
+          <CurrencySwitcher />
           <LanguageSwitcher currentLocale={currentLocale} />
           <Sheet
             open={isCartOpen}
@@ -349,7 +349,7 @@ export default function Navbar() {
                             </p>
                           )}
                           <p className="text-sm text-muted-foreground">
-                            €{formatPrice(item.unit_price || 0)}
+                            {formatPrice(item.unit_price || 0)}
                           </p>
                           <div className="flex items-center gap-2 mt-1">
                             <Button
@@ -409,7 +409,7 @@ export default function Navbar() {
                           </div>
                         </div>
                         <div className="font-semibold">
-                          €{formatPrice((item.unit_price || 0) * item.quantity)}
+                          {formatPrice((item.unit_price || 0) * item.quantity)}
                         </div>
                       </div>
                     ))}
@@ -422,7 +422,7 @@ export default function Navbar() {
                     {t("cart.total")}
                   </span>
                   <span className="text-lg font-semibold">
-                    €{formatPrice(totalPrice)}
+                    {formatPrice(totalPrice)}
                   </span>
                 </div>
                 <Button onClick={handleCheckout} className="w-full" size="lg">
