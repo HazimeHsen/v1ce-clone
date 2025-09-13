@@ -231,7 +231,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background header">
       <div className="center-wide flex w-full justify-between px-5 py-4">
         <div className="flex items-center gap-7">
           <Link href="/">

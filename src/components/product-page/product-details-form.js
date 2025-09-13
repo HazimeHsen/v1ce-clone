@@ -51,6 +51,66 @@ export default function ProductDetailsForm({
     return { title: combo, colors };
   });
 
+  const stickyRef = useRef(null);
+  const stickyInnerRef = useRef(null);
+  const actionRef = useRef(null);
+  const rafIdRef = useRef(null);
+
+  const [stickyTop, setStickyTop] = useState(0);
+
+  useEffect(() => {
+    const computeNegativeTop = () => {
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = requestAnimationFrame(() => {
+        const stickyInnerEl = stickyInnerRef.current || stickyRef.current;
+        const actionEl = actionRef.current;
+
+        const stickyInnerHeight = stickyInnerEl
+          ? stickyInnerEl.getBoundingClientRect().height
+          : 0;
+        const actionHeight = actionEl
+          ? actionEl.getBoundingClientRect().height
+          : 0;
+
+        const margin = 8;
+        const desiredVisible = actionHeight + margin;
+
+        let topToUse = -(stickyInnerHeight - desiredVisible);
+
+        if (topToUse > 0) topToUse = 0;
+
+        const maxNeg = -Math.max(
+          0,
+          stickyInnerHeight - window.innerHeight + 40
+        );
+        if (topToUse < maxNeg) topToUse = maxNeg;
+
+        setStickyTop(Math.round(topToUse));
+      });
+    };
+
+    computeNegativeTop();
+
+    const observers = [];
+
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(computeNegativeTop);
+      const stickyInnerEl = stickyInnerRef.current || stickyRef.current;
+      if (stickyInnerEl) ro.observe(stickyInnerEl);
+      const actionEl = actionRef.current;
+      if (actionEl) ro.observe(actionEl);
+      observers.push(ro);
+    }
+
+    window.addEventListener("resize", computeNegativeTop);
+
+    return () => {
+      observers.forEach((o) => o.disconnect && o.disconnect());
+      window.removeEventListener("resize", computeNegativeTop);
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    };
+  }, []);
+
   const handleSwatchSelect = (swatch, index) => {
     if (selectedColor === swatch.title) {
       setSelectedColor(null);
@@ -68,18 +128,6 @@ export default function ProductDetailsForm({
   );
 
   const basePrice = selectedVariant?.calculated_price?.calculated_amount || 25;
-  const currencyCode =
-    selectedVariant?.calculated_price?.currency_code || "eur";
-  const currencySymbol = currencyCode === "eur" ? "€" : "$";
-
-  const allPrices =
-    product?.variants?.map((v) => v.calculated_price?.calculated_amount) || [];
-  const uniquePrices = [...new Set(allPrices)];
-  const hasPriceVariation = uniquePrices.length > 1;
-  const minPrice = Math.min(...allPrices);
-  const maxPrice = Math.max(...allPrices);
-
-  // Using formatPrice from currency context
 
   const quantityBundles = [
     {
@@ -237,11 +285,11 @@ export default function ProductDetailsForm({
 
   return (
     <section className="relative flex w-full flex-col">
-      <div
-        className="sticky"
-        style={{ top: "-250px" }}
-      >
-        <div className="relative z-10 mb-6 flex flex-col gap-4">
+      <div ref={stickyRef} className="sticky" style={{ top: `${stickyTop}px` }}>
+        <div
+          ref={stickyInnerRef}
+          className="relative z-10 mb-6 flex flex-col gap-4"
+        >
           <div className="hidden md:flex flex-col gap-4 md:gap-6">
             <div className="flex flex-col gap-2">
               <div>
@@ -307,7 +355,9 @@ export default function ProductDetailsForm({
               </div>
               <p>
                 <span>{t("product.orderTodayForDelivery")} </span>
-                <span className="font-medium">{getDeliveryDateRange(1, 3)}</span>
+                <span className="font-medium">
+                  {getDeliveryDateRange(1, 3)}
+                </span>
               </p>
             </div>
             <div className="hidden">
@@ -639,7 +689,7 @@ export default function ProductDetailsForm({
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2" ref={actionRef}>
               <Button
                 className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-[10px] font-semibold transition-all disabled:pointer-events-none disabled:opacity-50 border border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-8 py-4 h-14 w-full text-xl"
                 onClick={handleAddToCart}
