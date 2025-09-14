@@ -5,7 +5,7 @@ import { Skeleton } from "./skeleton";
 
 export default function PriceDisplay({
   price,
-  fromCurrency = "USD",
+  fromCurrency = "AMD",
   className = "",
   showLoading = true,
 }) {
@@ -16,7 +16,7 @@ export default function PriceDisplay({
   } = useCurrency();
 
   const isLoading =
-    showLoading && rateLoading && selectedCurrency.code !== "USD";
+    showLoading && rateLoading && selectedCurrency.code !== "AMD";
 
   if (isLoading) {
     return (

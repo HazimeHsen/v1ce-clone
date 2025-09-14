@@ -116,8 +116,8 @@ export const CurrencyProvider = ({ children }) => {
 
       setSelectedCurrency(detectedCurrency);
 
-      if (detectedCurrency.code !== "USD") {
-        await fetchExchangeRate("USD", detectedCurrency.code);
+      if (detectedCurrency.code !== "AMD") {
+        await fetchExchangeRate("AMD", detectedCurrency.code);
       }
     } catch (error) {
       console.error("Failed to detect user currency:", error);
@@ -134,8 +134,8 @@ export const CurrencyProvider = ({ children }) => {
         const currency = JSON.parse(savedCurrency);
         setSelectedCurrency(currency);
 
-        if (currency.code !== "USD") {
-          fetchExchangeRate("USD", currency.code);
+        if (currency.code !== "AMD") {
+          fetchExchangeRate("AMD", currency.code);
         }
 
         setIsLoading(false);
@@ -161,8 +161,8 @@ export const CurrencyProvider = ({ children }) => {
     const currency = getCurrencyByCode(currencyCode);
     if (currency) {
       setSelectedCurrency(currency);
-      if (!exchangeRates[currencyCode] && currencyCode !== "USD") {
-        await fetchExchangeRate("USD", currencyCode);
+      if (!exchangeRates[currencyCode] && currencyCode !== "AMD") {
+        await fetchExchangeRate("AMD", currencyCode);
       } else {
         console.log(
           "Using existing rate for:",
@@ -176,7 +176,7 @@ export const CurrencyProvider = ({ children }) => {
   const formatPrice = (
     price,
     currency = selectedCurrency,
-    fromCurrency = "USD"
+    fromCurrency = "AMD"
   ) => {
     if (typeof price !== "number") return "0.00";
 

@@ -1,4 +1,5 @@
 export const CURRENCIES = [
+  { code: 'AMD', name: 'Armenian Dram', symbol: '֏', country: 'AM', flag: '/assets/images/flags/am.png' },
   { code: 'USD', name: 'US Dollar', symbol: '$', country: 'US', flag: '/assets/images/flags/us.png' },
   { code: 'EUR', name: 'Euro', symbol: '€', country: 'EU', flag: '/assets/images/flags/de.png' },
   { code: 'GBP', name: 'British Pound', symbol: '£', country: 'GB', flag: '/assets/images/flags/gb.png' },
@@ -105,7 +106,6 @@ export const CURRENCIES = [
   { code: 'GIP', name: 'Gibraltar Pound', symbol: '£', country: 'GI', flag: '/assets/images/flags/gi.png' },
   { code: 'FKP', name: 'Falkland Islands Pound', symbol: '£', country: 'FK', flag: '/assets/images/flags/fk.png' },
   { code: 'SHP', name: 'Saint Helena Pound', symbol: '£', country: 'SH', flag: '/assets/images/flags/sh.png' },
-  { code: 'AMD', name: 'Armenian Dram', symbol: '֏', country: 'AM', flag: '/assets/images/flags/am.png' },
   { code: 'AZN', name: 'Azerbaijani Manat', symbol: '₼', country: 'AZ', flag: '/assets/images/flags/az.png' },
   { code: 'GEL', name: 'Georgian Lari', symbol: '₾', country: 'GE', flag: '/assets/images/flags/ge.png' },
   { code: 'KZT', name: 'Kazakhstani Tenge', symbol: '₸', country: 'KZ', flag: '/assets/images/flags/kz.png' },
@@ -148,10 +148,9 @@ export const COUNTRY_CURRENCY_MAP = {
 };
 
 export const getCurrencyByCountry = (countryCode) => {
-  return COUNTRY_CURRENCY_MAP[countryCode] || 'USD';
+  return COUNTRY_CURRENCY_MAP[countryCode] || 'AMD';
 };
 
-// Get currency object by code
 export const getCurrencyByCode = (currencyCode) => {
   return CURRENCIES.find(currency => currency.code === currencyCode) || CURRENCIES[0];
 };

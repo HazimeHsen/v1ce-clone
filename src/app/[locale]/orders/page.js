@@ -56,7 +56,7 @@ export default function OrdersPage() {
     fetchOrders();
   }, [pagination.limit, pagination.offset, router]);
 
-  const formatPrice = (price, currencyCode = 'USD') => {
+  const formatPrice = (price, currencyCode = 'AMD') => {
     if (typeof price !== 'number') return '0.00';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',

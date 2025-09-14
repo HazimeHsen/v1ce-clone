@@ -1,34 +1,15 @@
-// Utility functions for currency conversion and formatting
-
-/**
- * Convert a price from one currency to another using exchange rates
- * @param {number} price - The price to convert
- * @param {string} fromCurrency - Source currency code (e.g., 'USD')
- * @param {string} toCurrency - Target currency code (e.g., 'EUR')
- * @param {Object} exchangeRates - Object containing exchange rates
- * @returns {number} - Converted price
- */
 export const convertPrice = (price, fromCurrency, toCurrency, exchangeRates = {}) => {
   if (!price || typeof price !== "number") return 0;
   if (fromCurrency === toCurrency) return price;
   
-  // If we have exchange rates, use them
   if (exchangeRates[toCurrency]) {
     return price * exchangeRates[toCurrency];
   }
   
-  // Fallback: return original price if no exchange rate available
   return price;
 };
 
-/**
- * Format a price with currency symbol and proper formatting
- * @param {number} price - The price to format
- * @param {string} currencyCode - Currency code (e.g., 'USD', 'EUR')
- * @param {Object} options - Formatting options
- * @returns {string} - Formatted price string
- */
-export const formatPrice = (price, currencyCode = 'USD', options = {}) => {
+export const formatPrice = (price, currencyCode = 'AMD', options = {}) => {
   if (typeof price !== "number") return "0.00";
   
   const defaultOptions = {
@@ -43,11 +24,6 @@ export const formatPrice = (price, currencyCode = 'USD', options = {}) => {
   return new Intl.NumberFormat('en-US', formatOptions).format(price);
 };
 
-/**
- * Get currency symbol for a given currency code
- * @param {string} currencyCode - Currency code (e.g., 'USD', 'EUR')
- * @returns {string} - Currency symbol
- */
 export const getCurrencySymbol = (currencyCode) => {
   const symbols = {
     'USD': '$',
@@ -189,11 +165,6 @@ export const getCurrencySymbol = (currencyCode) => {
   return symbols[currencyCode] || currencyCode;
 };
 
-/**
- * Validate if a currency code is supported
- * @param {string} currencyCode - Currency code to validate
- * @returns {boolean} - Whether the currency is supported
- */
 export const isSupportedCurrency = (currencyCode) => {
   const supportedCurrencies = [
     'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BRL', 'BSD', 'BTC', 'BTN', 'BWP', 'BYN', 'BYR', 'BZD', 'CAD', 'CDF', 'CHF', 'CLF', 'CLP', 'CNY', 'CNH', 'COP', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GGP', 'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'IMP', 'INR', 'IQD', 'IRR', 'ISK', 'JEP', 'JOD', 'JPY', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL', 'LYD', 'MAD', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRU', 'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLE', 'SLL', 'SOS', 'SRD', 'STD', 'STN', 'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TWD', 'TZS', 'AED', 'BOB', 'ERN', 'JMD', 'KES', 'MDL', 'QAR', 'TTD', 'UAH', 'UGX', 'UYU', 'UZS', 'VES', 'VND', 'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XCD', 'XCG', 'XDR', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMK', 'ZMW', 'ZWL'

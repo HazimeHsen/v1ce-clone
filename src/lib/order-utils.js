@@ -1,19 +1,9 @@
-/**
- * Utility functions for order management and processing
- */
-
-/**
- * Format price according to currency
- * @param {number} price - Price in cents
- * @param {string} currencyCode - Currency code (e.g., 'USD', 'EUR')
- * @returns {string} Formatted price string
- */
-export const formatPrice = (price, currencyCode = 'USD') => {
+export const formatPrice = (price, currencyCode = 'AMD') => {
   if (typeof price !== 'number') return '0.00';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: currencyCode.toUpperCase(),
-  }).format(price / 100); // Medusa stores prices in cents
+  }).format(price / 100);
 };
 
 /**
