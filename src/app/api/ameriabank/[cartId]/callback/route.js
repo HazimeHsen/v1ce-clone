@@ -38,14 +38,14 @@ export async function GET(req, { params }) {
     if (!paymentID) {
       console.error("Missing payment ID in callback");
       return NextResponse.redirect(
-        new URL("/checkout?error=missing_payment_id", req.url)
+        new URL(process.env.NEXT_PUBLIC_BASE_URL+"/checkout?error=missing_payment_id", req.url)
       );
     }
 
     if (!orderID) {
       console.error("Missing order ID in callback");
       return NextResponse.redirect(
-        new URL("/checkout?error=missing_order_id", req.url)
+        new URL(process.env.NEXT_PUBLIC_BASE_URL+"/checkout?error=missing_order_id", req.url)
       );
     }
 
@@ -71,7 +71,7 @@ export async function GET(req, { params }) {
       const errorData = await paymentDetailsResponse.json();
       console.error("Failed to get payment details:", errorData);
       return NextResponse.redirect(
-        new URL("/checkout?error=payment_processing_error", req.url)
+        new URL(process.env.NEXT_PUBLIC_BASE_URL+"/checkout?error=payment_processing_error", req.url)
       );
     }
 
@@ -99,7 +99,7 @@ export async function GET(req, { params }) {
       );
       return NextResponse.redirect(
         new URL(
-          `/checkout?error=payment_failed&callback_code=${responseCode}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?error=payment_failed&callback_code=${responseCode}`,
           req.url
         )
       );
@@ -112,7 +112,7 @@ export async function GET(req, { params }) {
       );
       return NextResponse.redirect(
         new URL(
-          `/checkout?error=payment_failed&details_code=${paymentDetails.ResponseCode}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?error=payment_failed&details_code=${paymentDetails.ResponseCode}`,
           req.url
         )
       );
@@ -143,7 +143,7 @@ export async function GET(req, { params }) {
       if (!confirmResponse.ok || confirmData.ResponseCode !== "00") {
         console.error("Failed to confirm payment:", confirmData);
         return NextResponse.redirect(
-          new URL("/checkout?error=payment_confirmation_failed", req.url)
+          new URL(process.env.NEXT_PUBLIC_BASE_URL+"/checkout?error=payment_confirmation_failed", req.url)
         );
       }
     }
@@ -168,7 +168,7 @@ export async function GET(req, { params }) {
     if (!orderRes.ok) {
       console.error("Failed to complete order:", orderData);
       return NextResponse.redirect(
-        new URL(`/checkout?error=order_completion_failed`, req.url)
+        new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/checkout?error=order_completion_failed`, req.url)
       );
     }
 
@@ -179,7 +179,7 @@ export async function GET(req, { params }) {
     );
 
     return NextResponse.redirect(
-      new URL(`/order/confirmed/${orderId}`, req.url)
+      new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/order/confirmed/${orderId}`, req.url)
     );
   } catch (err) {
     console.error("Ameria callback error:", err);
@@ -189,7 +189,7 @@ export async function GET(req, { params }) {
     const resolvedParams = await params;
 
     return NextResponse.redirect(
-      new URL("/checkout?error=payment_processing_error", req.url)
+      new URL(process.env.NEXT_PUBLIC_BASE_URL+"/checkout?error=payment_processing_error", req.url)
     );
   }
 }
