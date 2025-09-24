@@ -21,6 +21,8 @@ import { useCurrency } from "@/context/currency-context";
 import { useTranslations } from "@/hooks/use-translations";
 import { getDeliveryDateRange } from "@/lib/delivery-utils";
 import PriceDisplay from "@/components/ui/price-display";
+import { getLocalizedTitle, getLocalizedSubtitle, getLocalizedDescription } from "@/lib/translation-utils";
+import { useParams } from "next/navigation";
 
 export default function ProductDetailsForm({
   product,
@@ -34,6 +36,13 @@ export default function ProductDetailsForm({
   setSelectedColor,
 }) {
   const { t } = useTranslations();
+  const { locale } = useParams();
+  
+  // Get localized content
+  const localizedTitle = getLocalizedTitle(product, locale);
+  const localizedSubtitle = getLocalizedSubtitle(product, locale);
+  const localizedDescription = getLocalizedDescription(product, locale);
+  
   const [quantity, setQuantity] = useState(1);
   const [selectedBundle, setSelectedBundle] = useState(null);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
@@ -295,10 +304,10 @@ export default function ProductDetailsForm({
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="text-2xl font-semibold sm:text-3xl md:text-4xl">
-                  {product?.title || t("product.quantityBundles.defaultTitle")}
+                  {localizedTitle || t("product.quantityBundles.defaultTitle")}
                 </h1>
                 <h2 className="text-sm font-medium text-muted-foreground">
-                  {product?.subtitle || t("product.subtitle")}
+                  {localizedSubtitle}
                 </h2>
               </div>
               <button className="reviews cursor-pointer" type="button">

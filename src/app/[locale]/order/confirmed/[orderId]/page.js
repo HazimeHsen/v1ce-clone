@@ -6,6 +6,7 @@ import Link from "next/link";
 import { CheckCircle, Package, Truck, MapPin, Mail, Phone } from "lucide-react";
 import { PageLoader } from "@/components/ui/loader";
 import { useTranslations } from "@/hooks/use-translations";
+import { getLocalizedTitle } from "@/lib/translation-utils";
 import { useCurrency } from "@/context/currency-context";
 
 import { Button } from "@/components/ui/button";
@@ -180,7 +181,7 @@ export default function OrderConfirmedPage() {
                         <Package className="h-8 w-8 text-muted-foreground" style={{display: itemImage ? 'none' : 'flex'}} />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-foreground">{item.title || t("orderConfirmed.unknownProduct")}</h4>
+                        <h4 className="font-semibold text-foreground">{getLocalizedTitle(item, locale) || t("orderConfirmed.unknownProduct")}</h4>
                         {item.variant_title && (
                           <p className="text-sm text-muted-foreground mt-1">{item.variant_title}</p>
                         )}

@@ -23,6 +23,7 @@ import { useRouter, usePathname } from "next/navigation";
 import LanguageSwitcher from "./language-switcher";
 import CurrencySwitcher from "./currency-switcher";
 import { useTranslations } from "@/hooks/use-translations";
+import { getLocalizedTitle } from "@/lib/translation-utils";
 
 export default function Navbar() {
   const {
@@ -153,8 +154,10 @@ export default function Navbar() {
   };
 
   const getItemTitle = (item) => {
+    if (item.fullProduct) {
+      return getLocalizedTitle(item.fullProduct, currentLocale);
+    }
     return (
-      item.fullProduct?.title ||
       item.product_title ||
       item.title ||
       item.variant?.product?.title ||

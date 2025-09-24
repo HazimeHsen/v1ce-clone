@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useTranslations } from "@/hooks/use-translations";
+import { getLocalizedTitle } from "@/lib/translation-utils";
 
 import { Button } from "@/components/ui/button";
 import ShippingStep from "./components/ShippingStep";
@@ -274,8 +275,10 @@ export default function CheckoutPage() {
   };
 
   const getItemTitle = (item) => {
+    if (item.fullProduct) {
+      return getLocalizedTitle(item.fullProduct, locale);
+    }
     return (
-      item.fullProduct?.title ||
       item.product_title ||
       item.title ||
       item.variant?.product?.title ||

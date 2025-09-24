@@ -2,10 +2,16 @@ import Link from "next/link";
 import ColorSwatches from "./color-swatches";
 import PriceDisplay from "./ui/price-display";
 import { useTranslations } from "@/hooks/use-translations";
+import { getLocalizedTitle } from "@/lib/translation-utils";
+import { useParams } from "next/navigation";
 
 export default function ProductCard({ product }) {
   const { t } = useTranslations();
-  const { handle, thumbnail, title, variants } = product;
+  const { locale } = useParams();
+  const { handle, thumbnail, variants } = product;
+  
+  // Get localized title
+  const localizedTitle = getLocalizedTitle(product, locale);
 
   const colorSwatches = variants?.map((variant) => {
     const combo = variant.title;
@@ -36,7 +42,7 @@ export default function ProductCard({ product }) {
               )}
 
               <img
-                alt={title}
+                alt={localizedTitle}
                 loading="eager"
                 decoding="async"
                 className="object-cover transition-all duration-500 ease-in-out group-hover:scale-[1.02]"
@@ -50,7 +56,7 @@ export default function ProductCard({ product }) {
 
       <div className="flex size-full flex-col items-start justify-between gap-[10px] p-4">
         <div className="mb-2 flex flex-col items-start justify-between gap-2">
-          <span className="text-h6">{title}</span>
+          <span className="text-h6">{localizedTitle}</span>
         </div>
 
         <ColorSwatches swatches={colorSwatches} />

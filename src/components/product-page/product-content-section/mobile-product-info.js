@@ -10,6 +10,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useTranslations } from "@/hooks/use-translations";
+import { getLocalizedTitle, getLocalizedSubtitle } from "@/lib/translation-utils";
+import { useParams } from "next/navigation";
 import { useStore } from "@/context/store-context";
 import { useState } from "react";
 
@@ -30,6 +32,11 @@ export default function MobileProductInfo({
   decrementQuantity,
   incrementQuantity,
 }) {
+  const { locale } = useParams();
+  
+  // Get localized content
+  const localizedTitle = getLocalizedTitle(product, locale);
+  const localizedSubtitle = getLocalizedSubtitle(product, locale);
   const { t } = useTranslations();
   const { addToCart, openCart } = useStore();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
@@ -99,10 +106,10 @@ export default function MobileProductInfo({
       <div className="flex flex-col gap-2">
         <div>
           <h1 className="text-2xl font-semibold">
-            {product?.title || t("product.quantityBundles.defaultTitle")}
+            {localizedTitle || t("product.quantityBundles.defaultTitle")}
           </h1>
           <h2 className="text-sm font-medium text-muted-foreground">
-            {product?.metadata?.subtitle || t("product.subtitle")}
+            {localizedSubtitle}
           </h2>
         </div>
         

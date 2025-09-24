@@ -12,6 +12,7 @@ import { useParams } from "next/navigation";
 import { PageLoader } from "@/components/ui/loader";
 import { useTranslations } from "@/hooks/use-translations";
 import ProductJsonLd from "@/components/product-json-ld";
+import { getLocalizedTitle, getLocalizedSubtitle, getLocalizedDescription } from "@/lib/translation-utils";
 
 const testimonials = [
   {
@@ -230,6 +231,10 @@ export default function ProductPage() {
   const { fetchProduct, region } = useStore();
   const { formatPrice } = useCurrency();
   const { handle, locale } = useParams();
+  
+  const localizedTitle = getLocalizedTitle(product, locale);
+  const localizedSubtitle = getLocalizedSubtitle(product, locale);
+  const localizedDescription = getLocalizedDescription(product, locale);
 
   const getTranslatedTestimonials = () => {
     return testimonials.map((testimonial, index) => ({

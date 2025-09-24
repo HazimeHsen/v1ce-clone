@@ -72,17 +72,50 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
+  const fetchProductMetadata = useCallback(async (productId) => {
+    try {
+      const res = await medusa.products.list({
+        id: productId,
+        region_id: region.id,
+        fields: "id,metadata,variants,variants.metadata"
+      });
+      return res.products?.[0] || null;
+    } catch (err) {
+      console.error("Failed to fetch product metadata:", err);
+      return null;
+    }
+  }, [region]);
+
   const fetchProducts = useCallback(async () => {
     try {
       if (!region) return;
       const res = await medusa.products.list({
         region_id: region.id,
       });
-      setProducts(res.products);
+      
+      // Fetch metadata for each product
+      const productsWithMetadata = await Promise.all(
+        res.products.map(async (product) => {
+          const metadataProduct = await fetchProductMetadata(product.id);
+          if (metadataProduct) {
+            return {
+              ...product,
+              metadata: metadataProduct.metadata,
+              variants: product.variants.map((variant, index) => ({
+                ...variant,
+                metadata: metadataProduct.variants?.[index]?.metadata || variant.metadata
+              }))
+            };
+          }
+          return product;
+        })
+      );
+      
+      setProducts(productsWithMetadata);
     } catch (err) {
       console.error("Failed to fetch products:", err);
     }
-  }, [region]);
+  }, [region, fetchProductMetadata]);
 
   const fetchProduct = useCallback(async (handle) => {
     try {
@@ -101,6 +134,26 @@ export const StoreProvider = ({ children }) => {
       const product = res.products?.[0] || null;
 
       if (product) {
+        // Fetch metadata for this product
+        const metadataProduct = await fetchProductMetadata(product.id);
+        if (metadataProduct) {
+          const productWithMetadata = {
+            ...product,
+            metadata: metadataProduct.metadata,
+            variants: product.variants.map((variant, index) => ({
+              ...variant,
+              metadata: metadataProduct.variants?.[index]?.metadata || variant.metadata
+            }))
+          };
+          
+          setProductCache((prev) => ({
+            ...prev,
+            [cacheKey]: productWithMetadata,
+          }));
+          
+          return productWithMetadata;
+        }
+        
         setProductCache((prev) => ({
           ...prev,
           [cacheKey]: product,
@@ -112,7 +165,7 @@ export const StoreProvider = ({ children }) => {
       console.error("Failed to fetch product:", err);
       return null;
     }
-  }, [region]);
+  }, [region, fetchProductMetadata]);
 
   const fetchProductById = useCallback(async (productId) => {
     try {
@@ -131,6 +184,26 @@ export const StoreProvider = ({ children }) => {
       const product = res.products?.[0] || null;
 
       if (product) {
+        // Fetch metadata for this product
+        const metadataProduct = await fetchProductMetadata(productId);
+        if (metadataProduct) {
+          const productWithMetadata = {
+            ...product,
+            metadata: metadataProduct.metadata,
+            variants: product.variants.map((variant, index) => ({
+              ...variant,
+              metadata: metadataProduct.variants?.[index]?.metadata || variant.metadata
+            }))
+          };
+          
+          setProductCache((prev) => ({
+            ...prev,
+            [cacheKey]: productWithMetadata,
+          }));
+          
+          return productWithMetadata;
+        }
+        
         setProductCache((prev) => ({
           ...prev,
           [cacheKey]: product,
@@ -142,7 +215,7 @@ export const StoreProvider = ({ children }) => {
       console.error("Failed to fetch product by ID:", err);
       return null;
     }
-  }, [region]);
+  }, [region, fetchProductMetadata]);
 
   const fetchCartItemsWithProducts = useCallback(async (cartItems) => {
     if (!cartItems || cartItems.length === 0) return [];

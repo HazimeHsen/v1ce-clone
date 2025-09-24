@@ -8,7 +8,6 @@ const medusa = new Medusa({
 
 export async function generateProductMetadata(handle, locale = 'en') {
   try {
-    // Fetch product data
     const res = await medusa.products.list({
       handle: handle,
     });
@@ -22,20 +21,16 @@ export async function generateProductMetadata(handle, locale = 'en') {
     const productUrl = `${baseUrl}/${locale}/products/${handle}`;
     const productImage = product.images?.[0]?.url || product.thumbnail || `${baseUrl}/placeholder.jpg`;
     
-    // Get the first variant for pricing
     const firstVariant = product.variants?.[0];
     const price = firstVariant?.calculated_price?.calculated_amount || 0;
     const currency = firstVariant?.calculated_price?.currency_code || 'AMD';
     
-    // Format price for display
     const formattedPrice = (price / 100).toFixed(2);
     
-    // Generate product title and description
     const productTitle = product.title || 'Smart Business Card';
     const productDescription = product.description || 
       `Get your ${productTitle} smart business card. Professional, contactless networking solution with instant lead capture and CRM integration.`;
     
-    // Open Graph metadata
     const openGraph = {
       title: `${productTitle} | Mibio.am`,
       description: productDescription,
@@ -52,7 +47,6 @@ export async function generateProductMetadata(handle, locale = 'en') {
       ],
     };
 
-    // Add price metadata if available
     if (price > 0) {
       openGraph.price = {
         amount: formattedPrice,
@@ -60,7 +54,6 @@ export async function generateProductMetadata(handle, locale = 'en') {
       };
     }
 
-    // Twitter Card metadata
     const twitter = {
       card: 'summary_large_image',
       title: `${productTitle} | Mibio.am`,
@@ -68,7 +61,6 @@ export async function generateProductMetadata(handle, locale = 'en') {
       images: [productImage],
     };
 
-    // JSON-LD structured data
     const jsonLd = {
       "@context": "https://schema.org/",
       "@type": "Product",
@@ -90,12 +82,10 @@ export async function generateProductMetadata(handle, locale = 'en') {
       }
     };
 
-    // Add SKU if available
     if (firstVariant?.sku) {
       jsonLd.sku = firstVariant.sku;
     }
 
-    // Add additional images
     if (product.images && product.images.length > 1) {
       jsonLd.image = product.images.map(img => img.url);
     }
