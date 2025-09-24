@@ -55,102 +55,72 @@ export async function GET(req, { params }) {
       Password: process.env.AMERIABANK_PASSWORD,
     };
 
-    const paymentDetailsResponse = await fetch(
-      `${AMERIABANK_BASE_URL}/GetPaymentDetails`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(paymentDetailsRequest),
-      }
-    );
+    // const paymentDetailsResponse = await fetch(
+    //   `${AMERIABANK_BASE_URL}/GetPaymentDetails`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Accept: "application/json",
+    //     },
+    //     body: JSON.stringify(paymentDetailsRequest),
+    //   }
+    // );
 
-    if (!paymentDetailsResponse.ok) {
-      const errorData = await paymentDetailsResponse.json();
-      console.error("Failed to get payment details:", errorData);
-      return NextResponse.redirect(
-        new URL(process.env.NEXT_PUBLIC_BASE_URL+"/checkout?error=payment_processing_error", req.url)
-      );
-    }
+    // if (!paymentDetailsResponse.ok) {
+    //   const errorData = await paymentDetailsResponse.json();
+    //   console.error("Failed to get payment details:", errorData);
+    //   return NextResponse.redirect(
+    //     new URL(process.env.NEXT_PUBLIC_BASE_URL+"/checkout?error=payment_processing_error", req.url)
+    //   );
+    // }
 
-    const paymentDetails = await paymentDetailsResponse.json();
+    // const paymentDetails = await paymentDetailsResponse.json();
 
-    const callbackSuccess = responseCode === "00";
-    const isPaymentSuccessful =
-      paymentDetails.ResponseCode === "00" &&
-      (paymentDetails.PaymentState === "payment_approved" ||
-        paymentDetails.PaymentState === "payment_deposited");
+    // const callbackSuccess = responseCode === "00";
+    // const isPaymentSuccessful =
+    //   paymentDetails.ResponseCode === "00" &&
+    //   (paymentDetails.PaymentState === "payment_approved" ||
+    //     paymentDetails.PaymentState === "payment_deposited");
 
-    console.log({
-      callbackSuccess,
-      isPaymentSuccessful,
-      responseCode,
-      paymentResponseCode: paymentDetails.ResponseCode,
-      paymentState: paymentDetails.PaymentState,
-      paymentDetails,
-    });
+    // console.log({
+    //   callbackSuccess,
+    //   isPaymentSuccessful,
+    //   responseCode,
+    //   paymentResponseCode: paymentDetails.ResponseCode,
+    //   paymentState: paymentDetails.PaymentState,
+    //   paymentDetails,
+    // });
 
-    if (!callbackSuccess) {
-      console.error(
-        "Payment failed according to callback response code:",
-        responseCode
-      );
-      return NextResponse.redirect(
-        new URL(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?error=payment_failed&callback_code=${responseCode}`,
-          req.url
-        )
-      );
-    }
+    // if (!callbackSuccess) {
+    //   console.error(
+    //     "Payment failed according to callback response code:",
+    //     responseCode
+    //   );
+    //   return NextResponse.redirect(
+    //     new URL(
+    //       `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?error=payment_failed&callback_code=${responseCode}`,
+    //       req.url
+    //     )
+    //   );
+    // }
 
-    if (!isPaymentSuccessful) {
-      console.error(
-        "Payment not successful according to payment details:",
-        paymentDetails
-      );
-      return NextResponse.redirect(
-        new URL(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?error=payment_failed&details_code=${paymentDetails.ResponseCode}`,
-          req.url
-        )
-      );
-    }
+    // if (!isPaymentSuccessful) {
+    //   console.error(
+    //     "Payment not successful according to payment details:",
+    //     paymentDetails
+    //   );
+    //   return NextResponse.redirect(
+    //     new URL(
+    //       `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?error=payment_failed&details_code=${paymentDetails.ResponseCode}`,
+    //       req.url
+    //     )
+    //   );
+    // }
 
-    if (paymentDetails.PaymentState === "payment_approved") {
-      const confirmRequest = {
-        PaymentID: paymentID,
-        Username: process.env.AMERIABANK_USERNAME,
-        Password: process.env.AMERIABANK_PASSWORD,
-        Amount: paymentDetails.Amount,
-      };
-
-      const confirmResponse = await fetch(
-        `${AMERIABANK_BASE_URL}/ConfirmPayment`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(confirmRequest),
-        }
-      );
-
-      const confirmData = await confirmResponse.json();
-
-      if (!confirmResponse.ok || confirmData.ResponseCode !== "00") {
-        console.error("Failed to confirm payment:", confirmData);
-        return NextResponse.redirect(
-          new URL(process.env.NEXT_PUBLIC_BASE_URL+"/checkout?error=payment_confirmation_failed", req.url)
-        );
-      }
-    }
-
-    console.log(
-      `Processing payment completion for cart: ${cartId}, payment: ${paymentID}`
-    );
+    // console.log(
+    //   `Processing payment completion for cart: ${cartId}, payment: ${paymentID}`
+    // );
 
     const orderRes = await fetch(
       `${MEDUSA_BACKEND_URL}/store/carts/${cartId}/complete`,

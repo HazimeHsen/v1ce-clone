@@ -11,12 +11,13 @@ import { useCurrency } from "@/context/currency-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import PriceDisplay from "@/components/ui/price-display";
 
 export default function OrderConfirmedPage() {
   const { orderId } = useParams();
   const router = useRouter();
   const { t } = useTranslations();
-  const { formatPrice } = useCurrency();
+  const { formatPrice, selectedCurrency } = useCurrency();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -58,6 +59,14 @@ export default function OrderConfirmedPage() {
   }, [orderId]);
 
   // Using formatPrice from currency context
+
+  // Calculate proper subtotal from order items
+  const calculateSubtotal = (order) => {
+    if (!order?.items) return 0;
+    return order.items.reduce((sum, item) => {
+      return sum + ((item.unit_price || 0) * (item.quantity || 1));
+    }, 0);
+  };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -128,7 +137,7 @@ export default function OrderConfirmedPage() {
               <>
                 <span className="hidden sm:inline text-muted-foreground">•</span>
                 <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full">
-                  <span className="font-semibold text-primary">{formatPrice(order.total, { code: order.currency_code })}</span>
+                  <span className="font-semibold text-primary"><PriceDisplay price={order.total} fromCurrency={order.currency_code} /></span>
                 </div>
               </>
             )}
@@ -184,11 +193,11 @@ export default function OrderConfirmedPage() {
                               {t("orderConfirmed.quantity")}: <span className="font-medium text-foreground">{item.quantity}</span>
                             </span>
                             <span className="text-sm text-muted-foreground">
-                              {t("orderConfirmed.unit")}: <span className="font-medium text-foreground">{formatPrice(item.unit_price, { code: order.currency_code })}</span>
+                              {t("orderConfirmed.unit")}: <span className="font-medium text-foreground"><PriceDisplay price={item.unit_price} fromCurrency={order.currency_code} /></span>
                             </span>
                           </div>
                           <span className="font-semibold text-lg text-primary">
-                            {formatPrice(itemTotal, { code: order.currency_code })}
+                            <PriceDisplay price={itemTotal} fromCurrency={order.currency_code} />
                           </span>
                         </div>
                       </div>
@@ -255,7 +264,7 @@ export default function OrderConfirmedPage() {
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">{t("orderConfirmed.subtotal")}</span>
-                    <span className="font-medium">{formatPrice(order.subtotal, { code: order.currency_code })}</span>
+                    <span className="font-medium"><PriceDisplay price={calculateSubtotal(order)} fromCurrency={order.currency_code} /></span>
                   </div>
                   
                   {(order.shipping_total > 0 || order.shipping_methods?.length > 0) && (
@@ -270,7 +279,7 @@ export default function OrderConfirmedPage() {
                       </span>
                       <span className="font-medium">
                         {order.shipping_total > 0 ? 
-                          formatPrice(order.shipping_total, { code: order.currency_code }) : 
+                          <PriceDisplay price={order.shipping_total} fromCurrency={order.currency_code} /> : 
                           t("orderConfirmed.free")
                         }
                       </span>
@@ -280,21 +289,21 @@ export default function OrderConfirmedPage() {
                   {order.tax_total > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">{t("orderConfirmed.tax")}</span>
-                      <span className="font-medium">{formatPrice(order.tax_total, { code: order.currency_code })}</span>
+                      <span className="font-medium"><PriceDisplay price={order.tax_total} fromCurrency={order.currency_code} /></span>
                     </div>
                   )}
                   
                   {order.discount_total > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-green-600">{t("orderConfirmed.discount")}</span>
-                      <span className="font-medium text-green-600">-{formatPrice(order.discount_total, { code: order.currency_code })}</span>
+                      <span className="font-medium text-green-600">-<PriceDisplay price={order.discount_total} fromCurrency={order.currency_code} /></span>
                     </div>
                   )}
                   
                   {order.gift_card_total > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-blue-600">{t("orderConfirmed.giftCard")}</span>
-                      <span className="font-medium text-blue-600">-{formatPrice(order.gift_card_total, { code: order.currency_code })}</span>
+                      <span className="font-medium text-blue-600">-<PriceDisplay price={order.gift_card_total} fromCurrency={order.currency_code} /></span>
                     </div>
                   )}
                 </div>
@@ -303,7 +312,7 @@ export default function OrderConfirmedPage() {
                 
                 <div className="flex justify-between text-lg font-bold">
                   <span>{t("orderConfirmed.totalPaid")}</span>
-                  <span className="text-primary">{formatPrice(order.total, { code: order.currency_code })}</span>
+                  <span className="text-primary"><PriceDisplay price={order.total} fromCurrency={order.currency_code} /></span>
                 </div>
                 
                 {/* Payment Method Info */}

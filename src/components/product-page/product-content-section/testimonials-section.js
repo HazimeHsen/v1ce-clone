@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image";
 import { Play, Brush, ShieldPlus, Ship } from "lucide-react";
+import { useTranslations } from "@/hooks/use-translations";
 
 export default function TestimonialsSection({ testimonials }) {
+  const { t } = useTranslations();
   const duplicatedTestimonials = [
     ...testimonials,
     ...testimonials,
@@ -17,10 +19,10 @@ export default function TestimonialsSection({ testimonials }) {
             <Brush className="lucide lucide-brush size-6" />
           </div>
           <h3 className="mb-1 text-lg font-medium leading-tight">
-            Free Professional Design
+            {t("features.freeDesign.title")}
           </h3>
           <p className="text-sm text-muted-foreground">
-            We handle the design for you—no extra cost.
+            {t("features.freeDesign.description")}
           </p>
         </li>
         <li className="flex flex-col rounded-lg bg-secondary p-4">
@@ -28,10 +30,10 @@ export default function TestimonialsSection({ testimonials }) {
             <ShieldPlus className="lucide lucide-shield-plus size-6" />
           </div>
           <h3 className="mb-1 text-lg font-medium leading-tight">
-            Money Back Promise
+            {t("features.moneyBack.title")}
           </h3>
           <p className="text-sm text-muted-foreground">
-            Try it risk-free with our money-back guarantee.
+            {t("features.moneyBack.description")}
           </p>
         </li>
         <li className="flex flex-col rounded-lg bg-secondary p-4">
@@ -39,10 +41,10 @@ export default function TestimonialsSection({ testimonials }) {
             <Ship className="lucide lucide-ship size-6" />
           </div>
           <h3 className="mb-1 text-lg font-medium leading-tight">
-            Fast &amp; Secure Delivery
+            {t("features.fastDelivery.title")}
           </h3>
           <p className="text-sm text-muted-foreground">
-            1-3 days shipping from the UK, US, or UAE.
+            {t("features.fastDelivery.description")}
           </p>
         </li>
       </ul>
@@ -148,6 +150,7 @@ export default function TestimonialsSection({ testimonials }) {
 import { useEffect, useRef } from "react";
 
 function InfiniteSlider({ testimonials }) {
+  const { t } = useTranslations();
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -176,7 +179,7 @@ function InfiniteSlider({ testimonials }) {
 
   return (
     <div className="relative flex flex-col items-center gap-4 rounded-md py-4 font-medium overflow-hidden">
-      <p className="z-10">TRUSTED BY LEADING BRANDS</p>
+      <p className="z-10">{t("features.trustedBrands")}</p>
 
       <div
         ref={scrollRef}

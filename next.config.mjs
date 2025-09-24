@@ -6,6 +6,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // assetPrefix: process.env.CDN_URL ? process.env.CDN_URL.replace(/\/+$/, "") : "",
   images: {
     unoptimized: true,
   },

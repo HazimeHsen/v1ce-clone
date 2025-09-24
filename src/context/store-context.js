@@ -21,6 +21,8 @@ export const StoreProvider = ({ children }) => {
   const [productCache, setProductCache] = useState({});
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  console.log(products);
+
   const calculateCartTotals = (cartItems, existingCart = cart) => {
     const subtotal = cartItems.reduce((sum, item) => {
       return sum + (item.unit_price || 0) * item.quantity;
@@ -320,7 +322,6 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
-  // Checkout methods
   const addShippingAddress = async (address) => {
     try {
       setError(null);
@@ -482,12 +483,10 @@ export const StoreProvider = ({ children }) => {
       const res = await medusa.carts.complete(cart.id);
       
       if (res.type === "order") {
-        // Clear cart after successful order
         setCart(null);
         localStorage.removeItem("cart_id");
         return { type: "order", order: res.data };
       } else {
-        // Cart needs more information
         setCart(res.data);
         return { type: "cart", cart: res.data };
       }
@@ -540,7 +539,6 @@ export const StoreProvider = ({ children }) => {
         isCartOpen,
         openCart,
         closeCart,
-        // Checkout methods
         addShippingAddress,
         addBillingAddress,
         addEmail,

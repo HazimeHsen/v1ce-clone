@@ -4,7 +4,7 @@ const ColorSwatches = ({
   swatches,
   size = 20,
   selectedSwatch,
-  onSwatchSelect,
+  onSwatchSelect = () => {},
 }) => {
   if (!swatches || swatches.length === 0) return null;
 

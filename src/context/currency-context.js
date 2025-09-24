@@ -14,8 +14,6 @@ export const CurrencyProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [exchangeRates, setExchangeRates] = useState({});
   const [ratesLoading, setRatesLoading] = useState(false);
-  console.log(isLoading);
-  console.log(ratesLoading);
 
   const fetchExchangeRates = async (targetCurrency) => {
     try {
@@ -182,12 +180,14 @@ export const CurrencyProvider = ({ children }) => {
 
     const convertedPrice = convertPrice(price, fromCurrency, currency.code);
 
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: currency.code,
+    // Use custom currency symbol from our currency configuration
+    const formattedNumber = new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(convertedPrice);
+
+    // Return formatted price with custom symbol
+    return `${currency.symbol}${formattedNumber}`;
   };
 
   const value = {

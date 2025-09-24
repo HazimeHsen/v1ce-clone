@@ -11,6 +11,7 @@ import { useCurrency } from "@/context/currency-context";
 import { useParams } from "next/navigation";
 import { PageLoader } from "@/components/ui/loader";
 import { useTranslations } from "@/hooks/use-translations";
+import ProductJsonLd from "@/components/product-json-ld";
 
 const testimonials = [
   {
@@ -228,7 +229,7 @@ export default function ProductPage() {
 
   const { fetchProduct, region } = useStore();
   const { formatPrice } = useCurrency();
-  const { handle } = useParams();
+  const { handle, locale } = useParams();
 
   const getTranslatedTestimonials = () => {
     return testimonials.map((testimonial, index) => ({
@@ -488,6 +489,7 @@ export default function ProductPage() {
 
   return (
     <>
+      <ProductJsonLd product={product} locale={locale} />
       <Navbar />
 
       <div className="center-wide mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 lg:gap-20">

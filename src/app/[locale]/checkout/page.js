@@ -451,7 +451,6 @@ export default function CheckoutPage() {
     0
   );
   const shipping = selectedShippingOption ? selectedShippingOption.amount : 0;
-  const tax = subtotal * 0.1;
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -503,8 +502,8 @@ export default function CheckoutPage() {
               handleRemove={handleRemove}
               totalItems={totalItems}
               subtotal={subtotal}
-              tax={tax}
               totalPrice={totalPrice}
+              shipping={shipping}
               isProcessingOrder={isProcessingOrder}
               loading={loading}
               getItemImage={getItemImage}

@@ -599,6 +599,21 @@
       }
     }
   },
+  "features": {
+    "freeDesign": {
+      "title": "Free Professional Design",
+      "description": "We handle the design for you—no extra cost."
+    },
+    "moneyBack": {
+      "title": "Money Back Promise", 
+      "description": "Try it risk-free with our money-back guarantee."
+    },
+    "fastDelivery": {
+      "title": "Fast & Secure Delivery",
+      "description": "1-3 days shipping from the UK, US, or UAE."
+    },
+    "trustedBrands": "TRUSTED BY LEADING BRANDS"
+  },
   "checkout": {
     "title": "Checkout",
     "description": "Review your order and complete your purchase",

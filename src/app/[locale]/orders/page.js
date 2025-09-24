@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import PriceDisplay from "@/components/ui/price-display";
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -56,13 +57,7 @@ export default function OrdersPage() {
     fetchOrders();
   }, [pagination.limit, pagination.offset, router]);
 
-  const formatPrice = (price, currencyCode = 'AMD') => {
-    if (typeof price !== 'number') return '0.00';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currencyCode.toUpperCase(),
-    }).format(price / 100); // Medusa stores prices in cents
-  };
+  // Removed custom formatPrice function - now using PriceDisplay component
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -217,7 +212,7 @@ export default function OrdersPage() {
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="text-sm font-medium">
-                        {formatPrice(order.total, order.currency_code)}
+                        <PriceDisplay price={order.total} fromCurrency={order.currency_code} />
                       </span>
                       <div className="flex items-center gap-2">
                         {getPaymentStatusBadge(order.payment_status)}

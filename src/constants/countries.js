@@ -128,7 +128,6 @@ export const COUNTRIES = [
   { code: 'OM', name: 'Oman' },
   { code: 'PK', name: 'Pakistan' },
   { code: 'PW', name: 'Palau' },
-  { code: 'PS', name: 'Palestine' },
   { code: 'PA', name: 'Panama' },
   { code: 'PG', name: 'Papua New Guinea' },
   { code: 'PY', name: 'Paraguay' },

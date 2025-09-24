@@ -19,14 +19,10 @@ export default function OrderSummary({
   handleRemove,
   totalItems,
   subtotal,
-  tax,
-  totalPrice,
-  isProcessingOrder,
-  loading,
+  shipping,
   getItemImage,
   getItemTitle,
   getItemVariantTitle,
-  formatPrice,
   t
 }) {
   return (
@@ -144,12 +140,18 @@ export default function OrderSummary({
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t("checkout.shipping")}</span>
-            <span className="text-foreground"><PriceDisplay price={3} /></span>
+            <span className="text-foreground">
+              {shipping === 0 ? (
+                <span className="text-primary">{t("checkout.free")}</span>
+              ) : (
+                <PriceDisplay price={shipping} />
+              )}
+            </span>
           </div>
           <Separator className="bg-border/50" />
           <div className="flex justify-between text-lg font-semibold text-foreground">
             <span>{t("checkout.total")}</span>
-            <span className="text-primary"><PriceDisplay price={totalPrice} /></span>
+            <span className="text-primary"><PriceDisplay price={subtotal + shipping} /></span>
           </div>
         </div>
       </CardContent>
