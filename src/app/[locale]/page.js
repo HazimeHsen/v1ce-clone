@@ -23,16 +23,14 @@ import { PageLoader } from "@/components/ui/loader";
 import FadeInSection from "@/components/ui/fade-in-section";
 
 export default function Home() {
-  const { products, fetchProducts } = useStore();
-  const [loading, setLoading] = useState(true);
+  const { products, fetchProducts, loading } = useStore();
 
   useEffect(() => {
-    const loadProducts = async () => {
-      await fetchProducts();
-      setLoading(false);
-    };
-    loadProducts();
-  }, []);
+    // Only fetch if we don't have products yet
+    if (!products || products.length === 0) {
+      fetchProducts();
+    }
+  }, [fetchProducts, products]);
 
   if (loading) {
     return <PageLoader />;

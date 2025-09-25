@@ -89,6 +89,7 @@ export const StoreProvider = ({ children }) => {
   const fetchProducts = useCallback(async () => {
     try {
       if (!region) return;
+      setLoading(true);
       const res = await medusa.products.list({
         region_id: region.id,
       });
@@ -114,6 +115,8 @@ export const StoreProvider = ({ children }) => {
       setProducts(productsWithMetadata);
     } catch (err) {
       console.error("Failed to fetch products:", err);
+    } finally {
+      setLoading(false);
     }
   }, [region, fetchProductMetadata]);
 
