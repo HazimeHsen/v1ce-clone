@@ -45,12 +45,6 @@ export default function ProductDetailsForm({
   
   const [quantity, setQuantity] = useState(1);
   const [selectedBundle, setSelectedBundle] = useState(null);
-
-  useEffect(() => {
-    if (quantityBundles && quantityBundles.length > 0 && !selectedBundle) {
-      setSelectedBundle(quantityBundles[0].id);
-    }
-  }, [quantityBundles, selectedBundle]);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [cartError, setCartError] = useState(null);
   const [cartSuccess, setCartSuccess] = useState(false);
@@ -205,6 +199,13 @@ export default function ProductDetailsForm({
       ],
     },
   ];
+
+  // Set first bundle as default when quantityBundles are available
+  useEffect(() => {
+    if (quantityBundles && quantityBundles.length > 0 && !selectedBundle) {
+      setSelectedBundle(quantityBundles[0].id);
+    }
+  }, [quantityBundles, selectedBundle]);
 
   useEffect(() => {
     if (mainCarouselRef.current) {

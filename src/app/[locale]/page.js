@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import Navbar from "@/components/navbar";
 import HeroSection from "@/components/hero-section";
 import CardCollections from "@/components/card-collections";
@@ -24,12 +24,15 @@ import FadeInSection from "@/components/ui/fade-in-section";
 
 export default function Home() {
   const { products, fetchProducts, loading } = useStore();
+  const hasFetched = useRef(false);
 
   useEffect(() => {
-    if (!products || products.length === 0) {
+    // Only fetch once if we don't have products and we're not already loading
+    if (!hasFetched.current && !products?.length && !loading) {
+      hasFetched.current = true;
       fetchProducts();
     }
-  }, [fetchProducts, products]);
+  }, [fetchProducts, products, loading]);
 
   if (loading) {
     return <PageLoader />;
