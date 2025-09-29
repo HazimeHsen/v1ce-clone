@@ -17,7 +17,7 @@ import PriceDisplay from "@/components/ui/price-display";
 export default function OrderConfirmedPage() {
   const { orderId } = useParams();
   const router = useRouter();
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
   const { formatPrice, selectedCurrency } = useCurrency();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);

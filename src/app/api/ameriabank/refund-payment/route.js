@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const AMERIABANK_BASE_URL = 'https://servicestest.ameriabank.am/VPOS/api/VPOS';
+const AMERIABANK_BASE_URL = 'https://services.ameriabank.am/VPOS/api/VPOS';
 
 export async function POST(request) {
   try {

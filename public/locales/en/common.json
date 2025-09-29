@@ -209,6 +209,9 @@
     "selectColorAndQuantity": "Please select both a color and quantity to continue",
     "shippingCalculated": "Shipping Calculated at Checkout",
     "orderTodayForDelivery": "Order today for delivery:",
+    "priceRange": "Price Range",
+    "priceRangeDescription": "Bulk pricing available",
+    "perItem": "per item",
     "details": {
       "title": "Key Details About Your Card",
       "description": "Description",
@@ -250,6 +253,7 @@
       "fourItems": "4 Items",
       "eightItems": "8 Items",
       "twelveItems": "12 Items",
+      "multipleItems": "{{count}} Items",
       "mostPopular": "Most Popular",
       "limitedTimeOnly": "Limited Time Only",
       "colour": "Colour:",
@@ -277,6 +281,11 @@
         "1": "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
         "2": "Smarter Follow-Ups - Send follow-ups from your Mibio dashboard or CRM.",
         "3": "Always Up to Date - Edit your info anytime. No reprints needed."
+      },
+      "dynamicDescription": {
+        "0": "Perfect for {{count}} person team",
+        "1": "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
+        "2": "Always Up to Date - Edit your info anytime. No reprints needed."
       }
     },
     "loading": {
@@ -702,6 +711,28 @@
     "converting": "Converting...",
     "fetchingRates": "Fetching exchange rates..."
   },
+  "checkout": {
+    "title": "Checkout",
+    "description": "Review your order and complete your purchase",
+    "back": "Back",
+    "error": "Error",
+    "shippingAndBilling": "Shipping & Billing",
+    "orderSummary": "Order Summary",
+    "shippingMethod": "Shipping Method",
+    "proceedToPayment": "Proceed to Payment",
+    "processing": "Processing...",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "address": "Street Address",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "emptyCartTitle": "Your cart is empty",
+    "emptyCartDescription": "Add some items to your cart to proceed with checkout.",
+    "emptyCartContinueShopping": "Continue Shopping"
+  },
   "metadata": {
     "home": {
       "title": "Mibio - Smart Business Cards | The Last Business Card You'll Ever Need",
@@ -718,11 +749,6 @@
       "description": "Get your {{productName}} smart business card. Professional, contactless networking solution with instant lead capture and CRM integration.",
       "keywords": "{{productName}}, smart business card, NFC card, contactless networking, lead capture"
     },
-    "checkout": {
-      "title": "Checkout - Complete Your Order | Mibio",
-      "description": "Complete your smart business card order. Secure checkout with worldwide shipping and 100% lifetime guarantee.",
-      "keywords": "checkout, order, smart business cards, secure payment, worldwide shipping"
-    },
     "contact": {
       "title": "Contact Us - Get in Touch | Mibio",
       "description": "Get in touch with Mibio. Our average response time is 3 hours. Contact us for support, bulk orders, or custom solutions.",
@@ -733,5 +759,26 @@
       "description": "Learn about Mibio's shipping and returns policy. Worldwide shipping, fast delivery, and 100% satisfaction guarantee.",
       "keywords": "shipping policy, returns policy, worldwide shipping, delivery, satisfaction guarantee"
     }
+  },
+  "orderFailed": {
+    "alreadyCompleted": {
+      "title": "Order Already Completed",
+      "description": "This order has already been processed and completed successfully.",
+      "explanation": "You're seeing this message because you tried to access the payment callback URL multiple times. Your order was already completed on the first attempt.",
+      "solution": {
+        "title": "What should you do?",
+        "description": "Your order is already confirmed and you should have received a confirmation email. You can view your order details in your account or contact support if you have any questions."
+      }
+    },
+    "generic": {
+      "title": "Order Processing Failed",
+      "description": "We encountered an issue while processing your order.",
+      "explanation": "There was an unexpected error during the order processing. Please try again or contact support if the problem persists."
+    },
+    "whatHappened": "What happened?",
+    "continueShopping": "Continue Shopping",
+    "viewOrders": "View My Orders",
+    "needHelp": "Need help?",
+    "contactSupport": "Contact Support"
   }
 }

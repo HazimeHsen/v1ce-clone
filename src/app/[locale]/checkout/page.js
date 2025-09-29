@@ -43,9 +43,8 @@ export default function CheckoutPage() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
   
-  // Create schema with translations
   const shippingSchema = z.object({
     firstName: z.string().min(2, t("checkout.validation.firstNameMin")),
     lastName: z.string().min(2, t("checkout.validation.lastNameMin")),
@@ -69,7 +68,6 @@ export default function CheckoutPage() {
 
   const cartItems = cart?.items || [];
 
-  // Handle URL error parameters from callback
   useEffect(() => {
     const errorParam = searchParams.get('error');
     if (errorParam) {
@@ -88,7 +86,6 @@ export default function CheckoutPage() {
       setUrlError(errorMessage);
       setError(errorMessage);
       
-      // Clear the error from URL after showing it
       const newUrl = new URL(window.location);
       newUrl.searchParams.delete('error');
       router.replace(newUrl.pathname + newUrl.search, { scroll: false });
@@ -143,11 +140,14 @@ export default function CheckoutPage() {
     fetchShippingOptions();
   }, [cart?.id]);
 
-  // Set page loading to false when ALL data is loaded
   useEffect(() => {
-    // Only hide loading when we have cart, store is not loading, and both shipping & cart items are done loading
     if (cart && !loading && !loadingShippingOptions && !loadingCartItems) {
       console.log("All data loaded, hiding page loader");
+      setIsPageLoading(false);
+    }
+    
+    if (!loading && !cart) {
+      console.log("No cart found, showing empty state");
       setIsPageLoading(false);
     }
   }, [cart, loading, loadingShippingOptions, loadingCartItems]);
@@ -360,16 +360,13 @@ export default function CheckoutPage() {
       await addShippingAddress(shippingAddress);
       await addBillingAddress(shippingAddress);
 
-      // If no shipping option is selected yet, select the first one
       if (!selectedShippingOption && shippingOptions.length > 0) {
         setSelectedShippingOption(shippingOptions[0]);
         await addShippingMethod(shippingOptions[0].id);
       } else if (selectedShippingOption) {
-        // Make sure the selected shipping method is set in the cart
         await addShippingMethod(selectedShippingOption.id);
       }
 
-      // Initialize payment session and redirect
       const initResponse = await fetch("/api/payment-sessions", {
         method: "POST",
         headers: {
@@ -392,7 +389,6 @@ export default function CheckoutPage() {
         throw new Error("No payment providers available");
       }
 
-      // Redirect to payment provider
       window.location.href = firstSession.data.redirect_url;
     } catch (error) {
       console.error("Failed to process shipping information:", error);
@@ -401,25 +397,27 @@ export default function CheckoutPage() {
       setIsProcessingOrder(false);
     }
   };
-
-  // Show empty cart only when we're sure cart is loaded and actually empty
-  if (!isPageLoading && !loading && cart && cartItems.length === 0) {
+  
+  const isEmpty = !cart || cartItems.length === 0;
+  
+  // Show empty cart if cart is empty or doesn't exist, regardless of loading state
+  if (isEmpty) {
     return (
       <div className="min-h-screen bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10"></div>
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
 
-        <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
-          <div className="text-center py-16">
+        <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
+          <div className="text-center max-w-md mx-auto">
             <div className="p-6 rounded-full bg-secondary/20 w-fit mx-auto mb-6">
               <CreditCard className="h-16 w-16 text-primary" />
             </div>
             <h1 className="text-2xl font-bold text-foreground mb-4">
-              Your cart is empty
+              {t("checkout.emptyCartTitle")}
             </h1>
             <p className="text-muted-foreground mb-8">
-              Add some items to your cart to proceed with checkout.
+              {t("checkout.emptyCartDescription")}
             </p>
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/10 rounded-lg blur-xl"></div>
@@ -427,7 +425,7 @@ export default function CheckoutPage() {
                 asChild
                 className="relative bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/25"
               >
-                <Link href="/products">Continue Shopping</Link>
+                <Link href="/products">{t("checkout.emptyCartContinueShopping")}</Link>
               </Button>
             </div>
           </div>
@@ -436,13 +434,43 @@ export default function CheckoutPage() {
     );
   }
 
-  console.log("isPageLoading", isPageLoading);
-  console.log("loading", loading);
-  console.log("cart", cart);
-  console.log("isProcessingOrder", isProcessingOrder);
 
-  if ((isPageLoading || loading || !cart) && !isProcessingOrder) {
+  if (isPageLoading && !isProcessingOrder) {
     return <PageLoader />;
+  }
+
+  // Final check - if cart is empty, show empty cart page
+  if (!cart || cartItems.length === 0) {
+    return (
+      <div className="min-h-screen bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
+
+        <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
+          <div className="text-center max-w-md mx-auto">
+            <div className="p-6 rounded-full bg-secondary/20 w-fit mx-auto mb-6">
+              <CreditCard className="h-16 w-16 text-primary" />
+            </div>
+            <h1 className="text-2xl font-bold text-foreground mb-4">
+              {t("checkout.emptyCartTitle")}
+            </h1>
+            <p className="text-muted-foreground mb-8">
+              {t("checkout.emptyCartDescription")}
+            </p>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/10 rounded-lg blur-xl"></div>
+              <Button
+                asChild
+                className="relative bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/25"
+              >
+                <Link href="/products">{t("checkout.emptyCartContinueShopping")}</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);

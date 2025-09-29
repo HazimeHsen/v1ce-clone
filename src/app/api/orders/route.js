@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
+import { sendOrderCompletionEmail, getCustomerName } from "@/lib/email-utils";
 
 const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
 const MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BASE_URL || "http://localhost:9000";
 
-// GET - Retrieve orders for the current customer
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -11,7 +11,6 @@ export async function GET(request) {
     const limit = searchParams.get('limit') || '10';
     const offset = searchParams.get('offset') || '0';
     
-    // Get authorization header from request
     const authorization = request.headers.get('authorization');
     
     if (!authorization) {
@@ -21,7 +20,6 @@ export async function GET(request) {
       );
     }
 
-    // Fetch orders from Medusa
     const ordersRes = await fetch(`${MEDUSA_BACKEND_URL}/store/orders?limit=${limit}&offset=${offset}`, {
       headers: {
         "x-publishable-api-key": PUBLISHABLE_KEY,
@@ -55,7 +53,6 @@ export async function GET(request) {
   }
 }
 
-// POST - Create order from cart (complete cart)
 export async function POST(request) {
   try {
     const { cartId } = await request.json();
@@ -67,7 +64,6 @@ export async function POST(request) {
       );
     }
 
-    // First, validate the cart has all required information
     const cartRes = await fetch(`${MEDUSA_BACKEND_URL}/store/carts/${cartId}`, {
       headers: {
         "x-publishable-api-key": PUBLISHABLE_KEY,
@@ -84,7 +80,6 @@ export async function POST(request) {
     const cartData = await cartRes.json();
     const cart = cartData.cart;
 
-    // Validate cart prerequisites
     const validationErrors = [];
     
     if (!cart.email) {
@@ -99,7 +94,6 @@ export async function POST(request) {
       validationErrors.push("Billing address is required");
     }
     
-    // Check if cart has items that require shipping but no shipping method
     const hasShippingItems = cart.items?.some(item => item.requires_shipping);
     if (hasShippingItems && (!cart.shipping_methods || cart.shipping_methods.length === 0)) {
       validationErrors.push("Shipping method is required for items that require shipping");
@@ -120,7 +114,6 @@ export async function POST(request) {
       );
     }
 
-    // Complete the cart to create an order
     const completeRes = await fetch(`${MEDUSA_BACKEND_URL}/store/carts/${cartId}/complete`, {
       method: "POST",
       headers: {
@@ -147,7 +140,8 @@ export async function POST(request) {
     console.log(result);
     
     if (result.type === "order") {
-      // Order was successfully created
+      await sendOrderCompletionEmail(result.data, cart.email, getCustomerName({ shipping_address: cart.shipping_address, email: cart.email }));
+
       return NextResponse.json({
         success: true,
         type: "order",
@@ -155,7 +149,6 @@ export async function POST(request) {
         message: "Order created successfully"
       });
     } else {
-      // Cart needs more information
       return NextResponse.json({
         success: false,
         type: "cart",

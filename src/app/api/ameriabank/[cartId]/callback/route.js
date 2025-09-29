@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { sendOrderCompletionEmail, getCustomerName } from "@/lib/email-utils";
 
 const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
 const MEDUSA_BACKEND_URL =
   process.env.NEXT_PUBLIC_MEDUSA_BASE_URL || "http://localhost:9000";
-const AMERIABANK_BASE_URL = "https://servicestest.ameriabank.am/VPOS/api/VPOS";
+const AMERIABANK_BASE_URL = "https://services.ameriabank.am/VPOS/api/VPOS";
 
 export async function GET(req, { params }) {
   const timestamp = new Date().toISOString();
@@ -122,6 +123,29 @@ export async function GET(req, { params }) {
     //   `Processing payment completion for cart: ${cartId}, payment: ${paymentID}`
     // );
 
+    // First, check if the cart is already completed
+    const cartCheckRes = await fetch(
+      `${MEDUSA_BACKEND_URL}/store/carts/${cartId}`,
+      {
+        headers: {
+          "x-publishable-api-key": PUBLISHABLE_KEY,
+        },
+      }
+    );
+
+    if (cartCheckRes.ok) {
+      const cartData = await cartCheckRes.json();
+      const cart = cartData.cart;
+      
+      // If cart is already completed, redirect to order-failed page
+      if (cart.completed_at) {
+        console.log(`Cart ${cartId} is already completed at ${cart.completed_at}`);
+        return NextResponse.redirect(
+          new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/order-failed?error=order_already_completed`, req.url)
+        );
+      }
+    }
+
     const orderRes = await fetch(
       `${MEDUSA_BACKEND_URL}/store/carts/${cartId}/complete`,
       {
@@ -137,6 +161,14 @@ export async function GET(req, { params }) {
 
     if (!orderRes.ok) {
       console.error("Failed to complete order:", orderData);
+      
+      // Check if the error is because order is already completed
+      if (orderData.message && orderData.message.includes("already completed")) {
+        return NextResponse.redirect(
+          new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/order-failed?error=order_already_completed`, req.url)
+        );
+      }
+      
       return NextResponse.redirect(
         new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/checkout?error=order_completion_failed`, req.url)
       );
@@ -147,6 +179,9 @@ export async function GET(req, { params }) {
     console.log(
       `Order completed successfully: ${orderId} for Ameria payment ${paymentID}, order ${orderID}`
     );
+
+    // Send email notification for order completion
+    await sendOrderCompletionEmail(orderData.order, orderData.order?.email, getCustomerName(orderData.order));
 
     return NextResponse.redirect(
       new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/order/confirmed/${orderId}`, req.url)

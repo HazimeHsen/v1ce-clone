@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import Medusa from "@medusajs/medusa-js";
+import { sendOrderCompletionEmail, getCustomerName } from "@/lib/email-utils";
 
 const StoreContext = createContext();
 
@@ -559,6 +560,8 @@ export const StoreProvider = ({ children }) => {
       const res = await medusa.carts.complete(cart.id);
       
       if (res.type === "order") {
+        await sendOrderCompletionEmail(res.data, res.data.email, getCustomerName(res.data));
+
         setCart(null);
         localStorage.removeItem("cart_id");
         return { type: "order", order: res.data };
