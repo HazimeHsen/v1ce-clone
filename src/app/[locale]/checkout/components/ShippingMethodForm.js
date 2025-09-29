@@ -48,7 +48,7 @@ export default function ShippingMethodForm({
             >
               <div className="flex items-center space-x-3">
                 <RadioGroupItem value={option.id} id={option.id} />
-                <Label htmlFor={option.id} className="flex flex-col cursor-pointer">
+                <Label htmlFor={option.id} className="flex flex-col items-start cursor-pointer">
                   <span className="font-medium text-foreground">{option.name}</span>
                   <span className="text-sm text-muted-foreground">
                     {option.description || t("checkout.estimatedDelivery")}
@@ -60,7 +60,7 @@ export default function ShippingMethodForm({
                   {option.amount === 0 ? (
                     <span className="text-primary">{t("checkout.free")}</span>
                   ) : (
-                    `€${formatPrice(option.amount)}`
+                    `${formatPrice(option.amount)}`
                   )}
                 </span>
               </div>

@@ -141,16 +141,17 @@ export default function CheckoutPage() {
   }, [cart?.id]);
 
   useEffect(() => {
-    if (cart && !loading && !loadingShippingOptions && !loadingCartItems) {
+    // Show loading while any of these are true:
+    // 1. Store context is loading
+    // 2. Cart items are being fetched
+    // 3. Shipping options are being fetched
+    const isLoading = loading || loadingCartItems || loadingShippingOptions;
+    
+    if (!isLoading) {
       console.log("All data loaded, hiding page loader");
       setIsPageLoading(false);
     }
-    
-    if (!loading && !cart) {
-      console.log("No cart found, showing empty state");
-      setIsPageLoading(false);
-    }
-  }, [cart, loading, loadingShippingOptions, loadingCartItems]);
+  }, [loading, loadingCartItems, loadingShippingOptions]);
 
   const shippingForm = useForm({
     resolver: zodResolver(shippingSchema),
@@ -169,10 +170,8 @@ export default function CheckoutPage() {
   const fetchEnrichedItems = useCallback(async () => {
     if (cartItems.length === 0) {
       setEnrichedCartItems([]);
-      // Only set loading to false if we actually have a cart (meaning it's truly empty, not just not loaded yet)
-      if (cart) {
-        setLoadingCartItems(false);
-      }
+      // Always set loading to false when there are no items
+      setLoadingCartItems(false);
       return;
     }
 
@@ -398,49 +397,15 @@ export default function CheckoutPage() {
     }
   };
   
-  const isEmpty = !cart || cartItems.length === 0;
-  
-  // Show empty cart if cart is empty or doesn't exist, regardless of loading state
-  if (isEmpty) {
-    return (
-      <div className="min-h-screen bg-background relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10"></div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
-
-        <div className="min-h-screen flex items-center justify-center px-4 relative z-10">
-          <div className="text-center max-w-md mx-auto">
-            <div className="p-6 rounded-full bg-secondary/20 w-fit mx-auto mb-6">
-              <CreditCard className="h-16 w-16 text-primary" />
-            </div>
-            <h1 className="text-2xl font-bold text-foreground mb-4">
-              {t("checkout.emptyCartTitle")}
-            </h1>
-            <p className="text-muted-foreground mb-8">
-              {t("checkout.emptyCartDescription")}
-            </p>
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/10 rounded-lg blur-xl"></div>
-              <Button
-                asChild
-                className="relative bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/25"
-              >
-                <Link href="/products">{t("checkout.emptyCartContinueShopping")}</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-
+  // Show loading state while fetching cart data
   if (isPageLoading && !isProcessingOrder) {
     return <PageLoader />;
   }
 
-  // Final check - if cart is empty, show empty cart page
-  if (!cart || cartItems.length === 0) {
+  // Check if cart is empty after loading is complete
+  const isEmpty = !cart || cartItems.length === 0;
+  
+  if (isEmpty) {
     return (
       <div className="min-h-screen bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10"></div>

@@ -786,6 +786,11 @@
       "title": "Shipping & Returns Policy | Mibio",
       "description": "Learn about Mibio's shipping and returns policy. Worldwide shipping, fast delivery, and 100% satisfaction guarantee.",
       "keywords": "shipping policy, returns policy, worldwide shipping, delivery, satisfaction guarantee"
+    },
+    "checkout": {
+      "title": "Checkout - Complete Your Order | Mibio",
+      "description": "Complete your smart business card purchase. Secure checkout with multiple payment options. Get your NFC business card delivered to your door.",
+      "keywords": "checkout, smart business card purchase, NFC card order, secure payment, business card delivery"
     }
   },
   "orderFailed": {
