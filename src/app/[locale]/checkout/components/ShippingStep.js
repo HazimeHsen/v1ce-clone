@@ -77,7 +77,6 @@ export default function ShippingStep({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-foreground flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-primary" />
                       {t("checkout.email")}
                     </FormLabel>
                     <FormControl>
@@ -119,7 +118,6 @@ export default function ShippingStep({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-foreground flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-primary" />
                       {t("checkout.address")}
                     </FormLabel>
                     <FormControl>
