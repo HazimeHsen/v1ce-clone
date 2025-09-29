@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, StarHalf, ShoppingCart } from "lucide-react";
+import { Star, StarHalf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ColorSwatches from "@/components/color-swatches";
 import {
@@ -14,6 +14,9 @@ import { getLocalizedTitle, getLocalizedSubtitle } from "@/lib/translation-utils
 import { useParams } from "next/navigation";
 import { useStore } from "@/context/store-context";
 import { useState } from "react";
+import { Spinner } from "@/components/ui/loader";
+import { useCurrency } from "@/context/currency-context";
+import PriceDisplay from "@/components/ui/price-display";
 
 export default function MobileProductInfo({
   product,
@@ -249,7 +252,7 @@ export default function MobileProductInfo({
                         </span>
                       </div>
                       <div className="ml-2 text-right text-sm font-semibold">
-                        {bundle.price}
+                        <PriceDisplay price={bundle.price} />
                       </div>
                     </div>
                   </div>
@@ -322,7 +325,7 @@ export default function MobileProductInfo({
                         </div>
                         <div className="ml-2 text-right">
                           <div className="text-sm font-semibold">
-                            {bundle.price}
+                            <PriceDisplay price={bundle.price} />
                           </div>
                         </div>
                       </div>
@@ -350,14 +353,11 @@ export default function MobileProductInfo({
         >
           {isAddingToCart ? (
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <Spinner size="sm" />
               {t("product.addingToCart")}
             </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <ShoppingCart className="h-4 w-4" />
-              {t("product.addToCart")}
-            </div>
+            t("product.addToCart")
           )}
         </Button>
 
