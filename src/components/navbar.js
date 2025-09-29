@@ -37,7 +37,6 @@ export default function Navbar() {
   } = useStore();
   const { formatPrice } = useCurrency();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [enrichedCartItems, setEnrichedCartItems] = useState([]);
   const [loadingCartItems, setLoadingCartItems] = useState(false);
   const [updatingItems, setUpdatingItems] = useState(new Set());
   const router = useRouter();
@@ -49,133 +48,24 @@ export default function Navbar() {
 
   const cartItems = cart?.items || [];
 
-  const fetchEnrichedItems = useCallback(async () => {
-    if (cartItems.length === 0) {
-      setEnrichedCartItems([]);
-      return;
-    }
-
-    if (enrichedCartItems.length > 0) {
-      const currentItemIds = new Set(cartItems.map((item) => item.id));
-
-      const syncedItems = enrichedCartItems
-        .filter((enrichedItem) => currentItemIds.has(enrichedItem.id))
-        .map((enrichedItem) => {
-          const currentItem = cartItems.find(
-            (item) => item.id === enrichedItem.id
-          );
-          return currentItem
-            ? { ...enrichedItem, quantity: currentItem.quantity }
-            : enrichedItem;
-        });
-
-      if (syncedItems.length < cartItems.length) {
-        setLoadingCartItems(true);
-        try {
-          const enriched = await fetchCartItemsWithProducts(cartItems);
-          setEnrichedCartItems(enriched);
-        } catch (error) {
-          console.error("Failed to enrich cart items:", error);
-          setEnrichedCartItems(cartItems);
-        } finally {
-          setLoadingCartItems(false);
-        }
-      } else {
-        setEnrichedCartItems(syncedItems);
-      }
-      return;
-    }
-
-    setLoadingCartItems(true);
-    try {
-      const enriched = await fetchCartItemsWithProducts(cartItems);
-      setEnrichedCartItems(enriched);
-    } catch (error) {
-      console.error("Failed to enrich cart items:", error);
-      setEnrichedCartItems(cartItems);
-    } finally {
-      setLoadingCartItems(false);
-    }
-  }, [
-    cartItems.length,
-    cartItems
-      .map((item) => item.id)
-      .sort()
-      .join(","),
-    cartItems.map((item) => `${item.id}:${item.quantity}`).join(","),
-    fetchCartItemsWithProducts,
-  ]);
-
-  useEffect(() => {
-    fetchEnrichedItems();
-  }, [fetchEnrichedItems]);
 
   const getItemImage = (item) => {
-    if (item.fullProduct?.variants && item.variant_id) {
-      const variant = item.fullProduct.variants.find(
-        (v) => v.id === item.variant_id
-      );
-      if (variant?.metadata?.images) {
-        try {
-          const images = JSON.parse(variant.metadata.images);
-          if (Array.isArray(images) && images.length > 0) {
-            return images[0];
-          }
-        } catch (e) {
-          console.error("Failed to parse variant images from fullProduct", e);
-        }
-      }
-    }
-
-    if (item.fullProduct?.images && item.fullProduct.images.length > 0) {
-      return item.fullProduct.images[0].url;
-    }
-
+    // Use the thumbnail from the cart item directly
     if (item.thumbnail) {
       return item.thumbnail;
     }
 
-    if (item.fullProduct?.thumbnail) {
-      return item.fullProduct.thumbnail;
-    }
-
-    try {
-      const images =
-        item.variant?.metadata?.images &&
-        JSON.parse(item.variant.metadata.images);
-      if (Array.isArray(images) && images.length > 0) {
-        return images[0];
-      }
-    } catch (e) {
-      console.error("Failed to parse variant images", e);
-    }
-
-    return item.variant?.product?.thumbnail || "/placeholder.svg";
+    return "/placeholder.svg";
   };
 
   const getItemTitle = (item) => {
-    if (item.fullProduct) {
-      return getLocalizedTitle(item.fullProduct, currentLocale);
-    }
-    return (
-      item.product_title ||
-      item.title ||
-      item.variant?.product?.title ||
-      "Unknown Product"
-    );
+    // Use the product_title from the cart item directly
+    return item.product_title || item.title || "Unknown Product";
   };
 
   const getItemVariantTitle = (item) => {
-    if (item.fullProduct?.variants && item.variant_id) {
-      const variant = item.fullProduct.variants.find(
-        (v) => v.id === item.variant_id
-      );
-      if (variant?.title) {
-        return variant.title;
-      }
-    }
-
-    return item.variant_title || item.variant?.title || "";
+    // Use the variant_title from the cart item directly
+    return item.variant_title || "";
   };
 
   // Remove the local formatPrice function since we're using the one from currency context
@@ -223,8 +113,8 @@ export default function Navbar() {
   };
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const displayItems =
-    enrichedCartItems.length > 0 ? enrichedCartItems : cartItems;
+  const displayItems = cartItems;
+  console.log("cart", cart);
   const totalPrice = cart?.total ? cart.total : 0;
 
   const handleCheckout = () => {

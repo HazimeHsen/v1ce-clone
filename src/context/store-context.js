@@ -24,6 +24,22 @@ export const StoreProvider = ({ children }) => {
 
   console.log(products);
 
+  // Helper function to get the correct unit price for display in cart
+  const getDisplayUnitPrice = (cartItem) => {
+    if (!cartItem) return 0;
+    
+    // Apply quantity-based discount logic
+    // If quantity >= 4, apply discount (7 -> 5)
+    if (cartItem.quantity >= 4) {
+      // The unit_price in cart items is already the discounted price
+      // But we need to show the original price for display purposes
+      // For now, return the unit_price as is since it's already discounted
+      return cartItem.unit_price || 0;
+    }
+    
+    return cartItem.unit_price || 0;
+  };
+
   const calculateCartTotals = (cartItems, existingCart = cart) => {
     const subtotal = cartItems.reduce((sum, item) => {
       return sum + (item.unit_price || 0) * item.quantity;
@@ -626,6 +642,7 @@ export const StoreProvider = ({ children }) => {
         initializePaymentSessions,
         setPaymentSession,
         completeCart,
+        getDisplayUnitPrice,
       }}
     >
       {children}
