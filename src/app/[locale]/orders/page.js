@@ -201,26 +201,26 @@ export default function OrdersPage() {
           {orders.map((order) => (
             <Card key={order.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                       <h3 className="font-semibold">Order #{order.display_id || order.id}</h3>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar className="h-4 w-4" />
                         <span>{formatDate(order.created_at)}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                       <span className="text-sm font-medium">
                         <PriceDisplay price={order.total} fromCurrency={order.currency_code} />
                       </span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         {getPaymentStatusBadge(order.payment_status)}
                         {getFulfillmentStatusBadge(order.fulfillment_status)}
                       </div>
                     </div>
                   </div>
-                  <Button asChild variant="outline" size="sm">
+                  <Button asChild variant="outline" size="sm" className="w-full sm:w-auto">
                     <Link href={`/order/confirmed/${order.id}`}>
                       <Eye className="h-4 w-4 mr-2" />
                       View Details
@@ -244,7 +244,7 @@ export default function OrdersPage() {
                     
                     <div className="mt-2 flex flex-wrap gap-2">
                       {order.items.slice(0, 3).map((item) => (
-                        <div key={item.id} className="text-sm text-foreground">
+                        <div key={item.id} className="text-sm text-foreground break-words">
                           {item.title}
                           {item.quantity > 1 && <span className="text-muted-foreground"> × {item.quantity}</span>}
                         </div>

@@ -285,7 +285,9 @@ export default function Navbar() {
         </div>
 
         <div className="flex gap-5">
+          <div className="hidden lg:block">
           <CurrencySwitcher />
+          </div>
           <LanguageSwitcher currentLocale={currentLocale} />
           <Sheet
             open={isCartOpen}

@@ -34,7 +34,7 @@ export default function ShippingStep({
         <CardContent className="p-6">
           <Form {...shippingForm}>
             <form className="space-y-4" onSubmit={shippingForm.handleSubmit(onShippingSubmit)}>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={shippingForm.control}
                   name="firstName"
@@ -134,7 +134,7 @@ export default function ShippingStep({
                 )}
               />
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={shippingForm.control}
                   name="city"

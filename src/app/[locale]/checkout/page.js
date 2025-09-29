@@ -99,6 +99,7 @@ export default function CheckoutPage() {
     loadingCartItems,
     isPageLoading,
     cartItemsLength: cartItems.length,
+    cartId: cart?.id,
   });
 
   useEffect(() => {
@@ -144,14 +145,22 @@ export default function CheckoutPage() {
     // Show loading while any of these are true:
     // 1. Store context is loading
     // 2. Cart items are being fetched
-    // 3. Shipping options are being fetched
-    const isLoading = loading || loadingCartItems || loadingShippingOptions;
+    // 3. Shipping options are being fetched (only if cart exists)
+    const isLoading = loading || loadingCartItems || (cart?.id && loadingShippingOptions);
     
     if (!isLoading) {
       console.log("All data loaded, hiding page loader");
       setIsPageLoading(false);
     }
-  }, [loading, loadingCartItems, loadingShippingOptions]);
+  }, [loading, loadingCartItems, loadingShippingOptions, cart?.id]);
+
+  // Handle case when there's no cart and store is not loading
+  useEffect(() => {
+    if (!loading && !cart) {
+      console.log("No cart found, showing empty state");
+      setIsPageLoading(false);
+    }
+  }, [loading, cart]);
 
   const shippingForm = useForm({
     resolver: zodResolver(shippingSchema),
@@ -476,7 +485,7 @@ export default function CheckoutPage() {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="order-1 lg:order-1 space-y-6">
             <ShippingStep
               shippingForm={shippingForm}

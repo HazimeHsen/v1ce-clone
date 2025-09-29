@@ -41,7 +41,6 @@ export default function MobileProductInfo({
   const { addToCart, openCart } = useStore();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [cartError, setCartError] = useState(null);
-  const [cartSuccess, setCartSuccess] = useState(false);
 
   const handleAddToCart = async () => {
     try {
@@ -76,7 +75,6 @@ export default function MobileProductInfo({
 
       await addToCart(selectedVariant.id, totalQuantity);
 
-      setCartSuccess(true);
       setTimeout(() => {
         openCart();
       }, 500);
@@ -355,12 +353,9 @@ export default function MobileProductInfo({
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               {t("product.addingToCart")}
             </div>
-          ) : cartSuccess ? (
-            <div className="flex items-center gap-2">
-              {t("product.addedToCart")}
-            </div>
           ) : (
             <div className="flex items-center gap-2">
+              <ShoppingCart className="h-4 w-4" />
               {t("product.addToCart")}
             </div>
           )}
@@ -372,11 +367,6 @@ export default function MobileProductInfo({
           </div>
         )}
 
-        {cartSuccess && (
-          <div className="text-sm text-green-600 text-center bg-green-50 p-2 rounded-md">
-            {t("product.itemAddedSuccessfully")}
-          </div>
-        )}
       </div>
     </div>
   );
