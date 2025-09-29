@@ -13,7 +13,7 @@ import { useTranslations } from "@/hooks/use-translations";
 import { getLocalizedTitle, getLocalizedSubtitle } from "@/lib/translation-utils";
 import { useParams } from "next/navigation";
 import { useStore } from "@/context/store-context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Spinner } from "@/components/ui/loader";
 import { useCurrency } from "@/context/currency-context";
 import PriceDisplay from "@/components/ui/price-display";
@@ -44,6 +44,16 @@ export default function MobileProductInfo({
   const { addToCart, openCart } = useStore();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [cartError, setCartError] = useState(null);
+
+  console.log("Mobile ProductInfo - selectedBundle:", selectedBundle);
+
+  // Ensure first bundle is selected if none is selected
+  useEffect(() => {
+    if (!selectedBundle && quantityBundles && quantityBundles.length > 0) {
+      console.log("Mobile: Setting first bundle as default:", quantityBundles[0].id);
+      setSelectedBundle(quantityBundles[0].id);
+    }
+  }, [selectedBundle, quantityBundles, setSelectedBundle]);
 
   const handleAddToCart = async () => {
     try {
