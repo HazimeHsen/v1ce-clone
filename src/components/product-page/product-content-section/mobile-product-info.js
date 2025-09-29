@@ -237,7 +237,7 @@ export default function MobileProductInfo({
               <AccordionItem
                 key={bundle.id}
                 value={bundle.id}
-                className={`box-border border rounded-lg data-[state=open]:border-2 data-[state=open]:bg-secondary transition-colors duration-150 ease-out ${
+                className={`box-border border !border-b rounded-lg data-[state=open]:border-2 data-[state=open]:bg-secondary transition-colors duration-150 ease-out ${
                   selectedBundle === bundle.id
                     ? "border-primary bg-primary/5"
                     : ""
