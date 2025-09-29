@@ -45,12 +45,9 @@ export default function MobileProductInfo({
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [cartError, setCartError] = useState(null);
 
-  console.log("Mobile ProductInfo - selectedBundle:", selectedBundle);
-
   // Ensure first bundle is selected if none is selected
   useEffect(() => {
     if (!selectedBundle && quantityBundles && quantityBundles.length > 0) {
-      console.log("Mobile: Setting first bundle as default:", quantityBundles[0].id);
       setSelectedBundle(quantityBundles[0].id);
     }
   }, [selectedBundle, quantityBundles, setSelectedBundle]);
@@ -363,7 +360,7 @@ export default function MobileProductInfo({
         >
           {isAddingToCart ? (
             <div className="flex items-center gap-2">
-              <Spinner size="sm" />
+              <Spinner size="sm" color="text-white" />
               {t("product.addingToCart")}
             </div>
           ) : (
