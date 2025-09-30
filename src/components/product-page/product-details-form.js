@@ -34,6 +34,15 @@ export default function ProductDetailsForm({
   handleThumbnailClick,
   selectedColor,
   setSelectedColor,
+  quantityBundles = [],
+  firstOption,
+  accordionOptions = [],
+  selectedBundle,
+  setSelectedBundle,
+  quantity,
+  setQuantity,
+  incrementQuantity,
+  decrementQuantity,
 }) {
   const { t } = useTranslations();
   const { locale } = useParams();
@@ -43,8 +52,7 @@ export default function ProductDetailsForm({
   const localizedSubtitle = getLocalizedSubtitle(product, locale);
   const localizedDescription = getLocalizedDescription(product, locale);
   
-  const [quantity, setQuantity] = useState(1);
-  const [selectedBundle, setSelectedBundle] = useState("1-item"); // Default to first item
+  // Use props for quantity and selectedBundle instead of local state
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [cartError, setCartError] = useState(null);
   const [cartSuccess, setCartSuccess] = useState(false);
@@ -139,66 +147,7 @@ export default function ProductDetailsForm({
 
   const basePrice = selectedVariant?.calculated_price?.calculated_amount || 25;
 
-  const quantityBundles = [
-    {
-      id: "1-item",
-      name: t("product.quantityBundles.oneItem"),
-      quantity: 1,
-      price: basePrice * 1,
-      pricePerItem: basePrice,
-      save: null,
-      popular: false,
-      description: [
-        t("product.quantityBundles.oneItemDescription.0"),
-        t("product.quantityBundles.oneItemDescription.1"),
-        t("product.quantityBundles.oneItemDescription.2"),
-      ],
-    },
-    {
-      id: "4-items",
-      name: t("product.quantityBundles.fourItems"),
-      quantity: 4,
-      price: basePrice * 4,
-      pricePerItem: basePrice,
-      save: null,
-      popular: false,
-      description: [
-        t("product.quantityBundles.fourItemsDescription.0"),
-        t("product.quantityBundles.fourItemsDescription.1"),
-        t("product.quantityBundles.fourItemsDescription.2"),
-      ],
-    },
-    {
-      id: "8-items",
-      name: t("product.quantityBundles.eightItems"),
-      quantity: 8,
-      price: basePrice * 8,
-      pricePerItem: basePrice,
-      save: null,
-      popular: true,
-      description: [
-        t("product.quantityBundles.eightItemsDescription.0"),
-        t("product.quantityBundles.eightItemsDescription.1"),
-        t("product.quantityBundles.eightItemsDescription.2"),
-        t("product.quantityBundles.eightItemsDescription.3"),
-      ],
-    },
-    {
-      id: "12-items",
-      name: t("product.quantityBundles.twelveItems"),
-      quantity: 12,
-      price: basePrice * 12,
-      pricePerItem: basePrice,
-      save: null,
-      popular: false,
-      description: [
-        t("product.quantityBundles.twelveItemsDescription.0"),
-        t("product.quantityBundles.twelveItemsDescription.1"),
-        t("product.quantityBundles.twelveItemsDescription.2"),
-        t("product.quantityBundles.twelveItemsDescription.3"),
-      ],
-    },
-  ];
+  // quantityBundles now comes from props
 
 
   useEffect(() => {
@@ -217,11 +166,7 @@ export default function ProductDetailsForm({
     }
   }, [mainCarouselIndex, thumbCarouselIndex]);
 
-  useEffect(() => {
-    if (quantityBundles.length > 0 && !selectedBundle) {
-      setSelectedBundle(quantityBundles[0].id);
-    }
-  }, [selectedBundle]);
+  // selectedBundle is now managed by parent component
 
   useEffect(() => {
     if (colorSwatches.length > 0 && !selectedColor) {
@@ -229,12 +174,7 @@ export default function ProductDetailsForm({
     }
   }, [colorSwatches, selectedColor, setSelectedColor]);
 
-  const incrementQuantity = () => {
-    setQuantity((prev) => Math.min(prev + 1, 100000));
-  };
-  const decrementQuantity = () => {
-    setQuantity((prev) => Math.max(prev - 1, 1));
-  };
+  // quantity management is now handled by parent component
 
   const handleAddToCart = async () => {
     try {
@@ -580,70 +520,75 @@ export default function ProductDetailsForm({
             </div>
             <div className="hidden md:block">
               <div className="space-y-4">
-                <Accordion
-                  type="single"
-                  collapsible
-                  value={selectedBundle}
-                  onValueChange={setSelectedBundle}
-                >
-                  {/* Single Item Option - Standalone */}
-                  {quantityBundles
-                    .filter((bundle) => bundle.id === "1-item")
-                    .map((bundle) => (
-                      <AccordionItem
-                        key={bundle.id}
-                        value={bundle.id}
-                        className={`box-border overflow-hidden rounded-xl border border-muted data-[state=open]:border-2 data-[state=open]:bg-secondary ${
-                          selectedBundle === bundle.id
-                            ? "border-primary bg-primary/5"
-                            : ""
-                        }`}
-                      >
-                        <AccordionTrigger
-                          arrow={false}
-                          className="relative flex w-full flex-col p-0 hover:no-underline data-[state=open]:no-underline"
-                        >
-                          <div className="flex w-full">
-                            <div className="flex w-full cursor-pointer flex-row items-center justify-between p-5">
-                              <div className="flex w-full items-center gap-4">
-                                <div
-                                  className={`aspect-square size-2 rounded-full ring-1 ring-muted ring-offset-4 ${
-                                    selectedBundle === bundle.id
-                                      ? "bg-primary"
-                                      : "bg-white"
-                                  }`}
-                                ></div>
-                                <span className="text-left font-semibold leading-tight">
-                                  {bundle.name}
-                                </span>
-                              </div>
-                              <div className="ml-2 text-right font-semibold">
-                                <PriceDisplay price={bundle.price} />
-                              </div>
-                            </div>
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="px-5 pb-5">
+                {/* First Option - Outside Accordion */}
+                {firstOption && (
+                  <div className="w-full">
+                    <div
+                      className={`box-border overflow-hidden rounded-xl border border-muted p-5 cursor-pointer transition-colors duration-150 ease-out ${
+                        selectedBundle === firstOption.id
+                          ? "border-primary bg-primary/5"
+                          : "hover:border-primary/50"
+                      }`}
+                      onClick={() => {
+                        if (selectedBundle !== firstOption.id) {
+                          setSelectedBundle(firstOption.id);
+                        }
+                      }}
+                    >
+                      <div className="flex w-full items-center justify-between">
+                        <div className="flex w-full items-center gap-4">
+                          <div
+                            className={`aspect-square size-2 rounded-full ring-1 ring-muted ring-offset-4 ${
+                              selectedBundle === firstOption.id
+                                ? "bg-primary"
+                                : "bg-white"
+                            }`}
+                          ></div>
+                          <span className="text-left font-semibold leading-tight">
+                            {firstOption.name}
+                          </span>
+                        </div>
+                        <div className="ml-2 text-right font-semibold">
+                          <PriceDisplay price={firstOption.price} />
+                        </div>
+                      </div>
+                      
+                      {/* Description for first option */}
+                      {selectedBundle === firstOption.id && (
+                        <div className="mt-4 animate-in slide-in-from-top-2 duration-200">
                           <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                            {bundle.description.map((item, idx) => (
+                            {firstOption.description.map((item, idx) => (
                               <li key={idx}>{item}</li>
                             ))}
                           </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
-                  <div className="mt-4 rounded-xl bg-secondary p-4 border">
-                    <h3 className="font-semibold mb-4 text-center">
-                      {t("product.quantityBundles.limitedTimeOnly")}
-                    </h3>
-                    {quantityBundles
-                      .filter((bundle) => bundle.id !== "1-item")
-                      .map((bundle, index) => (
+                {/* Accordion for Other Options */}
+                {accordionOptions && accordionOptions.length > 0 && (
+                  <Accordion
+                    type="single"
+                    collapsible
+                    value={selectedBundle}
+                    onValueChange={(value) => {
+                      if (value && value !== selectedBundle) {
+                        setSelectedBundle(value);
+                      }
+                    }}
+                  >
+
+                    <div className="mt-4 rounded-xl bg-secondary p-4 border">
+                      <h3 className="font-semibold mb-4 text-center">
+                        {t("product.quantityBundles.limitedTimeOnly")}
+                      </h3>
+                      {accordionOptions.map((bundle, index) => (
                         <AccordionItem
                           key={bundle.id}
                           value={bundle.id}
-                          className={`box-border overflow-hidden rounded-xl border border-muted data-[state=open]:border-2 data-[state=open]:bg-background ${
+                          className={`box-border overflow-hidden rounded-xl border border-muted data-[state=open]:border-2 data-[state=open]:bg-background transition-all duration-300 ease-out ${
                             index > 0 ? "mt-4" : ""
                           } ${
                             selectedBundle === bundle.id
@@ -653,7 +598,7 @@ export default function ProductDetailsForm({
                         >
                           <AccordionTrigger
                             arrow={false}
-                            className="relative flex w-full flex-col p-0 hover:no-underline data-[state=open]:no-underline"
+                            className="relative flex w-full flex-col p-0 hover:no-underline data-[state=open]:no-underline transition-all duration-300"
                           >
                             {bundle.popular && (
                               <div className="flex w-full justify-center rounded-t-xl border-transparent bg-primary/10 py-1 font-semibold text-primary">
@@ -675,12 +620,21 @@ export default function ProductDetailsForm({
                                   </span>
                                 </div>
                                 <div className="ml-2 text-right font-semibold">
-                                  <PriceDisplay price={bundle.price} />
+                                  {bundle.originalPrice && bundle.originalPrice !== bundle.price ? (
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-sm text-muted-foreground line-through">
+                                        <PriceDisplay price={bundle.originalPrice} />
+                                      </span>
+                                      <PriceDisplay price={bundle.price} />
+                                    </div>
+                                  ) : (
+                                    <PriceDisplay price={bundle.price} />
+                                  )}
                                 </div>
                               </div>
                             </div>
                           </AccordionTrigger>
-                          <AccordionContent className="px-5 pb-5">
+                          <AccordionContent className="px-5 pb-5 animate-in slide-in-from-top-2 duration-300">
                             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
                               {bundle.description.map((item, idx) => (
                                 <li key={idx}>{item}</li>
@@ -689,8 +643,9 @@ export default function ProductDetailsForm({
                           </AccordionContent>
                         </AccordionItem>
                       ))}
-                  </div>
-                </Accordion>
+                    </div>
+                  </Accordion>
+                )}
               </div>
             </div>
 

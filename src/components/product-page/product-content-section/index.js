@@ -22,6 +22,8 @@ export default function ProductContentSection({
   selectedBundle,
   setSelectedBundle,
   quantityBundles,
+  firstOption,
+  accordionOptions,
   colorSwatches,
   formatPrice,
   basePrice,
@@ -75,6 +77,8 @@ export default function ProductContentSection({
         selectedBundle={selectedBundle}
         setSelectedBundle={setSelectedBundle}
         quantityBundles={quantityBundles}
+        firstOption={firstOption}
+        accordionOptions={accordionOptions}
         colorSwatches={colorSwatches}
         formatPrice={formatPrice}
         basePrice={basePrice}

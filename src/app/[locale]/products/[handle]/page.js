@@ -224,11 +224,11 @@ export default function ProductPage() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [colorImageMap, setColorImageMap] = useState({});
-  
+  console.log(product);
   const [quantity, setQuantity] = useState(1);
   const [selectedBundle, setSelectedBundle] = useState(null);
 
-  const { fetchProduct, region } = useStore();
+  const { fetchProduct } = useStore();
   const { formatPrice } = useCurrency();
   const { handle, locale } = useParams();
   
@@ -323,7 +323,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     const fetchProductData = async () => {
-      if (!region || !handle) return;
+      if (!handle) return;
 
       try {
         setLoading(true);
@@ -344,7 +344,7 @@ export default function ProductPage() {
     };
 
     fetchProductData();
-  }, [region, handle, fetchProduct]);
+  }, [handle, fetchProduct]);
 
   const currentImages = selectedColor
     ? colorImageMap[selectedColor] || [
@@ -414,66 +414,78 @@ export default function ProductPage() {
     setQuantity((prev) => Math.max(prev - 1, 1));
   };
 
-  const quantityBundles = [
-    {
-      id: "1-item",
-      name: t("product.quantityBundles.oneItem"),
-      quantity: 1,
-      price: basePrice * 1,
-      pricePerItem: basePrice,
-      save: null,
-      popular: false,
-      description: [
-        t("product.quantityBundles.oneItemDescription.0"),
-        t("product.quantityBundles.oneItemDescription.1"),
-        t("product.quantityBundles.oneItemDescription.2"),
-      ],
-    },
-    {
-      id: "4-items",
-      name: t("product.quantityBundles.fourItems"),
-      quantity: 4,
-      price: basePrice * 4,
-      pricePerItem: basePrice,
-      save: null,
-      popular: false,
-      description: [
-        t("product.quantityBundles.fourItemsDescription.0"),
-        t("product.quantityBundles.fourItemsDescription.1"),
-        t("product.quantityBundles.fourItemsDescription.2"),
-      ],
-    },
-    {
-      id: "8-items",
-      name: t("product.quantityBundles.eightItems"),
-      quantity: 8,
-      price: basePrice * 8,
-      pricePerItem: basePrice,
-      save: null,
-      popular: true,
-      description: [
-        t("product.quantityBundles.eightItemsDescription.0"),
-        t("product.quantityBundles.eightItemsDescription.1"),
-        t("product.quantityBundles.eightItemsDescription.2"),
-        t("product.quantityBundles.eightItemsDescription.3"),
-      ],
-    },
-    {
-      id: "12-items",
-      name: t("product.quantityBundles.twelveItems"),
-      quantity: 12,
-      price: basePrice * 12,
-      pricePerItem: basePrice,
-      save: null,
-      popular: false,
-      description: [
-        t("product.quantityBundles.twelveItemsDescription.0"),
-        t("product.quantityBundles.twelveItemsDescription.1"),
-        t("product.quantityBundles.twelveItemsDescription.2"),
-        t("product.quantityBundles.twelveItemsDescription.3"),
-      ],
-    },
-  ];
+  // Generate dynamic quantity bundles based on variant pricing
+  const generateQuantityBundles = (variant) => {
+    if (!variant?.prices || variant.prices.length === 0) {
+      // Fallback to default pricing if no variant pricing
+      return [
+        {
+          id: "1-item",
+          name: t("product.quantityBundles.oneItem"),
+          quantity: 1,
+          price: basePrice * 1,
+          pricePerItem: basePrice,
+          save: null,
+          popular: false,
+          description: [
+            t("product.quantityBundles.oneItemDescription.0"),
+            t("product.quantityBundles.oneItemDescription.1"),
+            t("product.quantityBundles.oneItemDescription.2"),
+          ],
+        },
+      ];
+    }
+
+    // Sort prices by min_quantity to ensure proper order
+    const sortedPrices = [...variant.prices].sort((a, b) => (a.min_quantity || 0) - (b.min_quantity || 0));
+    
+    const bundles = sortedPrices.map((price, index) => {
+      const quantity = price.min_quantity || 1;
+      const pricePerItem = price.amount;
+      const totalPrice = pricePerItem * quantity;
+      
+      // Calculate savings compared to the first price tier
+      const firstPrice = sortedPrices[0];
+      const originalPrice = firstPrice.amount * quantity;
+      const savings = originalPrice - totalPrice;
+      const savePercentage = savings > 0 ? Math.round((savings / originalPrice) * 100) : 0;
+      
+      // Determine if this is popular (middle option or highest savings)
+      const isPopular = index === Math.floor(sortedPrices.length / 2) || savePercentage > 20;
+      
+      return {
+        id: `${quantity}-items`,
+        name: quantity === 1 
+          ? t("product.quantityBundles.oneItem")
+          : t("product.quantityBundles.multipleItems", { count: quantity }),
+        quantity: quantity,
+        price: totalPrice,
+        pricePerItem: pricePerItem,
+        originalPrice: savePercentage > 0 ? originalPrice : null, // Add original price for strikethrough
+        save: savePercentage > 0 ? `${savePercentage}%` : null,
+        popular: isPopular,
+        description: [
+          t("product.quantityBundles.multipleItemsDescription.0"),
+          t("product.quantityBundles.multipleItemsDescription.1"),
+          t("product.quantityBundles.multipleItemsDescription.2"),
+        ],
+      };
+    });
+
+    return bundles;
+  };
+
+  const allQuantityBundles = selectedVariant 
+    ? generateQuantityBundles(selectedVariant)
+    : product?.variants?.[0] 
+      ? generateQuantityBundles(product.variants[0])
+      : [];
+
+  // Separate the first option (1 item) from accordion options
+  const firstOption = allQuantityBundles.find(bundle => bundle.quantity === 1) || allQuantityBundles[0];
+  const accordionOptions = allQuantityBundles.filter(bundle => bundle.quantity !== 1);
+  
+  console.log({allQuantityBundles, firstOption, accordionOptions});
 
   if (!product) {
     return (
@@ -510,7 +522,9 @@ export default function ProductPage() {
           setQuantity={setQuantity}
           selectedBundle={selectedBundle}
           setSelectedBundle={setSelectedBundle}
-          quantityBundles={quantityBundles}
+          quantityBundles={allQuantityBundles}
+          firstOption={firstOption}
+          accordionOptions={accordionOptions}
           colorSwatches={colorSwatches}
           formatPrice={formatPrice}
           basePrice={basePrice}
@@ -533,6 +547,15 @@ export default function ProductPage() {
             setMainCarouselIndex(0);
             setThumbCarouselIndex(0);
           }}
+          quantityBundles={allQuantityBundles}
+          firstOption={firstOption}
+          accordionOptions={accordionOptions}
+          selectedBundle={selectedBundle}
+          setSelectedBundle={setSelectedBundle}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          incrementQuantity={incrementQuantity}
+          decrementQuantity={decrementQuantity}
         />
       </div>
       <ProductReviewsSection center={false} />

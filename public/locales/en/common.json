@@ -286,6 +286,11 @@
         "0": "Perfect for {{count}} person team",
         "1": "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
         "2": "Always Up to Date - Edit your info anytime. No reprints needed."
+      },
+      "multipleItemsDescription": {
+        "0": "Perfect for {{count}} person team",
+        "1": "Never Lose a Lead Again - Tap to instantly share and capture contact info.",
+        "2": "Always Up to Date - Edit your info anytime. No reprints needed."
       }
     },
     "loading": {

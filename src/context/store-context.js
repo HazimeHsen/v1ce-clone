@@ -22,18 +22,10 @@ export const StoreProvider = ({ children }) => {
   const [productCache, setProductCache] = useState({});
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  console.log(products);
-
-  // Helper function to get the correct unit price for display in cart
   const getDisplayUnitPrice = (cartItem) => {
     if (!cartItem) return 0;
     
-    // Apply quantity-based discount logic
-    // If quantity >= 4, apply discount (7 -> 5)
     if (cartItem.quantity >= 4) {
-      // The unit_price in cart items is already the discounted price
-      // But we need to show the original price for display purposes
-      // For now, return the unit_price as is since it's already discounted
       return cartItem.unit_price || 0;
     }
     
@@ -91,17 +83,24 @@ export const StoreProvider = ({ children }) => {
 
   const fetchProductMetadata = useCallback(async (productId) => {
     try {
-      const res = await medusa.products.list({
-        id: productId,
-        region_id: region.id,
-        fields: "id,metadata,variants,variants.metadata"
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BASE_URL}/store/products/${productId}`, {
+        method: 'GET',
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
       });
-      return res.products?.[0] || null;
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.product || null;
     } catch (err) {
       console.error("Failed to fetch product metadata:", err);
       return null;
     }
-  }, [region]);
+  }, []);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -139,103 +138,82 @@ export const StoreProvider = ({ children }) => {
 
   const fetchProduct = useCallback(async (handle) => {
     try {
-      if (!region || !handle) return null;
+      if (!handle) return null;
 
-      const cacheKey = `${region.id}-${handle}`;
+      const cacheKey = `handle-${handle}`;
       if (productCache[cacheKey]) {
         return productCache[cacheKey];
       }
 
-      const res = await medusa.products.list({
-        handle: handle,
-        region_id: region.id,
+      // Use the store API directly to get complete product data
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BASE_URL}/store/products/${handle}`, {
+        method: 'GET',
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
       });
 
-      const product = res.products?.[0] || null;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const product = data.product || null;
 
       if (product) {
-        // Fetch metadata for this product
-        const metadataProduct = await fetchProductMetadata(product.id);
-        if (metadataProduct) {
-          const productWithMetadata = {
-            ...product,
-            metadata: metadataProduct.metadata,
-            variants: product.variants.map((variant, index) => ({
-              ...variant,
-              metadata: metadataProduct.variants?.[index]?.metadata || variant.metadata
-            }))
-          };
-          
-          setProductCache((prev) => ({
-            ...prev,
-            [cacheKey]: productWithMetadata,
-          }));
-          
-          return productWithMetadata;
-        }
-        
         setProductCache((prev) => ({
           ...prev,
           [cacheKey]: product,
         }));
+        
+        return product;
       }
 
-      return product;
+      return null;
     } catch (err) {
       console.error("Failed to fetch product:", err);
       return null;
     }
-  }, [region, fetchProductMetadata]);
+  }, []);
 
   const fetchProductById = useCallback(async (productId) => {
     try {
-      if (!region || !productId) return null;
+      if (!productId) return null;
 
-      const cacheKey = `${region.id}-id-${productId}`;
+      const cacheKey = `id-${productId}`;
       if (productCache[cacheKey]) {
         return productCache[cacheKey];
       }
 
-      const res = await medusa.products.list({
-        id: productId,
-        region_id: region.id,
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BASE_URL}/store/products/${productId}`, {
+        method: 'GET',
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
       });
 
-      const product = res.products?.[0] || null;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const product = data.product || null;
 
       if (product) {
-        // Fetch metadata for this product
-        const metadataProduct = await fetchProductMetadata(productId);
-        if (metadataProduct) {
-          const productWithMetadata = {
-            ...product,
-            metadata: metadataProduct.metadata,
-            variants: product.variants.map((variant, index) => ({
-              ...variant,
-              metadata: metadataProduct.variants?.[index]?.metadata || variant.metadata
-            }))
-          };
-          
-          setProductCache((prev) => ({
-            ...prev,
-            [cacheKey]: productWithMetadata,
-          }));
-          
-          return productWithMetadata;
-        }
-        
         setProductCache((prev) => ({
           ...prev,
           [cacheKey]: product,
         }));
+        
+        return product;
       }
 
-      return product;
+      return null;
     } catch (err) {
       console.error("Failed to fetch product by ID:", err);
       return null;
     }
-  }, [region, fetchProductMetadata]);
+  }, []);
 
   const fetchCartItemsWithProducts = useCallback(async (cartItems) => {
     if (!cartItems || cartItems.length === 0) return [];
