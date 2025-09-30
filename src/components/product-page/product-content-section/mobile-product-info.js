@@ -320,11 +320,6 @@ export default function MobileProductInfo({
                             <span className="text-left text-sm font-semibold leading-tight">
                               {bundle.name}
                             </span>
-                            {bundle.save && (
-                              <span className="text-xs font-medium text-green-600">
-                                {bundle.save}
-                              </span>
-                            )}
                           </div>
                         </div>
                         <div className="ml-2 text-right">
