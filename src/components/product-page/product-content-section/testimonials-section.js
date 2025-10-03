@@ -153,6 +153,25 @@ function InfiniteSlider({ testimonials }) {
   const { t } = useTranslations();
   const scrollRef = useRef(null);
 
+  // Company logos array
+  const companyLogos = [
+    { name: "ACBA Bank", logo: "/assets/images/logos/Acba-logo.png" },
+    { name: "Aleph Hospitality", logo: "/assets/images/logos/Aleph.png" },
+    { name: "AmeriaBank", logo: "/assets/images/logos/Ameriabank.png" },
+    { name: "AMIO Bank", logo: "/assets/images/logos/Amio.png" },
+    { name: "Amundi Acba", logo: "/assets/images/logos/Amundi Acba.png" },
+    { name: "Armenian Airlines", logo: "/assets/images/logos/ARMENIAN_AIRLINES.jpg" },
+    { name: "ArmSwissBank", logo: "/assets/images/logos/ArmSwissBank.png" },
+    { name: "Creedroomz", logo: "/assets/images/logos/Creedroomz.png" },
+    { name: "Dino", logo: "/assets/images/logos/Dino.png" },
+    { name: "EFES Insurance", logo: "/assets/images/logos/EFES Insurance.jpg" },
+    { name: "Grant Thornton", logo: "/assets/images/logos/GrantThornton.png" },
+    { name: "KEUS Family Wines", logo: "/assets/images/logos/Keush_Family_Wines.jpg" },
+    { name: "Natali Pharm", logo: "/assets/images/logos/Natali_Pharm.png" },
+    { name: "The Pelican Hotel", logo: "/assets/images/logos/Pelican.png" },
+    { name: "VINO&VINO", logo: "/assets/images/logos/VINO&VINO.png" },
+  ];
+
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
@@ -175,7 +194,7 @@ function InfiniteSlider({ testimonials }) {
     return () => cancelAnimationFrame(animationFrame);
   }, []);
 
-  const duplicated = [...testimonials, ...testimonials];
+  const duplicated = [...companyLogos, ...companyLogos];
 
   return (
     <div className="relative flex flex-col items-center gap-4 rounded-md py-4 font-medium overflow-hidden">
@@ -193,7 +212,7 @@ function InfiniteSlider({ testimonials }) {
                   src={brand.logo}
                   alt={brand.name}
                   fill
-                  className="object-contain object-left"
+                  className="object-contain object-center"
                   blurDataURL={brand.logo}
                   placeholder="blur"
                   quality={100}

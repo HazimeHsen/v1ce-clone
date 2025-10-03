@@ -5,16 +5,52 @@ import SliderImageCard from "./slider-image-card";
 
 const sliderImages = [
   {
-    before: "/assets/images/before-and-after-1.png",
-    after: "/assets/images/before-and-after-2.png",
+    before: "/assets/images/cards/old/ACBA Bank (Amundi Acba).jpg",
+    after: "/assets/images/cards/new/ACBA Bank (Amundi Acba).jpg",
   },
   {
-    before: "/assets/images/before-and-after-1.png",
-    after: "/assets/images/before-and-after-2.png",
+    before: "/assets/images/cards/old/Aleph Hospitality (The Pelican Hotel).jpg",
+    after: "/assets/images/cards/new/Aleph Hospitality (The Pelican Hotel).jpg",
   },
   {
-    before: "/assets/images/before-and-after-1.png",
-    after: "/assets/images/before-and-after-2.png",
+    before: "/assets/images/cards/old/AmeriaBank (Dino).jpg",
+    after: "/assets/images/cards/new/AmeriaBank (Dino).jpg",
+  },
+  {
+    before: "/assets/images/cards/old/AMIO Bank.jpg",
+    after: "/assets/images/cards/new/AMIO Bank.jpg",
+  },
+  {
+    before: "/assets/images/cards/old/Armenian Airlines.jpg",
+    after: "/assets/images/cards/new/Armenian Airlines.jpg",
+  },
+  {
+    before: "/assets/images/cards/old/ArmSwissBank.jpg",
+    after: "/assets/images/cards/new/ArmSwissBank.jpg",
+  },
+  {
+    before: "/assets/images/cards/old/Creedroomz.jpg",
+    after: "/assets/images/cards/new/Creedroomz.jpg",
+  },
+  {
+    before: "/assets/images/cards/old/EFES Insurance.jpg",
+    after: "/assets/images/cards/new/EFES Insurance.jpg",
+  },
+  {
+    before: "/assets/images/cards/old/GrantThornton.jpg",
+    after: "/assets/images/cards/new/GrantThornton.jpg",
+  },
+  {
+    before: "/assets/images/cards/old/KEUS Family Wines.jpg",
+    after: "/assets/images/cards/new/KEUS Family Wines.jpg",
+  },
+  {
+    before: "/assets/images/cards/old/Natali Pharm.jpg",
+    after: "/assets/images/cards/new/Natali Pharm.jpg",
+  },
+  {
+    before: "/assets/images/cards/old/VINO&VINO.jpg",
+    after: "/assets/images/cards/new/VINO&VINO.jpg",
   },
 ];
 
@@ -120,9 +156,10 @@ export default function RevealSlider() {
         >
           {allSliderImages.map((item, index) => (
             <SliderImageCard
-              key={`before-${index}`}
-              imageSrc={item.before}
-              imageAlt={`Before ${index}`}
+              key={`after-${index}`}
+              imageSrc={item.after}
+              imageAlt={`After ${index}`}
+              isAfter={true}
             />
           ))}
         </div>
@@ -146,10 +183,9 @@ export default function RevealSlider() {
         >
           {allSliderImages.map((item, index) => (
             <SliderImageCard
-              key={`after-${index}`}
-              imageSrc={item.after}
-              imageAlt={`After ${index}`}
-              isAfter={true}
+              key={`before-${index}`}
+              imageSrc={item.before}
+              imageAlt={`Before ${index}`}
             />
           ))}
         </div>
