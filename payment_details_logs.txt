@@ -16,3 +16,21 @@ Amount: 10
 Currency: 051
 OrderID: 3890078
 ---
+[2025-10-02T11:44:20.594Z] GET_PAYMENT_DETAILS
+PaymentID: 7EEF53E0-BF81-4697-8F0F-43F821A6124C
+ResponseCode: 00
+PaymentState: payment_deposited
+OrderStatus: 2
+Amount: 10
+Currency: 051
+OrderID: 3890083
+---
+[2025-10-03T10:50:18.925Z] GET_PAYMENT_DETAILS
+PaymentID: 7EEF53E0-BF81-4697-8F0F-43F821A6124C
+ResponseCode: 00
+PaymentState: payment_deposited
+OrderStatus: 2
+Amount: 10
+Currency: 051
+OrderID: 3890083
+---

@@ -207,7 +207,7 @@
     "addedToCart": "Added to Cart!",
     "itemAddedSuccessfully": "Item added successfully!",
     "selectColorAndQuantity": "Please select both a color and quantity to continue",
-    "shippingCalculated": "Shipping Calculated at Checkout",
+    "shippingCalculated": "Shipping Calculated at Checkout - Free Shipping on Orders Over",
     "orderTodayForDelivery": "Order today for delivery:",
     "priceRange": "Price Range",
     "priceRangeDescription": "Bulk pricing available",
@@ -764,7 +764,24 @@
     },
     "emptyCartTitle": "Your cart is empty",
     "emptyCartDescription": "Add some items to your cart to proceed with checkout.",
-    "emptyCartContinueShopping": "Continue Shopping"
+    "emptyCartContinueShopping": "Continue Shopping",
+    "promoCode": {
+      "title": "Promo Code",
+      "placeholder": "Enter promo code",
+      "apply": "Apply",
+      "applied": "Promo code applied successfully!",
+      "appliedPromotions": "Applied Promotions",
+      "off": "off",
+      "enterCode": "Please enter a promo code",
+      "noCart": "No cart available",
+      "invalidCode": "Invalid promo code",
+      "error": "Failed to apply promo code",
+      "removeError": "Failed to remove promo code",
+      "onlyOneAllowed": "Only one promo code can be applied at a time",
+      "removeFirst": "Remove current promo code first"
+    },
+    "discount": "Discount",
+    "discountTotal": "Discount Total"
   },
   "metadata": {
     "home": {

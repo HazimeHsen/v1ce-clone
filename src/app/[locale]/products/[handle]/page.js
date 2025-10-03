@@ -465,7 +465,7 @@ export default function ProductPage() {
         save: savePercentage > 0 ? `${savePercentage}%` : null,
         popular: isPopular,
         description: [
-          t("product.quantityBundles.multipleItemsDescription.0"),
+          t("product.quantityBundles.multipleItemsDescription.0", { count: quantity }),
           t("product.quantityBundles.multipleItemsDescription.1"),
           t("product.quantityBundles.multipleItemsDescription.2"),
         ],

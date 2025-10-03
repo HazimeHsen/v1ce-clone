@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CreditCard, X } from "lucide-react";
 import { Spinner } from "@/components/ui/loader";
 import PriceDisplay from "@/components/ui/price-display";
@@ -13,6 +14,7 @@ export default function OrderSummary({
   displayItems,
   loadingCartItems,
   cartItems,
+  cart,
   updatingItems,
   handleDecrease,
   handleIncrease,
@@ -20,11 +22,22 @@ export default function OrderSummary({
   totalItems,
   subtotal,
   shipping,
+  refetchingShipping,
+  refetchingCart,
   getItemImage,
   getItemTitle,
   getItemVariantTitle,
   t
 }) {
+  // Debug cart data
+  console.log("OrderSummary cart data:", {
+    cart,
+    discountTotal: cart?.discount_total,
+    promotions: cart?.promotions,
+    total: cart?.total,
+    subtotal,
+    shipping
+  });
   return (
     <Card className="bg-card/80 border-border/50 sticky top-8">
       <CardHeader className="border-b border-border/50 bg-secondary/20">
@@ -119,12 +132,21 @@ export default function OrderSummary({
                 </div>
                 
                 <div className="text-right">
-                  <p className="text-sm text-muted-foreground">
-                    <PriceDisplay price={item.unit_price || 0} /> each
-                  </p>
-                  <p className="font-semibold text-foreground">
-                    <PriceDisplay price={(item.unit_price || 0) * item.quantity} />
-                  </p>
+                  {refetchingCart ? (
+                    <>
+                      <Skeleton className="h-4 w-16 ml-auto mb-1" />
+                      <Skeleton className="h-5 w-20 ml-auto" />
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm text-muted-foreground">
+                        <PriceDisplay price={item.unit_price || 0} /> each
+                      </p>
+                      <p className="font-semibold text-foreground">
+                        <PriceDisplay price={(item.unit_price || 0) * item.quantity} />
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
@@ -136,22 +158,53 @@ export default function OrderSummary({
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t("checkout.subtotal")} ({totalItems} items)</span>
-            <span className="text-foreground"><PriceDisplay price={subtotal} /></span>
+            {refetchingCart ? (
+              <Skeleton className="h-5 w-20" />
+            ) : (
+              <span className="text-foreground"><PriceDisplay price={subtotal} /></span>
+            )}
           </div>
+          
+          {(cart?.discount_total && cart.discount_total > 0) ?(
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">
+                {t("checkout.discount")}
+                {cart?.promotions && cart.promotions.length > 0 && ` (${cart.promotions[0].code})`}
+              </span>
+              {refetchingCart ? (
+                <Skeleton className="h-5 w-20" />
+              ) : (
+                <span className="text-green-600">
+                  -<PriceDisplay price={cart.discount_total} />
+                </span>
+              )}
+            </div>
+          ) : null}
+          
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t("checkout.shipping")}</span>
-            <span className="text-foreground">
-              {shipping === 0 ? (
-                <span className="text-primary">{t("checkout.free")}</span>
-              ) : (
-                <PriceDisplay price={shipping} />
-              )}
-            </span>
+            {refetchingShipping ? (
+              <Skeleton className="h-5 w-20" />
+            ) : (
+              <span className="text-foreground">
+                {shipping === 0 ? (
+                  <span className="text-primary">{t("checkout.free")}</span>
+                ) : (
+                  <PriceDisplay price={shipping} />
+                )}
+              </span>
+            )}
           </div>
           <Separator className="bg-border/50" />
           <div className="flex justify-between text-lg font-semibold text-foreground">
             <span>{t("checkout.total")}</span>
-            <span className="text-primary"><PriceDisplay price={subtotal + shipping} /></span>
+            {refetchingShipping || refetchingCart ? (
+              <Skeleton className="h-6 w-24" />
+            ) : (
+              <span className="text-primary">
+                <PriceDisplay price={subtotal - (cart?.discount_total || 0) + shipping} />
+              </span>
+            )}
           </div>
         </div>
       </CardContent>

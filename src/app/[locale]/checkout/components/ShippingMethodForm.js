@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Truck } from "lucide-react";
 
 export default function ShippingMethodForm({
@@ -11,8 +12,13 @@ export default function ShippingMethodForm({
   setSelectedShippingOption,
   addShippingMethod,
   formatPrice,
+  refetchingShipping,
   t
 }) {
+  console.log("ShippingMethodForm shippingOptions", shippingOptions);
+  console.log("ShippingMethodForm selectedShippingOption", selectedShippingOption);
+  console.log("ShippingMethodForm refetchingShipping", refetchingShipping);
+
   const handleShippingOptionChange = async (optionId) => {
     const option = shippingOptions.find(opt => opt.id === optionId);
     if (option) {
@@ -55,15 +61,19 @@ export default function ShippingMethodForm({
                   </span>
                 </Label>
               </div>
-              <div className="text-right">
-                <span className="font-medium text-foreground">
-                  {option.amount === 0 ? (
-                    <span className="text-primary">{t("checkout.free")}</span>
-                  ) : (
-                    `${formatPrice(option.amount)}`
-                  )}
-                </span>
-              </div>
+               <div className="text-right">
+                 {refetchingShipping ? (
+                   <Skeleton className="h-5 w-20 ml-auto" />
+                 ) : (
+                   <span className="font-medium text-foreground">
+                     {option.amount === 0 ? (
+                       <span className="text-primary">{t("checkout.free")}</span>
+                     ) : (
+                       `${formatPrice(option.amount)}`
+                     )}
+                   </span>
+                 )}
+               </div>
             </div>
           ))}
         </RadioGroup>

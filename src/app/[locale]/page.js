@@ -47,9 +47,9 @@ export default function Home() {
       <FadeInSection direction="up">
         <CardCollections products={products} />
       </FadeInSection>
-      <FadeInSection direction="up">
+      {/* <FadeInSection direction="up">
         <TestimonialSection />
-      </FadeInSection>
+      </FadeInSection> */}
       <FadeInSection direction="up">
         <BeforeAfterSection />
       </FadeInSection>
@@ -71,9 +71,9 @@ export default function Home() {
       <FadeInSection direction="up">
         <AfterEventSection />
       </FadeInSection>
-      <FadeInSection direction="up">
+      {/* <FadeInSection direction="up">
         <CaseStudiesSection />
-      </FadeInSection>
+      </FadeInSection> */}
       <FadeInSection direction="up">
         <ProductReviewsSection />
       </FadeInSection>

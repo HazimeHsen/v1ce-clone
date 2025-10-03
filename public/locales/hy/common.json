@@ -207,7 +207,7 @@
     "addedToCart": "Ավելացվել է զամբյուղ!",
     "itemAddedSuccessfully": "Արտադրանքը հաջողությամբ ավելացվել է!",
     "selectColorAndQuantity": "Խնդրում ենք ընտրել և՛ գույնը, և՛ քանակը շարունակելու համար",
-    "shippingCalculated": "Առաքումը հաշվարկվում է պատվերի ժամանակ",
+    "shippingCalculated": "Առաքումը հաշվարկվում է պատվերի ժամանակ - Անվճար առաքում",
     "orderTodayForDelivery": "Պատվիրեք այսօր առաքման համար:",
     "priceRange": "Գնի միջակայք",
     "priceRangeDescription": "Մեծաքանակ գնման զեղչեր",
@@ -764,7 +764,24 @@
     },
     "emptyCartTitle": "Ձեր զամբյուղը դատարկ է",
     "emptyCartDescription": "Ավելացրեք որոշ ապրանքներ ձեր զամբյուղին՝ պատվերը ավարտելու համար:",
-    "emptyCartContinueShopping": "Շարունակել գնումները"
+    "emptyCartContinueShopping": "Շարունակել գնումները",
+    "promoCode": {
+      "title": "Խթանիչ Կոդ",
+      "placeholder": "Մուտքագրեք խթանիչ կոդ",
+      "apply": "Կիրառել",
+      "applied": "Խթանիչ կոդը հաջողությամբ կիրառվել է:",
+      "appliedPromotions": "Կիրառված խթաններ",
+      "off": "զեղչ",
+      "enterCode": "Խնդրում ենք մուտքագրել խթանիչ կոդ",
+      "noCart": "Զամբյուղ հասանելի չէ",
+      "invalidCode": "Անվավեր խթանիչ կոդ",
+      "error": "Խթանիչ կոդը կիրառել չհաջողվեց",
+      "removeError": "Խթանիչ կոդը հեռացնել չհաջողվեց",
+      "onlyOneAllowed": "Միայն մեկ խթանիչ կոդ կարող է կիրառվել միաժամանակ",
+      "removeFirst": "Նախ հեռացրեք ընթացիկ խթանիչ կոդը"
+    },
+    "discount": "Զեղչ",
+    "discountTotal": "Զեղչի ընդամենը"
   },
   "metadata": {
     "home": {

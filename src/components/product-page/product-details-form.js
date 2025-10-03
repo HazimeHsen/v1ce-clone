@@ -19,6 +19,7 @@ import ColorSwatches from "@/components/color-swatches";
 import { useStore } from "@/context/store-context";
 import { useCurrency } from "@/context/currency-context";
 import { useTranslations } from "@/hooks/use-translations";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getDeliveryDateRange } from "@/lib/delivery-utils";
 import PriceDisplay from "@/components/ui/price-display";
 import { getLocalizedTitle, getLocalizedSubtitle, getLocalizedDescription } from "@/lib/translation-utils";
@@ -58,7 +59,7 @@ export default function ProductDetailsForm({
   const [cartSuccess, setCartSuccess] = useState(false);
 
   const { addToCart, error: storeError, openCart } = useStore();
-  const { formatPrice } = useCurrency();
+  const { formatPrice, convertPrice, selectedCurrency, isLoading: rateLoading } = useCurrency();
 
   const mainCarouselRef = useRef(null);
   const thumbCarouselRef = useRef(null);
@@ -146,6 +147,17 @@ export default function ProductDetailsForm({
   );
 
   const basePrice = selectedVariant?.calculated_price?.calculated_amount || 25;
+
+  // Calculate total price for free shipping check
+  const selectedQuantityBundle = quantityBundles.find(
+    (b) => b.id === selectedBundle
+  );
+  const bundleQuantity = selectedQuantityBundle?.quantity || 1;
+  const totalQuantity = bundleQuantity * quantity;
+  const totalPrice = basePrice * totalQuantity;
+
+  // Free shipping threshold in AMD
+  const FREE_SHIPPING_THRESHOLD_AMD = 15000;
 
   // quantityBundles now comes from props
 
@@ -673,7 +685,12 @@ export default function ProductDetailsForm({
               )}
 
               <p className="min-w-full text-center text-xs font-medium text-muted-foreground">
-                {t("product.shippingCalculated")}
+                {t("product.shippingCalculated")} 
+                {rateLoading && selectedCurrency?.code !== "AMD" ? (
+                  <Skeleton className="inline-block h-3 w-16 ml-1" />
+                ) : (
+                  ` ${formatPrice(FREE_SHIPPING_THRESHOLD_AMD)}`
+                )}
               </p>
             </div>
           </div>

@@ -115,7 +115,8 @@ export default function Navbar() {
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const displayItems = cartItems;
   console.log("cart", cart);
-  const totalPrice = cart?.total ? cart.total : 0;
+  // Only show cart total if there are items, otherwise show 0
+  const totalPrice = cartItems.length > 0 && cart?.total ? cart.total : 0;
 
   const handleCheckout = () => {
     if (cartItems.length > 0) {

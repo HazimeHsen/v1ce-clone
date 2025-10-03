@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import ShippingStep from "./components/ShippingStep";
 import OrderSummary from "./components/OrderSummary";
 import ShippingMethodForm from "./components/ShippingMethodForm";
+import PromoCodeForm from "./components/PromoCodeForm";
 import { PageLoader } from "@/components/ui/loader";
 
 // Schema will be created inside component to use translations
@@ -27,6 +28,7 @@ export default function CheckoutPage() {
     removeFromCart,
     updateCartItem,
     fetchCartItemsWithProducts,
+    getCart,
     loading,
     error,
     setError,
@@ -65,6 +67,9 @@ export default function CheckoutPage() {
   const [loadingShippingOptions, setLoadingShippingOptions] = useState(true);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [urlError, setUrlError] = useState(null);
+  const [isInitialShippingLoad, setIsInitialShippingLoad] = useState(true);
+  const [refetchingShipping, setRefetchingShipping] = useState(false);
+  const [refetchingCart, setRefetchingCart] = useState(false);
 
   const cartItems = cart?.items || [];
 
@@ -100,67 +105,107 @@ export default function CheckoutPage() {
     isPageLoading,
     cartItemsLength: cartItems.length,
     cartId: cart?.id,
+    isEmpty: !cart || cartItems.length === 0,
+    shouldShowLoading: isPageLoading || loading || loadingCartItems || (cart?.id && loadingShippingOptions),
   });
 
-  useEffect(() => {
-    const fetchShippingOptions = async () => {
-      if (!cart?.id) {
-        return;
-      }
+  const fetchShippingOptions = async (silent = false) => {
+    if (!cart?.id) {
+      return;
+    }
 
-      try {
+    try {
+      // Initial load: show full page loading
+      if (isInitialShippingLoad && !silent) {
         setLoadingShippingOptions(true);
-        const shippingResponse = await fetch(
-          `/api/shipping?cartId=${cart.id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!shippingResponse.ok) {
-          throw new Error("Failed to fetch shipping options");
-        }
-
-        const options = await shippingResponse.json();
-        setShippingOptions(options?.shipping_options || []);
-
-        if (options?.shipping_options?.length > 0) {
-          setSelectedShippingOption(options?.shipping_options[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch shipping options:", error);
-        setShippingOptions([]);
-      } finally {
-        setLoadingShippingOptions(false);
+      } else {
+        // Refetch: show skeleton loader only
+        setRefetchingShipping(true);
       }
-    };
+      
+      const shippingResponse = await fetch(
+        `/api/shipping?cartId=${cart.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      if (!shippingResponse.ok) {
+        throw new Error("Failed to fetch shipping options");
+      }
+
+      const options = await shippingResponse.json();
+      setShippingOptions(options?.shipping_options || []);
+
+      // Maintain selected option or select first
+      setSelectedShippingOption(prevSelected => {
+        if (prevSelected) {
+          const stillAvailable = options?.shipping_options?.find(
+            opt => opt.id === prevSelected.id
+          );
+          if (stillAvailable) {
+            return prevSelected;
+          }
+        }
+        return options?.shipping_options?.length > 0 ? options.shipping_options[0] : null;
+      });
+    } catch (error) {
+      console.error("Failed to fetch shipping options:", error);
+      setShippingOptions([]);
+    } finally {
+      setLoadingShippingOptions(false);
+      setRefetchingShipping(false);
+      setIsInitialShippingLoad(false);
+    }
+  };
+
+  useEffect(() => {
     fetchShippingOptions();
   }, [cart?.id]);
 
+  // Comprehensive loading state management
   useEffect(() => {
-    // Show loading while any of these are true:
-    // 1. Store context is loading
-    // 2. Cart items are being fetched
-    // 3. Shipping options are being fetched (only if cart exists)
-    const isLoading = loading || loadingCartItems || (cart?.id && loadingShippingOptions);
+    // Determine if we should show loading
+    const shouldShowLoading = () => {
+      // Always show loading initially
+      if (isPageLoading === true) return true;
+      
+      // Show loading while cart items are being fetched
+      if (loadingCartItems) return true;
+      
+      // Show loading while shipping options are being fetched (if cart exists)
+      if (cart?.id && loadingShippingOptions) return true;
+      
+      return false;
+    };
+
+    const isLoading = shouldShowLoading();
     
     if (!isLoading) {
       console.log("All data loaded, hiding page loader");
       setIsPageLoading(false);
     }
-  }, [loading, loadingCartItems, loadingShippingOptions, cart?.id]);
+  }, [loadingCartItems, loadingShippingOptions, cart?.id, isPageLoading]);
 
-  // Handle case when there's no cart and store is not loading
+  // Reset loading state when component mounts
   useEffect(() => {
-    if (!loading && !cart) {
-      console.log("No cart found, showing empty state");
+    console.log("Component mounted, setting loading to true");
+    setIsPageLoading(true);
+    
+    // Fallback timeout to prevent infinite loading
+    const timeout = setTimeout(() => {
+      console.log("Loading timeout reached, forcing content to show");
       setIsPageLoading(false);
-    }
-  }, [loading, cart]);
+    }, 15000); // 15 second timeout
+
+    return () => {
+      clearTimeout(timeout);
+      console.log("Component unmounting, cleaning up");
+    };
+  }, []);
 
   const shippingForm = useForm({
     resolver: zodResolver(shippingSchema),
@@ -309,10 +354,47 @@ export default function CheckoutPage() {
 
   // Using formatPrice from currency context
 
+  const refetchCart = async () => {
+    if (!cart?.id) return;
+    
+    try {
+      setRefetchingCart(true);
+      const updatedCart = await getCart(cart.id);
+      if (updatedCart) {
+        // Refetch enriched items with updated cart
+        const enriched = await fetchCartItemsWithProducts(updatedCart.items);
+        setEnrichedCartItems(enriched);
+      }
+    } catch (error) {
+      console.error("Failed to refetch cart:", error);
+    } finally {
+      setRefetchingCart(false);
+    }
+  };
+
+  const refetchCartAndShipping = async () => {
+    // First, fetch both cart and shipping options in parallel
+    await Promise.all([
+      refetchCart(),
+      fetchShippingOptions(true)
+    ]);
+    
+    // After fetching, if there's a selected shipping option, reapply it to update the cart's shipping_total
+    if (selectedShippingOption?.id) {
+      try {
+        await addShippingMethod(selectedShippingOption.id);
+      } catch (error) {
+        console.error("Failed to reapply shipping method:", error);
+      }
+    }
+  };
+
   const handleIncrease = async (lineItemId, currentQuantity) => {
     try {
       setUpdatingItems((prev) => new Set(prev).add(lineItemId));
       await updateCartItem(lineItemId, currentQuantity + 1);
+      // Refetch cart and shipping in parallel
+      await refetchCartAndShipping();
     } catch (error) {
       console.error("Failed to increase quantity:", error);
     } finally {
@@ -329,6 +411,8 @@ export default function CheckoutPage() {
       if (currentQuantity > 1) {
         setUpdatingItems((prev) => new Set(prev).add(lineItemId));
         await updateCartItem(lineItemId, currentQuantity - 1);
+        // Refetch cart and shipping in parallel
+        await refetchCartAndShipping();
       }
     } catch (error) {
       console.error("Failed to decrease quantity:", error);
@@ -344,6 +428,8 @@ export default function CheckoutPage() {
   const handleRemove = async (lineItemId) => {
     try {
       await removeFromCart(lineItemId);
+      // Refetch cart and shipping in parallel
+      await refetchCartAndShipping();
     } catch (error) {
       console.error("Failed to remove item:", error);
     }
@@ -406,8 +492,16 @@ export default function CheckoutPage() {
     }
   };
   
-  // Show loading state while fetching cart data
-  if (isPageLoading && !isProcessingOrder) {
+  // Show loading state while fetching cart data (only for initial load, not during refetch)
+  const shouldShowLoading = isPageLoading || loadingCartItems || (cart?.id && loadingShippingOptions);
+  
+  if (shouldShowLoading && !isProcessingOrder) {
+    console.log("Showing loading state:", {
+      isPageLoading,
+      loadingCartItems,
+      loadingShippingOptions,
+      cartId: cart?.id
+    });
     return <PageLoader />;
   }
 
@@ -450,12 +544,22 @@ export default function CheckoutPage() {
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const displayItems =
     enrichedCartItems.length > 0 ? enrichedCartItems : cartItems;
-  const totalPrice = cart?.total ? cart.total : 0;
   const subtotal = displayItems.reduce(
     (sum, item) => sum + (item.unit_price || 0) * item.quantity,
     0
   );
-  const shipping = selectedShippingOption ? selectedShippingOption.amount : 0;
+  
+  // Use cart's shipping_total if a shipping method has been applied to the cart,
+  // otherwise use the selected option amount
+  const hasShippingMethod = cart?.shipping_methods && cart.shipping_methods.length > 0;
+  const shipping = hasShippingMethod && cart?.shipping_total !== undefined 
+    ? cart.shipping_total 
+    : (selectedShippingOption ? selectedShippingOption.amount : 0);
+    
+  const discountTotal = cart?.discount_total || 0;
+  
+  // Calculate total properly including shipping and discounts
+  const totalPrice = cart?.total || (subtotal + shipping - discountTotal);
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -491,7 +595,7 @@ export default function CheckoutPage() {
               shippingForm={shippingForm}
               onShippingSubmit={onShippingSubmit}
               isProcessingOrder={isProcessingOrder}
-              loading={loading || loadingShippingOptions}
+              loading={false}
               t={t}
             />
           </div>
@@ -501,19 +605,25 @@ export default function CheckoutPage() {
               displayItems={displayItems}
               loadingCartItems={loadingCartItems}
               cartItems={cartItems}
+              cart={cart}
               updatingItems={updatingItems}
               handleDecrease={handleDecrease}
               handleIncrease={handleIncrease}
               handleRemove={handleRemove}
               totalItems={totalItems}
               subtotal={subtotal}
-              totalPrice={totalPrice}
               shipping={shipping}
-              isProcessingOrder={isProcessingOrder}
-              loading={loading}
+              refetchingShipping={refetchingShipping}
+              refetchingCart={refetchingCart}
               getItemImage={getItemImage}
               getItemTitle={getItemTitle}
               getItemVariantTitle={getItemVariantTitle}
+              t={t}
+            />
+
+            <PromoCodeForm
+              cart={cart}
+              setCart={setCart}
               formatPrice={formatPrice}
               t={t}
             />
@@ -524,6 +634,7 @@ export default function CheckoutPage() {
               setSelectedShippingOption={setSelectedShippingOption}
               addShippingMethod={addShippingMethod}
               formatPrice={formatPrice}
+              refetchingShipping={refetchingShipping}
               t={t}
             />
           </div>
