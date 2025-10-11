@@ -34,3 +34,12 @@ Amount: 10
 Currency: 051
 OrderID: 3890083
 ---
+[2025-10-11T13:24:55.611Z] GET_PAYMENT_DETAILS
+PaymentID: 4073E2C7-8C69-4D7D-B724-42F91AD996F3
+ResponseCode: 00
+PaymentState: payment_approved
+OrderStatus: 1
+Amount: 10
+Currency: 051
+OrderID: 3890086
+---

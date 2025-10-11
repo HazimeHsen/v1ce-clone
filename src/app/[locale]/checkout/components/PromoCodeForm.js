@@ -19,7 +19,6 @@ export default function PromoCodeForm({
   const [promoCode, setPromoCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   const appliedPromotions = cart?.promotions || [];
   
@@ -45,7 +44,6 @@ export default function PromoCodeForm({
 
     setIsLoading(true);
     setError(null);
-    setSuccess(null);
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BASE_URL}/store/carts/${cart.id}/promotions`, {
@@ -67,7 +65,6 @@ export default function PromoCodeForm({
       }
 
       setCart(data.cart);
-      setSuccess(t("checkout.promoCode.applied"));
       setPromoCode("");
     } catch (err) {
       console.error("Failed to apply promo code:", err);
@@ -145,12 +142,9 @@ export default function PromoCodeForm({
                 onClick={addPromoCode}
                 disabled={isLoading || !promoCode.trim()}
                 className="px-6"
+                loading={isLoading}
               >
-                {isLoading ? (
-                  <Spinner size="sm" />
-                ) : (
-                  t("checkout.promoCode.apply")
-                )}
+                {t("checkout.promoCode.apply")}
               </Button>
             </div>
 
@@ -162,13 +156,6 @@ export default function PromoCodeForm({
               </div>
             )}
 
-            {/* Success Message */}
-            {success && (
-              <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-                <Check className="h-4 w-4 text-green-600" />
-                <p className="text-sm text-green-600">{success}</p>
-              </div>
-            )}
           </div>
         )}
 

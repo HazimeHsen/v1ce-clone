@@ -181,7 +181,7 @@ export async function GET(req, { params }) {
     );
 
     // Send email notification for order completion
-    await sendOrderCompletionEmail(orderData.order, orderData.order?.email, getCustomerName(orderData.order));
+    // await sendOrderCompletionEmail(orderData.order, orderData.order?.email, getCustomerName(orderData.order));
 
     return NextResponse.redirect(
       new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/order/confirmed/${orderId}`, req.url)

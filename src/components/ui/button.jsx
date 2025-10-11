@@ -78,7 +78,7 @@ function Button({
             size={spinnerSize} 
             color={getSpinnerColor()}
           />
-          {loadingText || "Loading..."}
+          {loadingText || ""}
         </>
       ) : (
         children
